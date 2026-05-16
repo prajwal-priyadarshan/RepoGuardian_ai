@@ -7,9 +7,7 @@ import {
   GitBranch,
   Wrench,
   Search,
-  Menu,
   X,
-  Shield,
   MoreVertical,
 } from 'lucide-react';
 import { useState } from 'react';
