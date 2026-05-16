@@ -73,11 +73,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center space-x-3 px-3 py-3 rounded-md transition-all duration-200 group relative ${
-                  isActive
+                className={`flex items-center space-x-3 px-3 py-3 rounded-md transition-all duration-200 group relative ${isActive
                     ? 'bg-red-950/20 text-red-500'
                     : 'text-white/60 hover:bg-red-900/10 hover:text-white'
-                }`}
+                  }`}
               >
                 <Icon className={`w-5 h-5 min-w-[20px] ${isActive ? 'text-red-500' : 'group-hover:text-red-500'}`} />
                 <AnimatePresence>
@@ -108,7 +107,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           <div className={`flex flex-col ${isSidebarOpen ? 'items-stretch' : 'items-center'} space-y-4`}>
             {/* Status Card */}
             {isSidebarOpen && (
-              <div className="p-4 rounded-md bg-red-950/10 border border-red-900/20">
+              <div className="p-4 rounded-2xl bg-red-950/10 border border-red-900/20">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-bold text-white/40 uppercase tracking-wider">System Status</span>
                   <div className={`w-2 h-2 rounded-full animate-pulse ${isError ? 'bg-red-500' : 'bg-green-500'}`} />
@@ -119,10 +118,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                 </div>
               </div>
             )}
-            
+
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="flex items-center justify-center w-full p-2 text-white/40 hover:text-white/80 hover:bg-red-900/20 rounded-lg transition-colors"
+              className="flex items-center justify-center w-full p-2 text-white/40 hover:text-white/80 hover:bg-red-900/20 rounded-md transition-colors"
             >
               {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -138,11 +137,11 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         {/* Top Header Bar */}
         <header className="h-20 bg-black/80 backdrop-blur-md sticky top-0 z-30 px-8 flex items-center justify-between border-b border-red-800/40">
           <div className="flex items-center space-x-4">
-             <h2 className="text-xl font-bold text-white">
-                {navItems.find(i => i.path === location.pathname)?.label || 'Overview'}
-             </h2>
+            <h2 className="text-xl font-bold text-white">
+              {navItems.find(i => i.path === location.pathname)?.label || 'Overview'}
+            </h2>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2 px-3 py-1.5 bg-red-950/10 border border-red-900/20 rounded-lg">
               <Shield className="w-4 h-4 text-white/40" />
@@ -155,7 +154,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                 <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mt-1">Admin Account</p>
               </div>
               <div className="w-10 h-10 rounded-full bg-red-900/20 border-2 border-red-900/40 shadow-sm flex items-center justify-center overflow-hidden">
-                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul" alt="User Avatar" />
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul" alt="User Avatar" />
               </div>
             </div>
           </div>
@@ -175,14 +174,15 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
         {/* Footer */}
         <footer className="mt-auto py-8 px-8 border-t border-red-900/40 flex flex-col md:flex-row justify-between items-center text-white/40 text-sm font-medium">
-           <p>© 2026 RepoGuardian AI. All rights reserved.</p>
-           <div className="flex space-x-6 mt-4 md:mt-0">
-             <a href="https://github.com/prajwal-priyadarshan/RepoGuardian_ai" target="_blank" rel="noopener noreferrer" className="hover:text-red-500 transition-colors">GitHub Repository</a>
-             <span className="text-red-900/30">|</span>
-             <p className="text-xs">Powered by Neo4j & Pinecone</p>
-           </div>
+          <p>© 2026 RepoGuardian AI. All rights reserved.</p>
+          <div className="flex space-x-6 mt-4 md:mt-0">
+            <a href="https://github.com/prajwal-priyadarshan/RepoGuardian_ai" target="_blank" rel="noopener noreferrer" className="hover:text-red-500 transition-colors">GitHub Repository</a>
+            <span className="text-red-900/30">|</span>
+            <p className="text-xs">Powered by Neo4j & Pinecone</p>
+          </div>
         </footer>
       </main>
     </div>
   );
 };
+

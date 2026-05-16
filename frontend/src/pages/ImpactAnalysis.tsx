@@ -34,9 +34,9 @@ export const ImpactAnalysis = () => {
   return (
     <div className="space-y-8 pb-12">
       {/* Control Header */}
-      <div className="p-8 bg-black border border-red-900/30 rounded-[2rem] flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="p-8 bg-black border border-red-900/30 rounded-md flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center space-x-5">
-           <div className="w-14 h-14 bg-red-600 rounded-2xl flex items-center justify-center shadow-lg shadow-red-950/50">
+           <div className="w-14 h-14 bg-red-600 rounded-md flex items-center justify-center shadow-lg shadow-red-950/50">
               <Network className="w-8 h-8 text-white" />
            </div>
            <div>
@@ -50,7 +50,7 @@ export const ImpactAnalysis = () => {
             <select
               value={selectedRepoId}
               onChange={(e) => setSelectedRepoId(e.target.value)}
-              className="appearance-none bg-red-950/10 border border-red-900/30 text-white text-sm font-bold rounded-xl focus:ring-red-500 focus:border-red-500 block w-64 p-3 pr-10"
+              className="appearance-none bg-red-950/10 border border-red-900/30 text-white text-sm font-bold rounded-md focus:ring-red-500 focus:border-red-500 block w-64 p-3 pr-10"
             >
               <option value="" className="bg-black text-white">Select Knowledge Base</option>
               {repositories.map((repo) => (
@@ -66,7 +66,7 @@ export const ImpactAnalysis = () => {
             onClick={handleAnalyze}
             isLoading={impactMutation.isPending}
             disabled={!selectedRepoId}
-            className="h-12 px-8 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold shadow-xl shadow-red-950/50 active:scale-95 transition-all"
+            className="h-12 px-8 rounded-md bg-red-600 hover:bg-red-700 text-white font-bold shadow-xl shadow-red-950/50 active:scale-95 transition-all"
           >
             Trace Impact Map
           </Button>
@@ -114,12 +114,12 @@ export const ImpactAnalysis = () => {
                      </p>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                     <div className="p-5 rounded-[2rem] bg-red-950/10 border border-red-900/20">
+                     <div className="p-5 rounded-md bg-red-950/10 border border-red-900/20">
                         <Layers className="w-5 h-5 text-red-500 mb-3" />
                         <p className="text-2xl font-bold">12</p>
                         <p className="text-xs font-bold text-white/40 uppercase tracking-wider">Affected Files</p>
                      </div>
-                     <div className="p-5 rounded-[2rem] bg-red-950/10 border border-red-900/20">
+                     <div className="p-5 rounded-md bg-red-950/10 border border-red-900/20">
                         <Database className="w-5 h-5 text-red-500 mb-3" />
                         <p className="text-2xl font-bold">48</p>
                         <p className="text-xs font-bold text-white/40 uppercase tracking-wider">Indexed Nodes</p>
@@ -145,7 +145,7 @@ export const ImpactAnalysis = () => {
                         {['Auth Middleware', 'API Controllers', 'Notification Engine'].map((subsystem, i) => (
                            <div key={i} className="p-6 flex items-center justify-between group hover:bg-red-900/10 transition-colors">
                               <div className="flex items-center space-x-4">
-                                 <div className="w-10 h-10 rounded-xl bg-red-950/20 flex items-center justify-center text-white/40 group-hover:text-red-500 group-hover:bg-red-900/20 transition-colors">
+                                 <div className="w-10 h-10 rounded-md bg-red-950/20 flex items-center justify-center text-white/40 group-hover:text-red-500 group-hover:bg-red-900/20 transition-colors">
                                     <GitBranch className="w-5 h-5" />
                                  </div>
                                  <div>
@@ -161,20 +161,20 @@ export const ImpactAnalysis = () => {
                </Card>
 
                <div className="space-y-6">
-                  <div className="p-8 rounded-[2rem] bg-black shadow-premium flex flex-col items-center justify-center text-center border border-red-900/20">
-                     <div className="w-16 h-16 bg-red-950/20 rounded-2xl flex items-center justify-center mb-6">
+                  <div className="p-8 rounded-md bg-black shadow-premium flex flex-col items-center justify-center text-center border border-red-900/20">
+                     <div className="w-16 h-16 bg-red-950/20 rounded-md flex items-center justify-center mb-6">
                         <ShieldAlert className="w-8 h-8 text-red-500" />
                      </div>
                      <h3 className="text-xl font-bold text-white mb-2">Isolation Recommended</h3>
                      <p className="text-white/60 text-sm font-medium leading-relaxed mb-6 max-w-xs">
                         We recommend decoupling the <code>PaymentService</code> from the <code>Logger</code> module to reduce cross-domain risk.
                      </p>
-                     <Button variant="outline" className="w-full rounded-xl border-red-900/40 font-bold h-12 text-white">
+                     <Button variant="outline" className="w-full rounded-md border-red-900/40 font-bold h-12 text-white">
                         Generate Refactoring Map
                      </Button>
                   </div>
                   
-                  <div className="p-6 rounded-[2.5rem] bg-gradient-to-br from-red-600 to-red-800 text-white shadow-xl shadow-red-950/50 relative overflow-hidden group">
+                  <div className="p-6 rounded-md bg-gradient-to-br from-red-600 to-red-800 text-white shadow-xl shadow-red-950/50 relative overflow-hidden group">
                      <div className="absolute bottom-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
                      <h4 className="font-bold flex items-center mb-2 italic">Pro Tip</h4>
                      <p className="text-white/80 text-sm leading-relaxed font-medium">
@@ -188,8 +188,8 @@ export const ImpactAnalysis = () => {
             </div>
           </motion.div>
         ) : (
-          <div className="py-24 text-center bg-black border border-red-900/20 border-dashed rounded-[2rem] flex flex-col items-center">
-             <div className="w-20 h-20 bg-red-950/10 rounded-3xl flex items-center justify-center mb-6">
+          <div className="py-24 text-center bg-black border border-red-900/20 border-dashed rounded-md flex flex-col items-center">
+             <div className="w-20 h-20 bg-red-950/10 rounded-md flex items-center justify-center mb-6">
                 <GitBranch className="w-10 h-10 text-white/20" />
              </div>
              <h3 className="text-xl font-bold text-white mb-2">Architectural Map Empty</h3>
@@ -202,3 +202,4 @@ export const ImpactAnalysis = () => {
     </div>
   );
 };
+

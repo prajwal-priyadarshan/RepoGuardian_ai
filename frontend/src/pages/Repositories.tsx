@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  FolderGit2, 
-  Upload, 
-  RefreshCw, 
-  Trash2, 
-  GitBranch, 
-  Calendar, 
-  Plus, 
-  Search, 
+import {
+  FolderGit2,
+  Upload,
+  RefreshCw,
+  Trash2,
+  GitBranch,
+  Calendar,
+  Plus,
+  Search,
   Globe,
   Lock,
   MoreVertical
@@ -89,16 +89,16 @@ export const Repositories = () => {
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-2 bg-black rounded-md shadow-premium border-2 border-red-900/30">
         <div className="relative w-full md:w-96">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-          <input 
-            type="text" 
-            placeholder="Filter indexed repositories..." 
+          <input
+            type="text"
+            placeholder="Filter indexed repositories..."
             className="w-full pl-11 pr-4 py-3 bg-transparent text-sm font-semibold text-white placeholder:text-white/30 focus:outline-none rounded-md"
           />
         </div>
         <div className="flex space-x-2 px-2">
-           <button className="px-4 py-2 text-xs font-bold text-red-500 bg-red-900/20 rounded-lg">All</button>
-           <button className="px-4 py-2 text-xs font-bold text-white/40 hover:bg-red-900/10 rounded-lg transition-colors">GitHub</button>
-           <button className="px-4 py-2 text-xs font-bold text-white/40 hover:bg-red-900/10 rounded-lg transition-colors">Local</button>
+          <button className="px-4 py-2 text-xs font-bold text-red-500 bg-red-900/20 rounded-lg">All</button>
+          <button className="px-4 py-2 text-xs font-bold text-white/40 hover:bg-red-900/10 rounded-lg transition-colors">GitHub</button>
+          <button className="px-4 py-2 text-xs font-bold text-white/40 hover:bg-red-900/10 rounded-lg transition-colors">Local</button>
         </div>
       </div>
 
@@ -123,10 +123,10 @@ export const Repositories = () => {
                 Your AI guardian needs code to analyze. Connect your first repository to begin building your structural knowledge base.
               </p>
               <div className="flex justify-center space-x-4">
-                <Button onClick={() => setIsCloneModalOpen(true)} className="rounded-xl h-12 px-8 font-bold">
+                <Button onClick={() => setIsCloneModalOpen(true)} className="rounded-md h-12 px-8 font-bold">
                   Clone Now
                 </Button>
-                <Button variant="outline" onClick={() => setIsUploadModalOpen(true)} className="rounded-xl h-12 px-8 font-bold">
+                <Button variant="outline" onClick={() => setIsUploadModalOpen(true)} className="rounded-md h-12 px-8 font-bold">
                   Upload ZIP
                 </Button>
               </div>
@@ -142,7 +142,7 @@ export const Repositories = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-            <Card className="group border-2 border-red-900/20 hover:border-red-600 shadow-premium hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] hover:-translate-y-1 transition-all duration-500 overflow-hidden bg-black rounded-md">
+              <Card className="group border-2 border-red-900/20 hover:border-red-600 shadow-premium hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] hover:-translate-y-1 transition-all duration-500 overflow-hidden bg-black rounded-md">
                 <div className="h-2 bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between">
@@ -157,8 +157,8 @@ export const Repositories = () => {
                       <div className="overflow-hidden">
                         <CardTitle className="text-lg font-bold text-white truncate leading-none mb-2">{repo.name}</CardTitle>
                         <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-white/40">
-                           {repo.source === 'github' ? <Globe className="w-3 h-3" /> : <Lock className="w-3 h-3" />}
-                           <span>{repo.source === 'github' ? 'Public / Managed' : 'Private / Local'}</span>
+                          {repo.source === 'github' ? <Globe className="w-3 h-3" /> : <Lock className="w-3 h-3" />}
+                          <span>{repo.source === 'github' ? 'Public / Managed' : 'Private / Local'}</span>
                         </div>
                       </div>
                     </div>
@@ -170,7 +170,7 @@ export const Repositories = () => {
                 <CardContent className="pb-6">
                   <div className="space-y-4">
                     {repo.url && (
-                        <p className="text-sm font-medium text-white/60 truncate bg-red-900/10 p-2 rounded-lg border border-red-900/20">{repo.url}</p>
+                      <p className="text-sm font-medium text-white/60 truncate bg-red-900/10 p-2 rounded-lg border border-red-900/20">{repo.url}</p>
                     )}
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
@@ -227,17 +227,17 @@ export const Repositories = () => {
             placeholder="https://github.com/username/repository"
             value={repoUrl}
             onChange={(e) => setRepoUrl(e.target.value)}
-            className="h-12 rounded-xl"
+            className="h-12 rounded-md"
           />
           <div className="flex justify-end space-x-3 pt-4">
-            <Button variant="ghost" onClick={() => setIsCloneModalOpen(false)} className="h-12 px-6 rounded-xl font-bold">
+            <Button variant="ghost" onClick={() => setIsCloneModalOpen(false)} className="h-12 px-6 rounded-md font-bold">
               Dismiss
             </Button>
             <Button
               onClick={handleClone}
               isLoading={cloneMutation.isPending}
               disabled={!repoUrl.trim()}
-              className="h-12 px-8 rounded-xl font-bold bg-red-600 text-white"
+              className="h-12 px-8 rounded-md font-bold bg-red-600 text-white"
             >
               Start Autonomous Indexing
             </Button>
@@ -255,7 +255,7 @@ export const Repositories = () => {
           <p className="text-sm text-white/60 font-medium leading-relaxed">
             Upload a local project ZIP. This is useful for analyzing private codebases without cloud git integration.
           </p>
-          <div 
+          <div
             className={`border-2 border-dashed rounded-[2rem] p-12 text-center transition-all ${selectedFile ? 'border-red-600 bg-red-950/10' : 'border-red-900/20 hover:border-red-900/40'}`}
           >
             <input
@@ -266,22 +266,22 @@ export const Repositories = () => {
               className="hidden"
             />
             <label htmlFor="zip-upload" className="cursor-pointer group">
-               <div className="w-16 h-16 bg-black border border-red-900/20 rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                  <Upload className={`w-8 h-8 ${selectedFile ? 'text-red-500' : 'text-white/20'}`} />
-               </div>
-               <p className="text-sm font-bold text-white">{selectedFile ? selectedFile.name : 'Select ZIP Archive'}</p>
-               <p className="text-xs font-bold text-white/40 mt-2">Maximum size: 50MB</p>
+              <div className="w-16 h-16 bg-black border border-red-900/20 rounded-md shadow-sm flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <Upload className={`w-8 h-8 ${selectedFile ? 'text-red-500' : 'text-white/20'}`} />
+              </div>
+              <p className="text-sm font-bold text-white">{selectedFile ? selectedFile.name : 'Select ZIP Archive'}</p>
+              <p className="text-xs font-bold text-white/40 mt-2">Maximum size: 50MB</p>
             </label>
           </div>
           <div className="flex justify-end space-x-3 pt-4">
-            <Button variant="ghost" onClick={() => setIsUploadModalOpen(false)} className="h-12 px-6 rounded-xl font-bold">
+            <Button variant="ghost" onClick={() => setIsUploadModalOpen(false)} className="h-12 px-6 rounded-md font-bold">
               Cancel
             </Button>
             <Button
               onClick={handleUpload}
               isLoading={uploadMutation.isPending}
               disabled={!selectedFile}
-              className="h-12 px-8 rounded-xl font-bold bg-red-600 text-white"
+              className="h-12 px-8 rounded-md font-bold bg-red-600 text-white"
             >
               Analyze & Index
             </Button>
@@ -291,3 +291,4 @@ export const Repositories = () => {
     </div>
   );
 };
+

@@ -32,17 +32,17 @@ export const Home = () => {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/dashboard">
-                  <Button size="lg" className="h-14 px-8 text-lg bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/40 hover:scale-105 transition-transform rounded-md">
+                  <Button size="lg" className="h-14 px-8 text-lg bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/40 transition-transform rounded-xl">
                     Enter Intelligence Core
                     <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </Link>
-                <Button variant="outline" size="lg" className="h-14 px-8 text-lg border-red-900/30 hover:bg-red-950/20 transition-colors text-white">
+                <Button variant="outline" size="lg" className="h-14 px-8 text-lg border-red-900/30 hover:bg-red-950/20 transition-colors text-white rounded-xl">
                   <GitBranch className="mr-2 w-5 h-5" />
                   Connect GitHub
                 </Button>
               </div>
-              
+
               <div className="mt-12 flex items-center space-x-8">
                 <div>
                   <p className="text-3xl font-bold text-white">100%</p>
@@ -68,9 +68,9 @@ export const Home = () => {
               className="relative"
             >
               <div className="relative z-10 glass-card p-4 overflow-hidden rounded-md">
-                <img 
-                  src="/hero_ai_guardian.png" 
-                  alt="AI Guardian Visualization" 
+                <img
+                  src="/hero_ai_guardian.png"
+                  alt="AI Guardian Visualization"
                   className="rounded-md w-full h-auto shadow-2xl opacity-90 transition-all duration-700"
                 />
               </div>
@@ -150,9 +150,9 @@ export const Home = () => {
           <div className="bg-black border border-red-900/40 rounded-md p-12 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-red-900/20">
             <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 blur-[100px] -z-0" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-400/5 blur-[100px] -z-0" />
-            
+
             <div className="relative z-10">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight">Ready to activate your Guardian?</h2>
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight">Ready to activate your Guardian ?</h2>
               <p className="text-red-500/80 text-lg mb-10 max-w-2xl mx-auto font-medium">
                 Join engineering teams using RepoGuardian to automate architectural analysis and prevent critical breakages.
               </p>

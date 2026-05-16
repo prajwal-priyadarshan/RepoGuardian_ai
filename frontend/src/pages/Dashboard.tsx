@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
-import { 
-  Activity, 
-  Brain, 
-  GitBranch, 
-  ShieldCheck, 
-  AlertTriangle, 
-  Zap, 
+import {
+  Activity,
+  Brain,
+  GitBranch,
+  ShieldCheck,
+  AlertTriangle,
+  Zap,
   Search,
   ChevronRight,
   TrendingUp,
@@ -18,35 +18,35 @@ export const Dashboard = () => {
   const { repositories, aiAnalysis, impactAnalysis } = useAppStore();
 
   const stats = [
-    { 
-      label: 'Total Repos', 
-      value: repositories.length, 
-      icon: GitBranch, 
-      color: 'text-red-500', 
+    {
+      label: 'Total Repos',
+      value: repositories.length,
+      icon: GitBranch,
+      color: 'text-red-500',
       bg: 'bg-red-950/20',
       trend: '+2 this week'
     },
-    { 
-      label: 'AI Insights', 
-      value: aiAnalysis ? 1 : 0, 
-      icon: Brain, 
-      color: 'text-red-500', 
+    {
+      label: 'AI Insights',
+      value: aiAnalysis ? 1 : 0,
+      icon: Brain,
+      color: 'text-red-500',
       bg: 'bg-red-950/20',
       trend: 'Real-time active'
     },
-    { 
-      label: 'Risk Score', 
-      value: impactAnalysis?.risk_score || '0.0', 
-      icon: AlertTriangle, 
-      color: 'text-red-500', 
+    {
+      label: 'Risk Score',
+      value: impactAnalysis?.risk_score || '0.0',
+      icon: AlertTriangle,
+      color: 'text-red-500',
       bg: 'bg-red-950/20',
       trend: 'Calculated by Neo4j'
     },
-    { 
-      label: 'Vulnerabilities', 
-      value: '0', 
-      icon: ShieldCheck, 
-      color: 'text-red-500', 
+    {
+      label: 'Vulnerabilities',
+      value: '0',
+      icon: ShieldCheck,
+      color: 'text-red-500',
       bg: 'bg-red-950/20',
       trend: 'System secure'
     },
@@ -55,14 +55,14 @@ export const Dashboard = () => {
   return (
     <div className="space-y-8 pb-12">
       {/* Welcome Banner */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative overflow-hidden p-8 rounded-md bg-black border-2 border-red-900/40 text-white shadow-2xl shadow-red-900/30"
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 blur-[80px]" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-900/5 blur-[80px]" />
-        
+
         <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
@@ -72,18 +72,18 @@ export const Dashboard = () => {
               RepoGuardian AI is currently monitoring your repositories for architectural risks and autonomous healing opportunities.
             </p>
             <div className="flex space-x-4">
-               <Button className="bg-red-600 text-white hover:bg-red-700 rounded-md px-6 h-12">
-                 Generate Report
-               </Button>
-               <Button variant="outline" className="border-red-900/40 text-white hover:bg-red-950/20 rounded-md px-6 h-12">
-                 Live Activity
-               </Button>
+              <Button className="bg-red-600 text-white hover:bg-red-700 rounded-md px-6 h-12">
+                Generate Report
+              </Button>
+              <Button variant="outline" className="border-red-900/40 text-white hover:bg-red-950/20 rounded-md px-6 h-12">
+                Live Activity
+              </Button>
             </div>
           </div>
           <div className="hidden md:flex justify-end">
             <div className="w-48 h-48 rounded-full border border-red-900/20 flex items-center justify-center relative">
-               <div className="absolute inset-0 border-2 border-red-500/20 rounded-full animate-ping" />
-               <Brain className="w-20 h-20 text-red-600" />
+              <div className="absolute inset-0 border-2 border-red-500/20 rounded-full animate-ping" />
+              <Brain className="w-20 h-20 text-red-600" />
             </div>
           </div>
         </div>
@@ -124,7 +124,7 @@ export const Dashboard = () => {
             <h2 className="text-2xl font-bold text-white">Recent Pulse</h2>
             <Button variant="ghost" className="text-red-500 font-bold hover:bg-red-950/20">View History</Button>
           </div>
-          
+
           <div className="space-y-4">
             {repositories.length > 0 ? (
               repositories.slice(0, 4).map((repo, i) => (
@@ -155,8 +155,8 @@ export const Dashboard = () => {
               ))
             ) : (
               <div className="text-center py-12 glass-card">
-                 <Zap className="w-12 h-12 mx-auto text-white/20 mb-4" />
-                 <p className="text-white/40 font-medium">No activity recorded yet. Connect a repo to begin.</p>
+                <Zap className="w-12 h-12 mx-auto text-white/20 mb-4" />
+                <p className="text-white/40 font-medium">No activity recorded yet. Connect a repo to begin.</p>
               </div>
             )}
           </div>
@@ -188,20 +188,21 @@ export const Dashboard = () => {
               <ChevronRight className="w-4 h-4 text-white/40" />
             </Button>
           </div>
-          
+
           {/* AI Tip */}
           <div className="p-6 rounded-md bg-red-950/10 border-2 border-red-900/30 relative overflow-hidden group">
-             <div className="absolute -top-12 -right-12 w-32 h-32 bg-red-900/10 rounded-full blur-2xl group-hover:scale-110 transition-transform" />
-             <h4 className="text-white font-bold mb-2 flex items-center">
-               <Brain className="w-4 h-4 mr-2 text-red-500" />
-               AI Recommendation
-             </h4>
-             <p className="text-white/70 text-sm leading-relaxed">
-               RepoGuardian noticed a circular dependency in your core module. Run an <strong>Impact Analysis</strong> to identify potential breakages.
-             </p>
+            <div className="absolute -top-12 -right-12 w-32 h-32 bg-red-900/10 rounded-full blur-2xl group-hover:scale-110 transition-transform" />
+            <h4 className="text-white font-bold mb-2 flex items-center">
+              <Brain className="w-4 h-4 mr-2 text-red-500" />
+              AI Recommendation
+            </h4>
+            <p className="text-white/70 text-sm leading-relaxed">
+              RepoGuardian noticed a circular dependency in your core module. Run an <strong>Impact Analysis</strong> to identify potential breakages.
+            </p>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
