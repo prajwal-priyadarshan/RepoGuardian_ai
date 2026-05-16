@@ -7,14 +7,12 @@ import {
   GitBranch,
   Wrench,
   Search,
-  Activity,
   Menu,
   X,
   Shield,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Toast } from './ui/Toast';
-import { useHealthCheck } from '../hooks/useAPI';
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -27,7 +25,6 @@ const navItems = [
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
-  const { isError } = useHealthCheck();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
@@ -105,19 +102,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         {/* Sidebar Footer */}
         <div className="p-4 border-t border-red-900/40">
           <div className={`flex flex-col ${isSidebarOpen ? 'items-stretch' : 'items-center'} space-y-4`}>
-            {/* Status Card */}
-            {isSidebarOpen && (
-              <div className="p-4 rounded-2xl bg-red-950/10 border border-red-900/20">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-white/40 uppercase tracking-wider">System Status</span>
-                  <div className={`w-2 h-2 rounded-full animate-pulse ${isError ? 'bg-red-500' : 'bg-green-500'}`} />
-                </div>
-                <div className="flex items-center space-x-2 text-xs text-white/80 truncate">
-                  <Activity className="w-3 h-3" />
-                  <span>{isError ? 'API Offline' : 'API Operational'}</span>
-                </div>
-              </div>
-            )}
 
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
