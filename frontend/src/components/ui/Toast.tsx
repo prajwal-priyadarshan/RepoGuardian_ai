@@ -29,31 +29,23 @@ export const Toast = () => {
           className="fixed top-4 left-1/2 z-50 w-full max-w-md"
         >
           <div
-            className={`flex items-center gap-3 p-4 rounded-lg shadow-lg ${
+            className={`flex items-center gap-3 p-4 rounded-lg shadow-lg bg-black border border-red-900/40 border-l-4 ${
               isError
-                ? 'bg-red-50 border-l-4 border-red-500'
-                : 'bg-green-50 border-l-4 border-green-500'
+                ? 'border-l-red-600'
+                : 'border-l-red-500'
             }`}
           >
             {isError ? (
               <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
             ) : (
-              <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+              <CheckCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
             )}
-            <p
-              className={`flex-1 text-sm font-medium ${
-                isError ? 'text-red-800' : 'text-green-800'
-              }`}
-            >
+            <p className="flex-1 text-sm font-medium text-white">
               {message}
             </p>
             <button
               onClick={clearMessages}
-              className={`flex-shrink-0 ${
-                isError
-                  ? 'text-red-600 hover:text-red-800'
-                  : 'text-green-600 hover:text-green-800'
-              }`}
+              className="flex-shrink-0 text-white/40 hover:text-red-500"
             >
               <X className="w-4 h-4" />
             </button>
@@ -74,7 +66,7 @@ export const LoadingSpinner = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) =
   return (
     <div className="flex items-center justify-center">
       <div
-        className={`${sizes[size]} border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin`}
+        className={`${sizes[size]} border-4 border-red-950 border-t-red-600 rounded-full animate-spin`}
       />
     </div>
   );

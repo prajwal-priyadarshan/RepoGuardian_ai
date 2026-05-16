@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { Layout } from './components/Layout';
+import { Home } from './pages/Home';
 import { Dashboard } from './pages/Dashboard';
 import { Repositories } from './pages/Repositories';
 import { AIAnalysis } from './pages/AIAnalysis';
@@ -7,18 +8,31 @@ import { ImpactAnalysis } from './pages/ImpactAnalysis';
 import { SelfHealing } from './pages/SelfHealing';
 import { CodeSearch } from './pages/CodeSearch';
 
+import { ScrollToTop } from './components/ScrollToTop';
+
 function App() {
   return (
-    <Layout>
+    <>
+      <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/repositories" element={<Repositories />} />
-        <Route path="/ai-analysis" element={<AIAnalysis />} />
-        <Route path="/impact" element={<ImpactAnalysis />} />
-        <Route path="/self-heal" element={<SelfHealing />} />
-        <Route path="/search" element={<CodeSearch />} />
+      <Route path="/" element={<Home />} />
+      <Route
+        path="/*"
+        element={
+          <Layout>
+            <Routes>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/repositories" element={<Repositories />} />
+              <Route path="/ai-analysis" element={<AIAnalysis />} />
+              <Route path="/impact" element={<ImpactAnalysis />} />
+              <Route path="/self-heal" element={<SelfHealing />} />
+              <Route path="/search" element={<CodeSearch />} />
+            </Routes>
+          </Layout>
+        }
+      />
       </Routes>
-    </Layout>
+    </>
   );
 }
 

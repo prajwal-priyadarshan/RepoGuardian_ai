@@ -8,9 +8,9 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = 'default', ...props }, ref) => {
     const variants = {
-      default: 'bg-white rounded-lg shadow-sm',
-      bordered: 'bg-white rounded-lg border-2 border-gray-200',
-      elevated: 'bg-white rounded-lg shadow-lg',
+      default: 'bg-black rounded-md shadow-premium border border-red-900/30 transition-all duration-300',
+      bordered: 'bg-black rounded-md border-2 border-red-800/50 shadow-premium',
+      elevated: 'bg-black rounded-md shadow-xl shadow-red-900/20 border border-red-900/20',
     };
 
     return (
@@ -29,7 +29,7 @@ const CardHeader = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('px-6 py-4 border-b border-gray-200', className)}
+      className={cn('px-6 py-4 border-b border-red-900/30', className)}
       {...props}
     />
   )
@@ -41,7 +41,7 @@ const CardTitle = forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadin
   ({ className, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn('text-xl font-semibold text-gray-900', className)}
+      className={cn('text-xl font-semibold text-white', className)}
       {...props}
     />
   )
@@ -53,7 +53,7 @@ const CardDescription = forwardRef<HTMLParagraphElement, React.HTMLAttributes<HT
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn('text-sm text-gray-600 mt-1', className)}
+      className={cn('text-sm text-white/60 mt-1', className)}
       {...props}
     />
   )
@@ -77,7 +77,7 @@ const CardFooter = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-lg', className)}
+      className={cn('px-6 py-4 border-t border-red-900/30 bg-red-950/10 rounded-b-md', className)}
       {...props}
     />
   )

@@ -9,6 +9,10 @@ export default {
       colors: {
         blue: "#3b82f6",
       },
+      fontFamily: {
+        cinzel: ['"Cinzel"', 'serif'],
+        karla: ['"Karla"', 'sans-serif'],
+      },
     },
   },
   plugins: [],

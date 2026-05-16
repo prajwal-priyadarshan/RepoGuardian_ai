@@ -1,4 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
+@theme {
+  --font-cinzel: "Cinzel", serif;
+  --font-karla: "Karla", sans-serif;
 
+  --color-brand-primary: #ff0000;
+  --color-brand-secondary: #cc0000;
+  --color-brand-accent: #ff4444;
+
+  --color-surface-base: #000000;
+  --color-surface-subtle: #050505;
+  --color-surface-muted: #111111;
+
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #ff0000;
+  --color-text-muted: #ffaaaa;
+
+  --shadow-premium: 0 10px 25px -5px rgba(255, 0, 0, 0.1), 0 8px 10px -6px rgba(255, 0, 0, 0.1);
+}
+
+@layer base {
+  * {
+    @apply border-red-900/40;
+  }
+
+  html {
+    @apply antialiased scroll-smooth bg-black;
+    font-family: var(--font-karla) !important;
+  }
+
+  body {
+    @apply bg-black text-white selection:bg-red-900 selection:text-white;
+    font-family: var(--font-karla) !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold tracking-tight text-white;
+    font-family: var(--font-cinzel) !important;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-black/60 backdrop-blur-xl border border-red-800/40 shadow-premium rounded-md transition-all duration-300;
+  }
+
+  .btn-premium {
+    @apply px-5 py-2.5 rounded-md font-semibold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-black;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-red-900 rounded-full hover:bg-red-600 transition-colors;
+}
