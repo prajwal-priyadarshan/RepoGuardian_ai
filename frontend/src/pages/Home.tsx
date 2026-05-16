@@ -2,10 +2,12 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Shield, Zap, Search, Activity, GitBranch, Cpu, ArrowRight } from 'lucide-react';
 import { Button, Card, CardContent } from '../components/ui';
+import { ScrollProgress } from '../components/ScrollProgress';
 
 export const Home = () => {
   return (
     <div className="min-h-screen bg-black transition-colors duration-300">
+      <ScrollProgress />
       {/* Hero Section */}
       <section className="relative pt-22 pb-22 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl -z-10">

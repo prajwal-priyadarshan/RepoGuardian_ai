@@ -25,124 +25,62 @@ const navItems = [
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
-    <div className="flex min-h-screen bg-black">
+    <div className="min-h-screen bg-black flex flex-col">
       <Toast />
 
-      {/* Sidebar Navigation */}
-      <motion.aside
-        initial={false}
-        animate={{ width: isSidebarOpen ? 280 : 80 }}
-        className="fixed inset-y-0 left-0 z-40 bg-black border-r border-red-900/40 shadow-sm overflow-hidden flex flex-col"
-      >
-        {/* Sidebar Header */}
-        <div className="h-20 flex items-center px-6 mb-4">
+      {/* Top Navigation Bar */}
+      <header className="h-20 bg-black/80 backdrop-blur-md sticky top-0 z-50 px-8 flex items-center justify-between border-b border-red-900/40">
+        <div className="flex items-center space-x-12">
+          {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
-            <img src="/favicon.png" className="w-12 h-12 min-w-[48px] rounded-md shadow-lg shadow-red-950/50 object-cover" alt="RepoGuardian Logo" />
-            <AnimatePresence>
-              {isSidebarOpen && (
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  className="overflow-hidden whitespace-nowrap"
-                >
-                  <h1 className="text-lg font-bold text-white tracking-tight">
-                    RepoGuardian <span className="text-red-500">AI</span>
-                  </h1>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <img src="/favicon.png" className="w-10 h-10 rounded-md shadow-lg shadow-red-950/50 object-cover" alt="RepoGuardian Logo" />
+            <div className="hidden lg:block">
+              <h1 className="text-lg font-bold text-white tracking-tight">
+                RepoGuardian <span className="text-red-500">AI</span>
+              </h1>
+            </div>
           </Link>
+
+          {/* Navigation Links */}
+          <nav className="hidden md:flex items-center space-x-1">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.path;
+
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all duration-200 group relative ${isActive
+                    ? 'text-red-500 bg-red-950/10'
+                    : 'text-white/60 hover:text-white hover:bg-red-900/10'
+                    }`}
+                >
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-red-500' : 'group-hover:text-red-500'}`} />
+                  <span className="text-sm font-bold whitespace-nowrap">{item.label}</span>
+                  {isActive && (
+                    <motion.div
+                      layoutId="navIndicator"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-600 rounded-full"
+                    />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
         </div>
 
-        {/* Navigation Items */}
-        <nav className="flex-1 px-4 space-y-2">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = location.pathname === item.path;
-
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center space-x-3 px-3 py-3 rounded-md transition-all duration-200 group relative ${isActive
-                  ? 'bg-red-950/20 text-red-500'
-                  : 'text-white/60 hover:bg-red-900/10 hover:text-white'
-                  }`}
-              >
-                <Icon className={`w-5 h-5 min-w-[20px] ${isActive ? 'text-red-500' : 'group-hover:text-red-500'}`} />
-                <AnimatePresence>
-                  {isSidebarOpen && (
-                    <motion.span
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -10 }}
-                      className="font-semibold whitespace-nowrap"
-                    >
-                      {item.label}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-                {isActive && (
-                  <motion.div
-                    layoutId="activeIndicator"
-                    className="absolute right-0 w-1 h-6 bg-red-600 rounded-l-full"
-                  />
-                )}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Sidebar Footer */}
-        <div className="p-4 border-t border-red-900/40">
-          <div className={`flex flex-col ${isSidebarOpen ? 'items-stretch' : 'items-center'} space-y-4`}>
-
-            <button
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="flex items-center justify-center w-full p-2 text-white/40 hover:text-white/80 hover:bg-red-900/20 rounded-md transition-colors"
-            >
-              {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+        <div className="flex items-center">
+          <div className="w-10 h-10 rounded-full bg-red-900/20 border-2 border-red-900/40 shadow-sm flex items-center justify-center overflow-hidden cursor-pointer hover:border-red-500 transition-colors">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul" alt="User Avatar" />
           </div>
         </div>
-      </motion.aside>
+      </header>
 
       {/* Main Content Area */}
-      <main
-        className="flex-1 transition-all duration-300 min-h-screen"
-        style={{ marginLeft: isSidebarOpen ? 280 : 80 }}
-      >
-        {/* Top Header Bar */}
-        <header className="h-20 bg-black/80 backdrop-blur-md sticky top-0 z-30 px-8 flex items-center justify-between border-b border-red-800/40">
-          <div className="flex items-center space-x-4">
-            <h2 className="text-xl font-bold text-white">
-              {navItems.find(i => i.path === location.pathname)?.label || 'Overview'}
-            </h2>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 px-3 py-1.5 bg-red-950/10 border border-red-900/20 rounded-lg">
-              <Shield className="w-4 h-4 text-white/40" />
-              <span className="text-xs font-bold text-white/80 tracking-tight">SECURE SESSION</span>
-            </div>
-            <div className="w-px h-6 bg-red-900/30 mx-2" />
-            <div className="flex items-center space-x-3 cursor-pointer group">
-              <div className="text-right">
-                <p className="text-sm font-bold text-white group-hover:text-red-500 transition-colors leading-none">Developer</p>
-                <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mt-1">Admin Account</p>
-              </div>
-              <div className="w-10 h-10 rounded-full bg-red-900/20 border-2 border-red-900/40 shadow-sm flex items-center justify-center overflow-hidden">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul" alt="User Avatar" />
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Content Section */}
+      <main className="flex-1 overflow-y-auto">
         <div className="p-8 max-w-7xl mx-auto">
           <motion.div
             key={location.pathname}
@@ -153,7 +91,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
             {children}
           </motion.div>
         </div>
-
       </main>
     </div>
   );
