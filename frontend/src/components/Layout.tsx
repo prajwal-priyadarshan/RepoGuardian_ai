@@ -40,9 +40,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         {/* Sidebar Header */}
         <div className="h-20 flex items-center px-6 mb-4">
           <Link to="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 min-w-[40px] bg-red-600 rounded-md flex items-center justify-center shadow-lg shadow-red-950/50">
-              <Brain className="w-6 h-6 text-white" />
-            </div>
+            <img src="/favicon.png" className="w-10 h-10 min-w-[40px] rounded-md shadow-lg shadow-red-950/50 object-cover" alt="RepoGuardian Logo" />
             <AnimatePresence>
               {isSidebarOpen && (
                 <motion.div
@@ -71,8 +69,8 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                 key={item.path}
                 to={item.path}
                 className={`flex items-center space-x-3 px-3 py-3 rounded-md transition-all duration-200 group relative ${isActive
-                    ? 'bg-red-950/20 text-red-500'
-                    : 'text-white/60 hover:bg-red-900/10 hover:text-white'
+                  ? 'bg-red-950/20 text-red-500'
+                  : 'text-white/60 hover:bg-red-900/10 hover:text-white'
                   }`}
               >
                 <Icon className={`w-5 h-5 min-w-[20px] ${isActive ? 'text-red-500' : 'group-hover:text-red-500'}`} />

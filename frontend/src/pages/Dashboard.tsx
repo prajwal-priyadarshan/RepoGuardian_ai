@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import {
   Activity,
-  Brain,
   GitBranch,
+  Shield,
   ShieldCheck,
   AlertTriangle,
   Zap,
@@ -29,7 +29,7 @@ export const Dashboard = () => {
     {
       label: 'AI Insights',
       value: aiAnalysis ? 1 : 0,
-      icon: Brain,
+      icon: Shield,
       color: 'text-red-500',
       bg: 'bg-red-950/20',
       trend: 'Real-time active'
@@ -83,7 +83,7 @@ export const Dashboard = () => {
           <div className="hidden md:flex justify-end">
             <div className="w-48 h-48 rounded-full border border-red-900/20 flex items-center justify-center relative">
               <div className="absolute inset-0 border-2 border-red-500/20 rounded-full animate-ping" />
-              <Brain className="w-20 h-20 text-red-600" />
+              <img src="/favicon.png" className="w-20 h-20 object-cover rounded-md shadow-2xl" alt="Core Identity" />
             </div>
           </div>
         </div>
@@ -193,7 +193,7 @@ export const Dashboard = () => {
           <div className="p-6 rounded-md bg-red-950/10 border-2 border-red-900/30 relative overflow-hidden group">
             <div className="absolute -top-12 -right-12 w-32 h-32 bg-red-900/10 rounded-full blur-2xl group-hover:scale-110 transition-transform" />
             <h4 className="text-white font-bold mb-2 flex items-center">
-              <Brain className="w-4 h-4 mr-2 text-red-500" />
+              <img src="/favicon.png" className="w-4 h-4 mr-2 object-cover rounded-sm" alt="AI" />
               AI Recommendation
             </h4>
             <p className="text-white/70 text-sm leading-relaxed">

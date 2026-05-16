@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Brain,
   Zap,
   AlertTriangle,
   ChevronRight,
@@ -38,9 +37,7 @@ export const AIAnalysis = () => {
       {/* Configuration Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 p-8 bg-black border border-red-900/30 rounded-md">
         <div className="flex items-center space-x-5">
-          <div className="w-14 h-14 bg-red-600 rounded-md flex items-center justify-center shadow-lg shadow-red-950/50">
-            <Brain className="w-8 h-8 text-white" />
-          </div>
+          <img src="/favicon.png" className="w-14 h-14 rounded-md shadow-lg shadow-red-950/50 object-cover" alt="AI Core Logo" />
           <div>
             <h1 className="text-2xl font-bold text-white">AI Intelligence Core</h1>
             <p className="text-sm font-medium text-white/60 mt-1">Deep architectural reasoning powered by Llama 3.3 & RAG.</p>
