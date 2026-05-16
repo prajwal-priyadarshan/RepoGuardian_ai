@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Shield, Zap, Search, Activity, GitBranch, Cpu, ArrowRight, Github } from 'lucide-react';
+import { Shield, Zap, Search, Activity, GitBranch, Cpu, ArrowRight } from 'lucide-react';
 import { Button, Card, CardContent } from '../components/ui';
 
 export const Home = () => {
@@ -38,7 +38,7 @@ export const Home = () => {
                   </Button>
                 </Link>
                 <Button variant="outline" size="lg" className="h-14 px-8 text-lg border-slate-200 hover:bg-slate-50 transition-colors">
-                  <Github className="mr-2 w-5 h-5" />
+                  <GitBranch className="mr-2 w-5 h-5" />
                   GitHub Integration
                 </Button>
               </div>
@@ -69,7 +69,7 @@ export const Home = () => {
             >
               <div className="relative z-10 glass-card p-4 overflow-hidden">
                 <img 
-                  src="/hero_ai_guardian_1778951524484.png" 
+                  src="/hero_ai_guardian.png" 
                   alt="AI Guardian Visualization" 
                   className="rounded-xl w-full h-auto shadow-2xl"
                 />
