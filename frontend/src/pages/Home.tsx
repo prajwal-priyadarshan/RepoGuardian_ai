@@ -28,7 +28,7 @@ export const Home = () => {
                 Your Projects' <span className="text-red-600 italic">Autonomous</span> Guardian.
               </h1>
               <p className="text-xl text-white/80 mb-10 max-w-xl leading-relaxed">
-                RepoGuardian AI stands watch over your GitHub repositories—analyzing structures, explaining logic, and <span className="text-red-600 font-semibold">healing architectural risks</span> automatically.
+                RepoGuardian AI stands watch over your GitHub repositories analyzing structures, explaining logic, and <span className="text-red-600 font-semibold">healing architectural risks</span> automatically.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/dashboard">
@@ -166,13 +166,73 @@ export const Home = () => {
         </div>
       </section>
 
-      <footer className="py-12 border-t border-red-900/20 px-6 bg-black">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-red-900/60 text-sm font-medium">
-          <p>© 2026 RepoGuardian AI. Standing watch over your code.</p>
-          <div className="flex space-x-8 mt-4 md:mt-0">
-            <a href="https://github.com/prajwal-priyadarshan/RepoGuardian_ai" target="_blank" rel="noopener noreferrer" className="hover:text-red-500 transition-colors">GitHub Repository</a>
-            <a href="#" className="hover:text-red-500 transition-colors">Documentation</a>
-            <a href="#" className="hover:text-red-500 transition-colors">Privacy</a>
+      <footer className="bg-black border-t border-red-900/20 pt-20 pb-12 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+            {/* Brand Column */}
+            <div className="col-span-1 lg:col-span-1">
+              <div className="flex items-center space-x-3 mb-6">
+                <img src="/favicon.png" className="w-10 h-10 rounded-md shadow-lg shadow-red-900/20" alt="Logo" />
+                <span className="text-xl font-bold text-white tracking-tighter">RepoGuardian AI</span>
+              </div>
+              <p className="text-white/40 text-sm leading-relaxed mb-6 font-medium">
+                The autonomous structural guardian for modern codebases. Powered by deep architectural reasoning and Graph-RAG intelligence.
+              </p>
+              <div className="flex space-x-4">
+                <a href="https://github.com/prajwal-priyadarshan/RepoGuardian_ai" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-md bg-red-950/20 flex items-center justify-center text-red-500 hover:bg-red-600 hover:text-white transition-all">
+                  <GitBranch className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Product Column */}
+            <div>
+              <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-[11px]">Intelligence Core</h4>
+              <ul className="space-y-4">
+                <li><Link to="/dashboard" className="text-white/40 hover:text-red-500 transition-colors text-sm font-medium">Dashboard Overview</Link></li>
+                <li><Link to="/ai-analysis" className="text-white/40 hover:text-red-500 transition-colors text-sm font-medium">AI Structural Analysis</Link></li>
+                <li><Link to="/impact" className="text-white/40 hover:text-red-500 transition-colors text-sm font-medium">Impact Ripple Mapping</Link></li>
+                <li><Link to="/self-heal" className="text-white/40 hover:text-red-500 transition-colors text-sm font-medium">Autonomous Healing</Link></li>
+              </ul>
+            </div>
+
+            {/* Resources Column */}
+            <div>
+              <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-[11px]">Resources</h4>
+              <ul className="space-y-4">
+                <li><a href="#" className="text-white/40 hover:text-red-500 transition-colors text-sm font-medium">Documentation</a></li>
+                <li><a href="#" className="text-white/40 hover:text-red-500 transition-colors text-sm font-medium">API Reference</a></li>
+                <li><a href="#" className="text-white/40 hover:text-red-500 transition-colors text-sm font-medium">Architecture Deep-dive</a></li>
+                <li><a href="#" className="text-white/40 hover:text-red-500 transition-colors text-sm font-medium">Release Notes</a></li>
+              </ul>
+            </div>
+
+            {/* Tech Stack Column */}
+            <div>
+              <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-[11px]">Integrations</h4>
+              <div className="flex flex-wrap gap-3">
+                {['Neo4j', 'Pinecone', 'Llama 3.3', 'FastAPI', 'Groq', 'React'].map((tech) => (
+                  <span key={tech} className="px-3 py-1 bg-red-950/20 border border-red-900/30 text-red-500 text-[10px] font-bold rounded-md uppercase tracking-wider">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-8 p-4 bg-red-900/5 border border-red-900/20 rounded-md">
+                <p className="text-[10px] font-bold text-white/60 uppercase tracking-widest mb-1">Current Status</p>
+                <div className="flex items-center space-x-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                  <span className="text-[11px] text-white/80 font-medium">All Systems Operational</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-8 border-t border-red-900/20 flex flex-col md:flex-row justify-between items-center text-white/20 text-[11px] font-bold uppercase tracking-[0.2em]">
+            <p>© 2026 RepoGuardian AI. Standing watch over your code.</p>
+            <div className="flex space-x-8 mt-4 md:mt-0">
+              <a href="#" className="hover:text-red-500 transition-colors">Privacy Policy</a>
+              <a href="#" className="hover:text-red-500 transition-colors">Terms of Service</a>
+            </div>
           </div>
         </div>
       </footer>
