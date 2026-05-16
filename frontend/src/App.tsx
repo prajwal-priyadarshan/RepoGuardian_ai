@@ -9,10 +9,12 @@ import { SelfHealing } from './pages/SelfHealing';
 import { CodeSearch } from './pages/CodeSearch';
 
 import { ScrollToTop } from './components/ScrollToTop';
+import { ScrollProgress } from './components/ScrollProgress';
 
 function App() {
   return (
     <>
+      <ScrollProgress />
       <ScrollToTop />
       <Routes>
       <Route path="/" element={<Home />} />
