@@ -14,7 +14,7 @@ import { useHealthCheck } from '../hooks/useAPI';
 import { getBaseURL } from '../lib/api.client';
 
 const navItems = [
-  { path: '/', label: 'Dashboard', icon: Home },
+  { path: '/dashboard', label: 'Dashboard', icon: Home },
   { path: '/repositories', label: 'Repositories', icon: FolderGit2 },
   { path: '/ai-analysis', label: 'AI Analysis', icon: Brain },
   { path: '/impact', label: 'Impact Analysis', icon: GitBranch },
