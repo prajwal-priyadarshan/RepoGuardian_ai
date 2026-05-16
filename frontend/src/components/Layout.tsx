@@ -32,7 +32,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
       {/* Top Navigation Bar */}
       <header className="h-20 bg-black/80 backdrop-blur-md sticky top-0 z-50 px-8 flex items-center justify-between border-b border-red-900/40">
-        <div className="flex items-center space-x-12">
+        <div className="flex items-center">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <img src="/favicon.png" className="w-10 h-10 rounded-md shadow-lg shadow-red-950/50 object-cover" alt="RepoGuardian Logo" />
@@ -42,23 +42,23 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               </h1>
             </div>
           </Link>
+        </div>
 
-          {/* Navigation Links */}
+        <div className="flex items-center space-x-8">
+          {/* Navigation Links - Now on the right */}
           <nav className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => {
-              const Icon = item.icon;
               const isActive = location.pathname === item.path;
 
               return (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all duration-200 group relative ${isActive
+                  className={`px-4 py-2 rounded-md transition-all duration-200 group relative ${isActive
                     ? 'text-red-500 bg-red-950/10'
                     : 'text-white/60 hover:text-white hover:bg-red-900/10'
                     }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-red-500' : 'group-hover:text-red-500'}`} />
                   <span className="text-sm font-bold whitespace-nowrap">{item.label}</span>
                   {isActive && (
                     <motion.div
@@ -70,11 +70,14 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               );
             })}
           </nav>
-        </div>
 
-        <div className="flex items-center">
-          <div className="w-10 h-10 rounded-full bg-red-900/20 border-2 border-red-900/40 shadow-sm flex items-center justify-center overflow-hidden cursor-pointer hover:border-red-500 transition-colors">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul" alt="User Avatar" />
+          <div className="w-px h-6 bg-red-900/30 hidden sm:block" />
+
+          {/* User Avatar */}
+          <div className="flex items-center">
+            <div className="w-10 h-10 rounded-full bg-red-900/20 border-2 border-red-900/40 shadow-sm flex items-center justify-center overflow-hidden cursor-pointer hover:border-red-500 transition-colors">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul" alt="User Avatar" />
+            </div>
           </div>
         </div>
       </header>
