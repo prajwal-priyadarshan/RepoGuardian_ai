@@ -7,7 +7,7 @@ export const Home = () => {
   return (
     <div className="min-h-screen bg-black transition-colors duration-300">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-32 overflow-hidden">
+      <section className="relative pt-22 pb-22 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl -z-10">
           <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-red-900/10 rounded-full blur-3xl opacity-50" />
           <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-red-950/10 rounded-full blur-3xl opacity-50" />
@@ -80,7 +80,7 @@ export const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-black border-y border-red-900/10">
+      <section className="py-22 bg-black border-y border-red-900/10">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-20">
             <h2 className="text-4xl font-bold text-white mb-6">Designed to Protect Your Work</h2>
