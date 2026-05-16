@@ -38,7 +38,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       <motion.aside
         initial={false}
         animate={{ width: isSidebarOpen ? 280 : 80 }}
-        className="fixed inset-y-0 left-0 z-40 bg-black border-r border-red-900/50 shadow-sm overflow-hidden flex flex-col"
+        className="fixed inset-y-0 left-0 z-40 bg-black border-r border-red-900/40 shadow-sm overflow-hidden flex flex-col"
       >
         {/* Sidebar Header */}
         <div className="h-20 flex items-center px-6 mb-4">
@@ -136,7 +136,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         style={{ marginLeft: isSidebarOpen ? 280 : 80 }}
       >
         {/* Top Header Bar */}
-        <header className="h-20 bg-black/80 backdrop-blur-md sticky top-0 z-30 px-8 flex items-center justify-between border-b border-red-800/50">
+        <header className="h-20 bg-black/80 backdrop-blur-md sticky top-0 z-30 px-8 flex items-center justify-between border-b border-red-800/40">
           <div className="flex items-center space-x-4">
              <h2 className="text-xl font-bold text-white">
                 {navItems.find(i => i.path === location.pathname)?.label || 'Overview'}

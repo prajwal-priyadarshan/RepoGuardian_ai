@@ -8,9 +8,13 @@ import { ImpactAnalysis } from './pages/ImpactAnalysis';
 import { SelfHealing } from './pages/SelfHealing';
 import { CodeSearch } from './pages/CodeSearch';
 
+import { ScrollToTop } from './components/ScrollToTop';
+
 function App() {
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
       <Route path="/" element={<Home />} />
       <Route
         path="/*"
@@ -27,7 +31,8 @@ function App() {
           </Layout>
         }
       />
-    </Routes>
+      </Routes>
+    </>
   );
 }
 
