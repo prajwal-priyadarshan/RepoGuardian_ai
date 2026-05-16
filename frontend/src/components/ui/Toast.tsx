@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle, AlertCircle, Info } from 'lucide-react';
+import { X, CheckCircle, AlertCircle } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 
 export const Toast = () => {
