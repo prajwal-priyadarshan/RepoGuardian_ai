@@ -37,7 +37,7 @@ export const CodeSearch = () => {
   return (
     <div className="space-y-8 pb-12">
       {/* Search Command Header */}
-      <div className="p-8 bg-black border-2 border-red-900/40 rounded-[2.5rem] shadow-premium">
+      <div className="p-8 bg-black border-2 border-red-900/40 rounded-md shadow-premium">
         <div className="max-w-4xl mx-auto space-y-8">
            <div className="text-center">
               <h1 className="text-4xl font-black text-white tracking-tight mb-3">Semantic Knowledge Retrieval</h1>
@@ -54,7 +54,7 @@ export const CodeSearch = () => {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                    className="w-full pl-14 pr-4 py-4 bg-red-950/10 border border-red-900/30 rounded-2xl text-lg font-medium text-white placeholder:text-white/20 focus:ring-red-500 focus:border-red-500 shadow-sm"
+                    className="w-full pl-14 pr-4 py-4 bg-red-950/10 border border-red-900/30 rounded-md text-lg font-medium text-white placeholder:text-white/20 focus:ring-red-500 focus:border-red-500 shadow-sm"
                   />
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center space-x-2">
                      <span className="text-[10px] font-black text-white/30 bg-red-950/20 px-2 py-1 rounded">ENTER ↵</span>
@@ -80,7 +80,7 @@ export const CodeSearch = () => {
                     onClick={handleSearch}
                     isLoading={searchMutation.isPending}
                     disabled={!selectedRepoId || !query.trim()}
-                    className="bg-red-600 hover:bg-red-700 text-white font-bold h-11 px-8 rounded-xl shadow-lg shadow-red-950/50 active:scale-95 transition-all flex items-center"
+                    className="bg-red-600 hover:bg-red-700 text-white font-bold h-11 px-8 rounded-md shadow-lg shadow-red-950/50 active:scale-95 transition-all flex items-center"
                  >
                     <Sparkles className="w-4 h-4 mr-2 text-white" />
                     Query Vector DB
@@ -129,12 +129,12 @@ export const CodeSearch = () => {
                    animate={{ opacity: 1, x: 0 }}
                    transition={{ delay: i * 0.1 }}
                  >
-                    <Card className="border-2 border-red-900/20 group hover:border-red-600 shadow-premium hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] transition-all duration-500 overflow-hidden bg-black rounded-[2.5rem]">
+                    <Card className="border-2 border-red-900/20 group hover:border-red-600 shadow-premium hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] transition-all duration-500 overflow-hidden bg-black rounded-md">
                       <div className="h-1 bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                       <CardHeader className="p-6 pb-2 border-b border-red-900/20">
                          <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-3">
-                               <div className="w-10 h-10 rounded-xl bg-red-950/20 text-red-500 flex items-center justify-center">
+                               <div className="w-10 h-10 rounded-md bg-red-950/20 text-red-500 flex items-center justify-center">
                                   <FileCode className="w-5 h-5" />
                                </div>
                                <div>
@@ -177,8 +177,8 @@ export const CodeSearch = () => {
             </div>
           </motion.div>
         ) : (
-          <div className="py-24 text-center bg-black border border-red-900/20 border-dashed rounded-[2.5rem] flex flex-col items-center">
-             <div className="w-20 h-20 bg-red-950/10 rounded-3xl flex items-center justify-center mb-6">
+          <div className="py-24 text-center bg-black border border-red-900/20 border-dashed rounded-md flex flex-col items-center">
+             <div className="w-20 h-20 bg-red-950/10 rounded-md flex items-center justify-center mb-6">
                 <Search className="w-10 h-10 text-white/20" />
              </div>
              <h3 className="text-xl font-bold text-white mb-2">Search Base Ready</h3>

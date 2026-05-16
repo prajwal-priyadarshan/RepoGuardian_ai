@@ -20,7 +20,7 @@ export const Home = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-red-950/30 text-red-500 text-sm font-semibold mb-6">
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-red-950/30 text-red-500 text-sm font-semibold mb-6">
                 <Shield className="w-4 h-4" />
                 <span>The Ultimate Guardian of Projects</span>
               </div>
@@ -32,7 +32,7 @@ export const Home = () => {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/dashboard">
-                  <Button size="lg" className="h-14 px-8 text-lg bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/40 hover:scale-105 transition-transform">
+                  <Button size="lg" className="h-14 px-8 text-lg bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/40 hover:scale-105 transition-transform rounded-md">
                     Enter Intelligence Core
                     <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
@@ -67,11 +67,11 @@ export const Home = () => {
               transition={{ duration: 1, delay: 0.2 }}
               className="relative"
             >
-              <div className="relative z-10 glass-card p-4 overflow-hidden rounded-[2rem]">
+              <div className="relative z-10 glass-card p-4 overflow-hidden rounded-md">
                 <img 
                   src="/hero_ai_guardian.png" 
                   alt="AI Guardian Visualization" 
-                  className="rounded-2xl w-full h-auto shadow-2xl opacity-90 transition-all duration-700"
+                  className="rounded-md w-full h-auto shadow-2xl opacity-90 transition-all duration-700"
                 />
               </div>
             </motion.div>
@@ -129,7 +129,7 @@ export const Home = () => {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
               >
-                <Card className="h-full border-2 border-red-900/40 hover:border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.05)] hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] transition-all duration-500 group bg-black rounded-[2.5rem] overflow-hidden">
+                <Card className="h-full border-2 border-red-900/40 hover:border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.05)] hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] transition-all duration-500 group bg-black rounded-md overflow-hidden">
                   <CardContent className="pt-8 p-8">
                     <div className="w-12 h-12 rounded-xl bg-red-950/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                       {feature.icon}
@@ -147,7 +147,7 @@ export const Home = () => {
       {/* CTA Section */}
       <section className="py-24 relative overflow-hidden bg-black">
         <div className="max-w-5xl mx-auto px-6">
-          <div className="bg-black border border-red-900/40 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-red-900/20">
+          <div className="bg-black border border-red-900/40 rounded-md p-12 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-red-900/20">
             <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 blur-[100px] -z-0" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-400/5 blur-[100px] -z-0" />
             
@@ -157,7 +157,7 @@ export const Home = () => {
                 Join engineering teams using RepoGuardian to automate architectural analysis and prevent critical breakages.
               </p>
               <Link to="/dashboard">
-                <Button variant="primary" size="lg" className="h-16 px-10 text-xl bg-red-600 text-white hover:bg-red-700 rounded-2xl transition-all shadow-xl shadow-red-900/40">
+                <Button variant="primary" size="lg" className="h-16 px-10 text-xl bg-red-600 text-white hover:bg-red-700 rounded-md transition-all shadow-xl shadow-red-900/40">
                   Get Started for Free
                 </Button>
               </Link>

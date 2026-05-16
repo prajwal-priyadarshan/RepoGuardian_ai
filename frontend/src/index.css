@@ -44,11 +44,11 @@
 
 @layer components {
   .glass-card {
-    @apply bg-black/60 backdrop-blur-xl border border-red-800/40 shadow-premium rounded-[2.5rem] transition-all duration-300;
+    @apply bg-black/60 backdrop-blur-xl border border-red-800/40 shadow-premium rounded-md transition-all duration-300;
   }
 
   .btn-premium {
-    @apply px-5 py-2.5 rounded-xl font-semibold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+    @apply px-5 py-2.5 rounded-md font-semibold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
   }
 }
 

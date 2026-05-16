@@ -58,7 +58,7 @@ export const Dashboard = () => {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden p-8 rounded-[2.5rem] bg-black border-2 border-red-900/40 text-white shadow-2xl shadow-red-900/30"
+        className="relative overflow-hidden p-8 rounded-md bg-black border-2 border-red-900/40 text-white shadow-2xl shadow-red-900/30"
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 blur-[80px]" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-900/5 blur-[80px]" />
@@ -72,10 +72,10 @@ export const Dashboard = () => {
               RepoGuardian AI is currently monitoring your repositories for architectural risks and autonomous healing opportunities.
             </p>
             <div className="flex space-x-4">
-               <Button className="bg-red-600 text-white hover:bg-red-700 rounded-xl px-6 h-12">
+               <Button className="bg-red-600 text-white hover:bg-red-700 rounded-md px-6 h-12">
                  Generate Report
                </Button>
-               <Button variant="outline" className="border-red-900/40 text-white hover:bg-red-950/20 rounded-xl px-6 h-12">
+               <Button variant="outline" className="border-red-900/40 text-white hover:bg-red-950/20 rounded-md px-6 h-12">
                  Live Activity
                </Button>
             </div>
@@ -101,7 +101,7 @@ export const Dashboard = () => {
             <Card className="border-2 border-red-900/20 hover:border-red-600 shadow-premium hover:shadow-[0_0_30px_rgba(255,0,0,0.1)] transition-all duration-500 bg-black">
               <CardContent className="pt-6">
                 <div className="flex justify-between items-start mb-4">
-                  <div className={`p-3 rounded-2xl ${stat.bg}`}>
+                  <div className={`p-3 rounded-md ${stat.bg}`}>
                     <stat.icon className={`w-6 h-6 ${stat.color}`} />
                   </div>
                   <div className="flex items-center text-xs font-bold text-red-500 bg-red-950/30 px-2 py-1 rounded-lg">
@@ -136,7 +136,7 @@ export const Dashboard = () => {
                   className="group glass-card p-5 flex items-center justify-between hover:border-red-900/50 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 rounded-2xl bg-red-950/10 flex items-center justify-center group-hover:bg-red-900/20 transition-colors">
+                    <div className="w-12 h-12 rounded-md bg-red-950/10 flex items-center justify-center group-hover:bg-red-900/20 transition-colors">
                       <GitBranch className="w-6 h-6 text-white/40 group-hover:text-red-500" />
                     </div>
                     <div>
@@ -166,21 +166,21 @@ export const Dashboard = () => {
         <div className="space-y-6">
           <h2 className="text-2xl font-bold text-white">Actions</h2>
           <div className="grid gap-4">
-            <Button className="w-full h-14 bg-black border-2 border-red-900/30 text-white hover:bg-red-900/10 hover:border-red-600 shadow-sm rounded-2xl flex justify-between px-6 transition-all">
+            <Button className="w-full h-14 bg-black border-2 border-red-900/30 text-white hover:bg-red-900/10 hover:border-red-600 shadow-sm rounded-md flex justify-between px-6 transition-all">
               <span className="flex items-center font-bold">
                 <Search className="w-5 h-5 mr-3 text-red-500" />
                 Semantic Search
               </span>
               <ChevronRight className="w-4 h-4 text-white/40" />
             </Button>
-            <Button className="w-full h-14 bg-black border-2 border-red-900/30 text-white hover:bg-red-900/10 hover:border-red-600 shadow-sm rounded-2xl flex justify-between px-6 transition-all">
+            <Button className="w-full h-14 bg-black border-2 border-red-900/30 text-white hover:bg-red-900/10 hover:border-red-600 shadow-sm rounded-md flex justify-between px-6 transition-all">
               <span className="flex items-center font-bold">
                 <ShieldCheck className="w-5 h-5 mr-3 text-red-500" />
                 Verify Security
               </span>
               <ChevronRight className="w-4 h-4 text-white/40" />
             </Button>
-            <Button className="w-full h-14 bg-black border-2 border-red-900/30 text-white hover:bg-red-900/10 hover:border-red-600 shadow-sm rounded-2xl flex justify-between px-6 transition-all">
+            <Button className="w-full h-14 bg-black border-2 border-red-900/30 text-white hover:bg-red-900/10 hover:border-red-600 shadow-sm rounded-md flex justify-between px-6 transition-all">
               <span className="flex items-center font-bold">
                 <Activity className="w-5 h-5 mr-3 text-red-500" />
                 Infrastructure Graph
@@ -190,7 +190,7 @@ export const Dashboard = () => {
           </div>
           
           {/* AI Tip */}
-          <div className="p-6 rounded-[2.5rem] bg-red-950/10 border-2 border-red-900/30 relative overflow-hidden group">
+          <div className="p-6 rounded-md bg-red-950/10 border-2 border-red-900/30 relative overflow-hidden group">
              <div className="absolute -top-12 -right-12 w-32 h-32 bg-red-900/10 rounded-full blur-2xl group-hover:scale-110 transition-transform" />
              <h4 className="text-white font-bold mb-2 flex items-center">
                <Brain className="w-4 h-4 mr-2 text-red-500" />

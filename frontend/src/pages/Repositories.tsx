@@ -69,7 +69,7 @@ export const Repositories = () => {
         <div className="flex items-center space-x-3">
           <Button
             onClick={() => setIsCloneModalOpen(true)}
-            className="h-12 px-6 rounded-xl bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/40 flex items-center space-x-2 transition-all active:scale-95"
+            className="h-12 px-6 rounded-md bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/40 flex items-center space-x-2 transition-all active:scale-95"
           >
             <Plus className="w-5 h-5" />
             <span className="font-bold">Connect GitHub</span>
@@ -77,7 +77,7 @@ export const Repositories = () => {
           <Button
             onClick={() => setIsUploadModalOpen(true)}
             variant="outline"
-            className="h-12 px-6 rounded-xl border-red-900/30 text-white hover:bg-red-900/10 flex items-center space-x-2 transition-all active:scale-95"
+            className="h-12 px-6 rounded-md border-red-900/30 text-white hover:bg-red-900/10 flex items-center space-x-2 transition-all active:scale-95"
           >
             <Upload className="w-4 h-4" />
             <span className="font-bold">Upload Local</span>
@@ -86,13 +86,13 @@ export const Repositories = () => {
       </div>
 
       {/* Filter Bar */}
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-2 bg-black rounded-2xl shadow-premium border-2 border-red-900/30">
+      <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-2 bg-black rounded-md shadow-premium border-2 border-red-900/30">
         <div className="relative w-full md:w-96">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
           <input 
             type="text" 
             placeholder="Filter indexed repositories..." 
-            className="w-full pl-11 pr-4 py-3 bg-transparent text-sm font-semibold text-white placeholder:text-white/30 focus:outline-none"
+            className="w-full pl-11 pr-4 py-3 bg-transparent text-sm font-semibold text-white placeholder:text-white/30 focus:outline-none rounded-md"
           />
         </div>
         <div className="flex space-x-2 px-2">
@@ -115,7 +115,7 @@ export const Repositories = () => {
         >
           <Card className="border-2 border-dashed border-red-900/20 shadow-none bg-red-950/5">
             <CardContent className="text-center py-20">
-              <div className="w-20 h-20 bg-black border border-red-900/20 rounded-3xl shadow-sm flex items-center justify-center mx-auto mb-6">
+              <div className="w-20 h-20 bg-black border border-red-900/20 rounded-md shadow-sm flex items-center justify-center mx-auto mb-6">
                 <FolderGit2 className="w-10 h-10 text-white/20" />
               </div>
               <h3 className="text-xl font-bold text-white mb-2">No Repositories Indexed</h3>
@@ -142,12 +142,12 @@ export const Repositories = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-            <Card className="group border-2 border-red-900/20 hover:border-red-600 shadow-premium hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] hover:-translate-y-1 transition-all duration-500 overflow-hidden bg-black rounded-[2.5rem]">
+            <Card className="group border-2 border-red-900/20 hover:border-red-600 shadow-premium hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] hover:-translate-y-1 transition-all duration-500 overflow-hidden bg-black rounded-md">
                 <div className="h-2 bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-4">
-                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm ${repo.source === 'github' ? 'bg-red-600 text-white' : 'bg-red-900/20 text-red-500'}`}>
+                      <div className={`w-12 h-12 rounded-md flex items-center justify-center shadow-sm ${repo.source === 'github' ? 'bg-red-600 text-white' : 'bg-red-900/20 text-red-500'}`}>
                         {repo.source === 'github' ? (
                           <GitBranch className="w-6 h-6" />
                         ) : (

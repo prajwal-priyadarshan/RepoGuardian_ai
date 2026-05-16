@@ -34,10 +34,10 @@ export const SelfHealing = () => {
   return (
     <div className="space-y-8 pb-12">
       {/* Healing Command Header */}
-      <div className="p-8 bg-black border-2 border-red-900/40 rounded-[2.5rem] shadow-premium">
+      <div className="p-8 bg-black border-2 border-red-900/40 rounded-md shadow-premium">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
            <div className="flex items-center space-x-6">
-              <div className="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center shadow-lg shadow-red-950/50">
+              <div className="w-16 h-16 bg-red-600 rounded-md flex items-center justify-center shadow-lg shadow-red-950/50">
                  <Wrench className="w-9 h-9 text-white" />
               </div>
               <div>
@@ -51,7 +51,7 @@ export const SelfHealing = () => {
                 <select
                   value={selectedRepoId}
                   onChange={(e) => setSelectedRepoId(e.target.value)}
-                  className="bg-red-950/10 border border-red-900/30 text-white text-sm font-bold rounded-xl focus:ring-red-500 focus:border-red-500 block w-full p-3"
+                  className="bg-red-950/10 border border-red-900/30 text-white text-sm font-bold rounded-md focus:ring-red-500 focus:border-red-500 block w-full p-3"
                 >
                   <option value="" className="bg-black text-white">Target Repository</option>
                   {repositories.map((repo) => (
@@ -64,7 +64,7 @@ export const SelfHealing = () => {
                   onClick={handleSelfHeal}
                   isLoading={selfHealMutation.isPending}
                   disabled={!selectedRepoId}
-                  className="bg-red-600 hover:bg-red-700 text-white font-bold px-8 rounded-xl h-12 shadow-lg shadow-red-950/50 active:scale-95 transition-all"
+                  className="bg-red-600 hover:bg-red-700 text-white font-bold px-8 rounded-md h-12 shadow-lg shadow-red-950/50 active:scale-95 transition-all"
                 >
                   <Sparkles className="w-4 h-4 mr-2 text-white" />
                   Initiate Healing
@@ -105,9 +105,9 @@ export const SelfHealing = () => {
             className="space-y-8"
           >
             {/* Healing Confirmation */}
-            <div className="bg-red-950/10 border-2 border-red-900/40 rounded-[2.5rem] p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-premium">
+            <div className="bg-red-950/10 border-2 border-red-900/40 rounded-md p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-premium">
                <div className="flex items-center space-x-6 text-center md:text-left">
-                  <div className="w-16 h-16 bg-black border border-red-900/20 rounded-3xl flex items-center justify-center shadow-sm">
+                  <div className="w-16 h-16 bg-black border border-red-900/20 rounded-md flex items-center justify-center shadow-sm">
                      <CheckCircle2 className="w-10 h-10 text-red-500" />
                   </div>
                   <div>
@@ -116,7 +116,7 @@ export const SelfHealing = () => {
                   </div>
                </div>
                <div className="flex space-x-3">
-                  <Button className="bg-red-600 hover:bg-red-700 text-white font-bold h-12 px-8 rounded-xl shadow-lg shadow-red-950/50">
+                  <Button className="bg-red-600 hover:bg-red-700 text-white font-bold h-12 px-8 rounded-md shadow-lg shadow-red-950/50">
                      Review Summary
                   </Button>
                </div>
@@ -126,7 +126,7 @@ export const SelfHealing = () => {
             <div className="grid lg:grid-cols-2 gap-8">
                <div className="space-y-6">
                   {selfHealResults.summary?.map((heal, i) => (
-                    <Card key={i} className="border-2 border-red-900/20 hover:border-red-600 shadow-premium hover:shadow-[0_0_20px_rgba(255,0,0,0.1)] transition-all duration-500 overflow-hidden bg-black rounded-[2rem]">
+                    <Card key={i} className="border-2 border-red-900/20 hover:border-red-600 shadow-premium hover:shadow-[0_0_20px_rgba(255,0,0,0.1)] transition-all duration-500 overflow-hidden bg-black rounded-md">
                       <CardHeader className="bg-red-950/20 border-b border-red-900/20 p-4">
                          <div className="flex items-center justify-between">
                             <CardTitle className="text-sm font-bold text-white">{heal.entity}</CardTitle>
@@ -137,7 +137,7 @@ export const SelfHealing = () => {
                       </CardHeader>
                       <CardContent className="p-6">
                          <p className="text-sm font-medium text-white/60 mb-4">{heal.result.message}</p>
-                         <div className="p-4 bg-black border border-red-900/20 rounded-xl">
+                         <div className="p-4 bg-black border border-red-900/20 rounded-md">
                             <div className="flex items-center space-x-2 text-[10px] font-black text-white/20 uppercase tracking-widest mb-2">
                                <Terminal className="w-3 h-3" />
                                <span>Commit SHA</span>
@@ -150,7 +150,7 @@ export const SelfHealing = () => {
                </div>
 
                <div className="space-y-8">
-                  <Card className="border-2 border-red-900/20 shadow-premium bg-black rounded-[2rem] overflow-hidden">
+                  <Card className="border-2 border-red-900/20 shadow-premium bg-black rounded-md overflow-hidden">
                      <CardHeader className="pb-2">
                         <h3 className="font-bold text-white flex items-center">
                            <ShieldCheck className="w-5 h-5 mr-3 text-red-500" />
@@ -158,22 +158,22 @@ export const SelfHealing = () => {
                         </h3>
                      </CardHeader>
                      <CardContent className="space-y-4">
-                        <div className="flex items-center justify-between p-4 rounded-xl bg-red-950/10 border border-red-900/20">
+                        <div className="flex items-center justify-between p-4 rounded-md bg-red-950/10 border border-red-900/20">
                            <span className="text-sm font-bold text-white/80">Regression Tests</span>
                            <span className="text-xs font-black text-red-500">PASSED</span>
                         </div>
-                        <div className="flex items-center justify-between p-4 rounded-xl bg-red-950/10 border border-red-900/20">
+                        <div className="flex items-center justify-between p-4 rounded-md bg-red-950/10 border border-red-900/20">
                            <span className="text-sm font-bold text-white/80">Graph Integrity</span>
                            <span className="text-xs font-black text-red-500">VALIDATED</span>
                         </div>
-                        <div className="flex items-center justify-between p-4 rounded-xl bg-red-950/10 border border-red-900/20">
+                        <div className="flex items-center justify-between p-4 rounded-md bg-red-950/10 border border-red-900/20">
                            <span className="text-sm font-bold text-white/80">Type Safety</span>
                            <span className="text-xs font-black text-red-500">SECURE</span>
                         </div>
                      </CardContent>
                   </Card>
 
-                  <div className="p-8 rounded-[2.5rem] bg-red-950/10 border-2 border-red-900/40 relative overflow-hidden group shadow-premium">
+                  <div className="p-8 rounded-md bg-red-950/10 border-2 border-red-900/40 relative overflow-hidden group shadow-premium">
                      <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/5 rounded-full blur-2xl transition-transform group-hover:scale-125" />
                      <h4 className="font-bold text-white mb-2 flex items-center">
                         <Cpu className="w-4 h-4 mr-2 text-white/20" />
@@ -187,8 +187,8 @@ export const SelfHealing = () => {
             </div>
           </motion.div>
         ) : (
-          <div className="py-24 text-center bg-black border border-red-900/20 border-dashed rounded-[2.5rem] flex flex-col items-center">
-             <div className="w-20 h-20 bg-red-950/10 rounded-3xl flex items-center justify-center mb-6">
+          <div className="py-24 text-center bg-black border border-red-900/20 border-dashed rounded-md flex flex-col items-center">
+             <div className="w-20 h-20 bg-red-950/10 rounded-md flex items-center justify-center mb-6">
                 <ShieldCheck className="w-10 h-10 text-white/20" />
              </div>
              <h3 className="text-xl font-bold text-white mb-2">Healing Module Ready</h3>

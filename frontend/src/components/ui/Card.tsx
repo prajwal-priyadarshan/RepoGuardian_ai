@@ -8,9 +8,9 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = 'default', ...props }, ref) => {
     const variants = {
-      default: 'bg-black rounded-xl shadow-premium border border-red-900/30 transition-all duration-300',
-      bordered: 'bg-black rounded-xl border-2 border-red-800/50 shadow-premium',
-      elevated: 'bg-black rounded-xl shadow-xl shadow-red-900/20 border border-red-900/20',
+      default: 'bg-black rounded-md shadow-premium border border-red-900/30 transition-all duration-300',
+      bordered: 'bg-black rounded-md border-2 border-red-800/50 shadow-premium',
+      elevated: 'bg-black rounded-md shadow-xl shadow-red-900/20 border border-red-900/20',
     };
 
     return (
@@ -77,7 +77,7 @@ const CardFooter = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('px-6 py-4 border-t border-red-900/30 bg-red-950/10 rounded-b-xl', className)}
+      className={cn('px-6 py-4 border-t border-red-900/30 bg-red-950/10 rounded-b-md', className)}
       {...props}
     />
   )
