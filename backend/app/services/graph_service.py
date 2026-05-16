@@ -37,12 +37,22 @@ class GraphService:
             for func in file_data.get("functions", []):
                 func_name = func.get("name")
                 if func_name:
+                    # 1. Define the function and its location
                     query = """
                     MATCH (f:File {name: $file_name, repo_id: $repo_id})
                     MERGE (func:Function {name: $func_name, repo_id: $repo_id})
                     MERGE (func)-[:DEFINED_IN]->(f)
                     """
                     tx.run(query, file_name=file_name, func_name=func_name, repo_id=repo_id)
+                    
+                    # 2. Map function calls! (Phase 3 Gap Fix)
+                    for called_func in func.get("calls", []):
+                        call_query = """
+                        MATCH (caller:Function {name: $func_name, repo_id: $repo_id})
+                        MERGE (target:Function {name: $called_func, repo_id: $repo_id})
+                        MERGE (caller)-[:CALLS]->(target)
+                        """
+                        tx.run(call_query, func_name=func_name, called_func=called_func, repo_id=repo_id)
                 
             # Create Class Nodes and relationships
             for cls in file_data.get("classes", []):

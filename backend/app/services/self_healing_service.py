@@ -23,24 +23,39 @@ def apply_fix(repo_id: str, file_path: str, fixed_code: str):
     with open(full_path, "w", encoding="utf-8") as f:
         f.write(fixed_code)
 
+from app.services import static_analysis_service
+
 def validate_fix(repo_id: str, file_path: str) -> bool:
     base_path = Path("data/repos") / repo_id
     full_path = base_path / file_path
     
-    # Only support Python syntax validation for now
-    if not str(full_path).endswith(".py"):
-        return True
-        
-    try:
-        # Check for python syntax errors using py_compile
-        result = subprocess.run(
-            ["python", "-m", "py_compile", str(full_path)],
-            capture_output=True,
-            text=True
-        )
-        return result.returncode == 0
-    except Exception:
+    # 1. Basic Syntax Check
+    if str(full_path).endswith(".py"):
+        try:
+            subprocess.run(["python", "-m", "py_compile", str(full_path)], capture_output=True, check=True)
+        except Exception:
+            return False
+            
+    # 2. Heuristic Static Analysis (Phase 9 Gap Fix)
+    with open(full_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    
+    # We simulate a 'diff' for the static analyzer by comparing against the file content
+    issues = static_analysis_service.analyze_changes("+ " + content.replace("\n", "\n+ "))
+    
+    # If the static analyzer finds hardcoded secrets or other critical issues, fail validation
+    if any("secret" in issue.lower() or "password" in issue.lower() for issue in issues):
         return False
+        
+    return True
+
+def propagate_fix_to_dependencies(repo_id: str, original_file: str, dependent_files: list[str]):
+    """Iterates through all dependent files and updates them to maintain compatibility."""
+    # This is Step 9.3: Multi-file Update
+    # For now, we log the propagation. In a full implementation, we would loop through 
+    # and call ai_service.generate_fix_code for each dependent file context.
+    print(f"Propagating changes from {original_file} to {len(dependent_files)} dependencies: {dependent_files}")
+    pass
 
 def rollback_fix(repo_id: str, file_path: str, backup_path: str):
     base_path = Path("data/repos") / repo_id

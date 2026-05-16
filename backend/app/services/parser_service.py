@@ -93,12 +93,31 @@ def parse_file(file_path: str) -> dict:
         parser = Parser(LANGUAGES[ext])
         tree = parser.parse(source_bytes)
         
-        # Simple recursive tree traversal to capture structural elements
+        # State to track current structural context
+        current_function = None
+
+        # Recursive tree traversal to capture structural elements
         def traverse(node):
+            nonlocal current_function
+            
             if node.type in GRAMMAR_MAPPINGS["function"]:
                 name = extract_name(node, source_bytes)
                 if name != "Unknown":
-                    result["functions"].append({"name": name, "args": []}) 
+                    # Create a new function entry
+                    func_entry = {"name": name, "calls": []}
+                    result["functions"].append(func_entry)
+                    
+                    # Track that we are now INSIDE this function
+                    prev_function = current_function
+                    current_function = func_entry
+                    
+                    # Continue traversal for children
+                    for child in node.children:
+                        traverse(child)
+                    
+                    # Backtrack
+                    current_function = prev_function
+                    return # Skip the generic child loop at the bottom for this node
                     
             elif node.type in GRAMMAR_MAPPINGS["class"]:
                 name = extract_name(node, source_bytes)
@@ -111,7 +130,17 @@ def parse_file(file_path: str) -> dict:
                 result["imports"].append(source_text)
                 
             elif node.type == "call_expression":
+                # Extract the name of the function being called
                 function_node = node.child_by_field_name("function")
+                if function_node:
+                    called_name = source_bytes[function_node.start_byte:function_node.end_byte].decode('utf-8')
+                    
+                    # If we are currently inside a function, record the call!
+                    if current_function is not None and called_name != "require":
+                        if called_name not in current_function["calls"]:
+                            current_function["calls"].append(called_name)
+
+                # Special check for JS/Node 'require'
                 if function_node and source_bytes[function_node.start_byte:function_node.end_byte].decode('utf-8') == "require":
                     stmt = node
                     while stmt and stmt.type not in ["variable_declaration", "lexical_declaration", "expression_statement"]:
@@ -121,7 +150,7 @@ def parse_file(file_path: str) -> dict:
                         if source_text not in result["imports"]:
                             result["imports"].append(source_text)
                 
-            # Continue traversal
+            # Continue traversal for all other nodes
             for child in node.children:
                 traverse(child)
                 
