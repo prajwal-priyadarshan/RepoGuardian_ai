@@ -10,7 +10,8 @@ export default {
         blue: "#3b82f6",
       },
       fontFamily: {
-        arvo: ['"Arvo"', 'serif'],
+        cinzel: ['"Cinzel"', 'serif'],
+        karla: ['"Karla"', 'sans-serif'],
       },
     },
   },

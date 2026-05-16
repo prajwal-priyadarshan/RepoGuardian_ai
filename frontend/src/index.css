@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
 @theme {
-  --font-arvo: "Arvo", serif;
+  --font-cinzel: "Cinzel", serif;
+  --font-karla: "Karla", sans-serif;
   
   --color-brand-primary: #ff0000;
   --color-brand-secondary: #cc0000;
@@ -27,16 +28,17 @@
 
   html {
     @apply antialiased scroll-smooth bg-black;
-    font-family: var(--font-arvo) !important;
+    font-family: var(--font-karla) !important;
   }
 
   body {
     @apply bg-black text-white selection:bg-red-900 selection:text-white;
-    font-family: var(--font-arvo) !important;
+    font-family: var(--font-karla) !important;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold tracking-tight text-white;
+    font-family: var(--font-cinzel) !important;
   }
 }
 
