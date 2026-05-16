@@ -5,7 +5,7 @@ import { Button, Card, CardContent } from '../components/ui';
 
 export const Home = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white transition-colors duration-300">
       {/* Hero Section */}
       <section className="relative pt-20 pb-32 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl -z-10">
@@ -22,41 +22,41 @@ export const Home = () => {
             >
               <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6">
                 <Shield className="w-4 h-4" />
-                <span>The Future of Code Security</span>
+                <span>The Ultimate Guardian of Projects</span>
               </div>
               <h1 className="text-6xl md:text-7xl font-bold text-slate-900 leading-[1.1] mb-6">
-                Your Code's <span className="text-blue-600">Autonomous</span> Guardian.
+                Your Projects' <span className="text-blue-600 italic">Autonomous</span> Guardian.
               </h1>
               <p className="text-xl text-slate-600 mb-10 max-w-xl leading-relaxed">
-                RepoGuardian AI uses Neo4j dependency graphs and Gemini-powered RAG to analyze, explain, and automatically heal your codebase.
+                RepoGuardian AI stands watch over your GitHub repositories—analyzing structures, explaining logic, and <span className="text-blue-600 font-semibold">healing architectural risks</span> automatically.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/dashboard">
-                  <Button size="lg" className="h-14 px-8 text-lg shadow-lg shadow-blue-200 hover:scale-105 transition-transform">
-                    Enter Workspace
+                  <Button size="lg" className="h-14 px-8 text-lg bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200 hover:scale-105 transition-transform">
+                    Enter Intelligence Core
                     <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </Link>
                 <Button variant="outline" size="lg" className="h-14 px-8 text-lg border-slate-200 hover:bg-slate-50 transition-colors">
                   <GitBranch className="mr-2 w-5 h-5" />
-                  GitHub Integration
+                  Connect GitHub
                 </Button>
               </div>
               
               <div className="mt-12 flex items-center space-x-8">
                 <div>
                   <p className="text-3xl font-bold text-slate-900">100%</p>
-                  <p className="text-sm text-slate-500 font-medium">Auto-Indexing</p>
+                  <p className="text-sm text-slate-500 font-medium uppercase tracking-widest text-[10px]">Auto-Indexing</p>
                 </div>
                 <div className="w-px h-8 bg-slate-200" />
                 <div>
-                  <p className="text-3xl font-bold text-slate-900">Groq</p>
-                  <p className="text-sm text-slate-500 font-medium">Llama 3.3 Speed</p>
+                  <p className="text-3xl font-bold text-slate-900">Llama 3.3</p>
+                  <p className="text-sm text-slate-500 font-medium uppercase tracking-widest text-[10px]">Logic Speed</p>
                 </div>
                 <div className="w-px h-8 bg-slate-200" />
                 <div>
                   <p className="text-3xl font-bold text-slate-900">RAG</p>
-                  <p className="text-sm text-slate-500 font-medium">Context Aware</p>
+                  <p className="text-sm text-slate-500 font-medium uppercase tracking-widest text-[10px]">Context Aware</p>
                 </div>
               </div>
             </motion.div>
@@ -67,16 +67,16 @@ export const Home = () => {
               transition={{ duration: 1, delay: 0.2 }}
               className="relative"
             >
-              <div className="relative z-10 glass-card p-4 overflow-hidden">
+              <div className="relative z-10 glass-card p-4 overflow-hidden rounded-[2rem]">
                 <img 
                   src="/hero_ai_guardian.png" 
                   alt="AI Guardian Visualization" 
-                  className="rounded-xl w-full h-auto shadow-2xl"
+                  className="rounded-2xl w-full h-auto shadow-2xl"
                 />
               </div>
               {/* Decorative elements */}
-              <div className="absolute -top-6 -right-6 w-32 h-32 bg-yellow-100 rounded-full blur-2xl -z-10 animate-pulse" />
-              <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-blue-100 rounded-full blur-3xl -z-10 animate-pulse" />
+              <div className="absolute -top-6 -right-6 w-32 h-32 bg-blue-100 rounded-full blur-2xl -z-10 animate-pulse" />
+              <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-blue-50 rounded-full blur-3xl -z-10 animate-pulse" />
             </motion.div>
           </div>
         </div>
@@ -86,7 +86,7 @@ export const Home = () => {
       <section className="py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-4xl font-bold text-slate-900 mb-6">Built for Modern Engineering Teams</h2>
+            <h2 className="text-4xl font-bold text-slate-900 mb-6">Designed to Protect Your Work</h2>
             <p className="text-lg text-slate-600">
               Go beyond simple static analysis. RepoGuardian understands the deep architectural impact of every commit.
             </p>
@@ -96,27 +96,27 @@ export const Home = () => {
             {[
               {
                 icon: <Activity className="w-6 h-6 text-blue-600" />,
-                title: "Deep Impact Analysis",
+                title: "Impact Analysis",
                 description: "Analyze how changes in one function ripple through your entire Neo4j dependency graph."
               },
               {
                 icon: <Zap className="w-6 h-6 text-yellow-500" />,
-                title: "Autonomous Self-Healing",
+                title: "Self-Healing",
                 description: "Detect bugs and let AI generate, validate, and propose safe code fixes automatically."
               },
               {
                 icon: <Search className="w-6 h-6 text-indigo-600" />,
                 title: "Semantic Code Search",
-                description: "Query your codebase in natural language using high-dimension Gemini embeddings."
+                description: "Explore your project in natural language using high-dimension Gemini embeddings."
               },
               {
                 icon: <GitBranch className="w-6 h-6 text-emerald-600" />,
-                title: "Knowledge Base Sync",
+                title: "Knowledge Sync",
                 description: "Automatically refresh RAG and Graph data every time you push new code to GitHub."
               },
               {
                 icon: <Cpu className="w-6 h-6 text-purple-600" />,
-                title: "Multi-Model Reasoning",
+                title: "Inference Speed",
                 description: "Powered by Gemini for indexing and Groq (Llama 3.3) for lightning-fast analysis."
               },
               {
@@ -132,13 +132,13 @@ export const Home = () => {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
               >
-                <Card className="h-full hover:shadow-xl transition-shadow border-none shadow-premium group">
-                  <CardContent className="pt-8">
+                <Card className="h-full hover:shadow-xl transition-shadow border-none shadow-premium group bg-white rounded-[2rem]">
+                  <CardContent className="pt-8 p-8">
                     <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                       {feature.icon}
                     </div>
                     <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
-                    <p className="text-slate-600 leading-relaxed">{feature.description}</p>
+                    <p className="text-slate-600 leading-relaxed text-sm font-medium">{feature.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -152,15 +152,15 @@ export const Home = () => {
         <div className="max-w-5xl mx-auto px-6">
           <div className="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/20 blur-[100px] -z-0" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-600/20 blur-[100px] -z-0" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/10 blur-[100px] -z-0" />
             
             <div className="relative z-10">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">Ready to secure your codebase?</h2>
-              <p className="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight">Ready to activate your Guardian?</h2>
+              <p className="text-slate-400 text-lg mb-10 max-w-2xl mx-auto font-medium">
                 Join engineering teams using RepoGuardian to automate architectural analysis and prevent critical breakages.
               </p>
               <Link to="/dashboard">
-                <Button variant="primary" size="lg" className="h-16 px-10 text-xl bg-white text-slate-900 hover:bg-slate-100 rounded-2xl">
+                <Button variant="primary" size="lg" className="h-16 px-10 text-xl bg-white text-slate-900 hover:bg-slate-100 rounded-2xl transition-all">
                   Get Started for Free
                 </Button>
               </Link>
@@ -169,16 +169,17 @@ export const Home = () => {
         </div>
       </section>
 
-      <footer className="py-12 border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-slate-500">
-          <p>© 2026 RepoGuardian AI. All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-blue-600 transition-colors">Twitter</a>
-            <a href="https://github.com/prajwal-priyadarshan/RepoGuardian_ai" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">GitHub</a>
+      <footer className="py-12 border-t border-slate-100 px-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm font-medium">
+          <p>© 2026 RepoGuardian AI. Standing watch over your code.</p>
+          <div className="flex space-x-8 mt-4 md:mt-0">
+            <a href="https://github.com/prajwal-priyadarshan/RepoGuardian_ai" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">GitHub Repository</a>
             <a href="#" className="hover:text-blue-600 transition-colors">Documentation</a>
+            <a href="#" className="hover:text-blue-600 transition-colors">Privacy</a>
           </div>
         </div>
       </footer>
     </div>
   );
 };
+
