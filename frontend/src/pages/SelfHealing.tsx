@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Wrench, 
   CheckCircle2, 
-  ChevronRight, 
   ShieldCheck,
   Cpu,
   Terminal,

@@ -11,7 +11,7 @@ import {
   TrendingUp,
   Clock
 } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent, Button } from '../components/ui';
+import { Card, CardContent, Button } from '../components/ui';
 import { useAppStore } from '../store/useAppStore';
 
 export const Dashboard = () => {

@@ -3,9 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   GitBranch, 
   Activity, 
-  AlertTriangle, 
   ChevronRight, 
-  Maximize2, 
   ShieldAlert, 
   Network,
   Layers,

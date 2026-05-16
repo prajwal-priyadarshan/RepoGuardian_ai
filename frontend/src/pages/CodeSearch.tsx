@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, 
-  ChevronRight, 
   Maximize2, 
   ExternalLink, 
   Database,
@@ -17,7 +16,6 @@ import {
   CardContent,
   CardFooter,
   Button,
-  LoadingSpinner,
 } from '../components/ui';
 import { useAppStore } from '../store/useAppStore';
 import { useSearchCode } from '../hooks/useAPI';

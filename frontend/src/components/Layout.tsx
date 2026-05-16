@@ -11,13 +11,10 @@ import {
   Menu,
   X,
   Shield,
-  ExternalLink,
-  ChevronRight,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Toast } from './ui/Toast';
 import { useHealthCheck } from '../hooks/useAPI';
-import { getBaseURL } from '../lib/api.client';
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },

@@ -9,7 +9,6 @@ import {
   Calendar, 
   Plus, 
   Search, 
-  ChevronRight,
   Globe,
   Lock,
   MoreVertical
@@ -18,7 +17,6 @@ import {
   Card,
   CardHeader,
   CardTitle,
-  CardDescription,
   CardContent,
   CardFooter,
   Button,
