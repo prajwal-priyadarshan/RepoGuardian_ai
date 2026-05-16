@@ -9,6 +9,9 @@ export default {
       colors: {
         blue: "#3b82f6",
       },
+      fontFamily: {
+        nunito: ['Nunito', 'sans-serif'],
+      },
     },
   },
   plugins: [],
