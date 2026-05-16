@@ -174,7 +174,7 @@ export const Home = () => {
           <p>© 2026 RepoGuardian AI. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="hover:text-blue-600 transition-colors">Twitter</a>
-            <a href="#" className="hover:text-blue-600 transition-colors">GitHub</a>
+            <a href="https://github.com/prajwal-priyadarshan/RepoGuardian_ai" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">GitHub</a>
             <a href="#" className="hover:text-blue-600 transition-colors">Documentation</a>
           </div>
         </div>
