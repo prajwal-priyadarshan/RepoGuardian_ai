@@ -10,7 +10,7 @@ export default {
         blue: "#3b82f6",
       },
       fontFamily: {
-        exo2: ['"Exo 2"', 'sans-serif'],
+        arvo: ['"Arvo"', 'serif'],
       },
     },
   },
