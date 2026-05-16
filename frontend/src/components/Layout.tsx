@@ -154,15 +154,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           </motion.div>
         </div>
 
-        {/* Footer */}
-        <footer className="mt-auto py-8 px-8 border-t border-red-900/40 flex flex-col md:flex-row justify-between items-center text-white/40 text-sm font-medium">
-          <p>© 2026 RepoGuardian AI. All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="https://github.com/prajwal-priyadarshan/RepoGuardian_ai" target="_blank" rel="noopener noreferrer" className="hover:text-red-500 transition-colors">GitHub Repository</a>
-            <span className="text-red-900/30">|</span>
-            <p className="text-xs">Powered by Neo4j & Pinecone</p>
-          </div>
-        </footer>
       </main>
     </div>
   );
