@@ -26,3 +26,11 @@ def upload_repo_endpoint(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal server error")
+
+@router.post("/sync/{repo_id}")
+def sync_repo_endpoint(repo_id: str):
+    try:
+        repo_service.sync_repository(repo_id)
+        return {"repo_id": repo_id, "status": "synced", "message": "Knowledge base updated with latest GitHub changes."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

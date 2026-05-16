@@ -2,17 +2,21 @@ import os
 from pinecone import Pinecone, ServerlessSpec
 from dotenv import load_dotenv
 
-# We use sentence-transformers for 100% free local embeddings instead of OpenAI
-from sentence_transformers import SentenceTransformer
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 load_dotenv(override=True)
 
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 PINECONE_ENVIRONMENT = os.getenv("PINECONE_ENVIRONMENT", "us-east-1")
-PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "repoguardian-local")
+PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "repoguardian-gemini")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-# Load embedding model globally so it doesn't reload on every query
-embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+embeddings_model = None
+if GEMINI_API_KEY:
+    embeddings_model = GoogleGenerativeAIEmbeddings(
+        model="models/gemini-embedding-001",
+        google_api_key=GEMINI_API_KEY
+    )
 
 def get_pinecone_client():
     if not PINECONE_API_KEY:
@@ -26,7 +30,7 @@ def initialize_index():
     if PINECONE_INDEX_NAME not in existing_indexes:
         pc.create_index(
             name=PINECONE_INDEX_NAME,
-            dimension=384, # MiniLM dimension (not OpenAI 1536)
+            dimension=3072, # Gemini-embedding-001 dimension
             metric='cosine',
             spec=ServerlessSpec(
                 cloud='aws',
@@ -35,7 +39,9 @@ def initialize_index():
         )
 
 def generate_embedding(text: str) -> list[float]:
-    return embedding_model.encode(text).tolist()
+    if not embeddings_model:
+        raise ValueError("GEMINI_API_KEY is missing. Please add it to your .env file.")
+    return embeddings_model.embed_query(text)
 
 def store_embeddings(repo_id: str, parsed_data: list[dict]):
     pc = get_pinecone_client()

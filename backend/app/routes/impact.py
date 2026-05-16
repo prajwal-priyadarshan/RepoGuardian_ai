@@ -4,18 +4,18 @@ from app.services import impact_service
 
 router = APIRouter()
 
+from typing import Optional
+
 class ImpactRequest(BaseModel):
     repo_id: str
-    file_path: str
-    new_code: str
 
 @router.post("/analyze")
 def analyze_impact_endpoint(req: ImpactRequest):
-    if not req.repo_id or not req.file_path:
-        raise HTTPException(status_code=400, detail="repo_id and file_path are required.")
+    if not req.repo_id:
+        raise HTTPException(status_code=400, detail="repo_id is required.")
         
     try:
-        result = impact_service.run_impact_analysis(req.repo_id, req.file_path, req.new_code)
+        result = impact_service.run_impact_analysis(req.repo_id)
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
