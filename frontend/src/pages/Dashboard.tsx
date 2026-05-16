@@ -58,7 +58,7 @@ export const Dashboard = () => {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden p-8 rounded-[2rem] bg-black border border-red-900/30 text-white shadow-2xl shadow-red-900/20"
+        className="relative overflow-hidden p-8 rounded-[2.5rem] bg-black border-2 border-red-900/40 text-white shadow-2xl shadow-red-900/30"
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 blur-[80px]" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-900/5 blur-[80px]" />
@@ -98,7 +98,7 @@ export const Dashboard = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
           >
-            <Card className="border border-red-900/10 shadow-premium hover:shadow-xl transition-all duration-300 bg-black">
+            <Card className="border-2 border-red-900/20 hover:border-red-600 shadow-premium hover:shadow-[0_0_30px_rgba(255,0,0,0.1)] transition-all duration-500 bg-black">
               <CardContent className="pt-6">
                 <div className="flex justify-between items-start mb-4">
                   <div className={`p-3 rounded-2xl ${stat.bg}`}>
@@ -166,21 +166,21 @@ export const Dashboard = () => {
         <div className="space-y-6">
           <h2 className="text-2xl font-bold text-white">Actions</h2>
           <div className="grid gap-4">
-            <Button className="w-full h-14 bg-black border border-red-900/30 text-white hover:bg-red-900/10 shadow-sm rounded-2xl flex justify-between px-6">
+            <Button className="w-full h-14 bg-black border-2 border-red-900/30 text-white hover:bg-red-900/10 hover:border-red-600 shadow-sm rounded-2xl flex justify-between px-6 transition-all">
               <span className="flex items-center font-bold">
                 <Search className="w-5 h-5 mr-3 text-red-500" />
                 Semantic Search
               </span>
               <ChevronRight className="w-4 h-4 text-white/40" />
             </Button>
-            <Button className="w-full h-14 bg-black border border-red-900/30 text-white hover:bg-red-900/10 shadow-sm rounded-2xl flex justify-between px-6">
+            <Button className="w-full h-14 bg-black border-2 border-red-900/30 text-white hover:bg-red-900/10 hover:border-red-600 shadow-sm rounded-2xl flex justify-between px-6 transition-all">
               <span className="flex items-center font-bold">
                 <ShieldCheck className="w-5 h-5 mr-3 text-red-500" />
                 Verify Security
               </span>
               <ChevronRight className="w-4 h-4 text-white/40" />
             </Button>
-            <Button className="w-full h-14 bg-black border border-red-900/30 text-white hover:bg-red-900/10 shadow-sm rounded-2xl flex justify-between px-6">
+            <Button className="w-full h-14 bg-black border-2 border-red-900/30 text-white hover:bg-red-900/10 hover:border-red-600 shadow-sm rounded-2xl flex justify-between px-6 transition-all">
               <span className="flex items-center font-bold">
                 <Activity className="w-5 h-5 mr-3 text-red-500" />
                 Infrastructure Graph
@@ -190,7 +190,7 @@ export const Dashboard = () => {
           </div>
           
           {/* AI Tip */}
-          <div className="p-6 rounded-[2rem] bg-red-950/10 border border-red-900/20 relative overflow-hidden group">
+          <div className="p-6 rounded-[2.5rem] bg-red-950/10 border-2 border-red-900/30 relative overflow-hidden group">
              <div className="absolute -top-12 -right-12 w-32 h-32 bg-red-900/10 rounded-full blur-2xl group-hover:scale-110 transition-transform" />
              <h4 className="text-white font-bold mb-2 flex items-center">
                <Brain className="w-4 h-4 mr-2 text-red-500" />

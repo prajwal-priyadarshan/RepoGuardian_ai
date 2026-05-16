@@ -34,7 +34,7 @@ export const SelfHealing = () => {
   return (
     <div className="space-y-8 pb-12">
       {/* Healing Command Header */}
-      <div className="p-8 bg-black border border-red-900/30 rounded-[2.5rem]">
+      <div className="p-8 bg-black border-2 border-red-900/40 rounded-[2.5rem] shadow-premium">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
            <div className="flex items-center space-x-6">
               <div className="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center shadow-lg shadow-red-950/50">
@@ -105,7 +105,7 @@ export const SelfHealing = () => {
             className="space-y-8"
           >
             {/* Healing Confirmation */}
-            <div className="bg-red-950/10 border border-red-900/30 rounded-[2.5rem] p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+            <div className="bg-red-950/10 border-2 border-red-900/40 rounded-[2.5rem] p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-premium">
                <div className="flex items-center space-x-6 text-center md:text-left">
                   <div className="w-16 h-16 bg-black border border-red-900/20 rounded-3xl flex items-center justify-center shadow-sm">
                      <CheckCircle2 className="w-10 h-10 text-red-500" />
@@ -126,7 +126,7 @@ export const SelfHealing = () => {
             <div className="grid lg:grid-cols-2 gap-8">
                <div className="space-y-6">
                   {selfHealResults.summary?.map((heal, i) => (
-                    <Card key={i} className="border border-red-900/10 shadow-premium overflow-hidden bg-black">
+                    <Card key={i} className="border-2 border-red-900/20 hover:border-red-600 shadow-premium hover:shadow-[0_0_20px_rgba(255,0,0,0.1)] transition-all duration-500 overflow-hidden bg-black rounded-[2rem]">
                       <CardHeader className="bg-red-950/20 border-b border-red-900/20 p-4">
                          <div className="flex items-center justify-between">
                             <CardTitle className="text-sm font-bold text-white">{heal.entity}</CardTitle>
@@ -150,7 +150,7 @@ export const SelfHealing = () => {
                </div>
 
                <div className="space-y-8">
-                  <Card className="border border-red-900/10 shadow-premium bg-black">
+                  <Card className="border-2 border-red-900/20 shadow-premium bg-black rounded-[2rem] overflow-hidden">
                      <CardHeader className="pb-2">
                         <h3 className="font-bold text-white flex items-center">
                            <ShieldCheck className="w-5 h-5 mr-3 text-red-500" />
@@ -173,7 +173,7 @@ export const SelfHealing = () => {
                      </CardContent>
                   </Card>
 
-                  <div className="p-8 rounded-[2.5rem] bg-red-950/10 border border-red-900/20 relative overflow-hidden group">
+                  <div className="p-8 rounded-[2.5rem] bg-red-950/10 border-2 border-red-900/40 relative overflow-hidden group shadow-premium">
                      <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/5 rounded-full blur-2xl transition-transform group-hover:scale-125" />
                      <h4 className="font-bold text-white mb-2 flex items-center">
                         <Cpu className="w-4 h-4 mr-2 text-white/20" />

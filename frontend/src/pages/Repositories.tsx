@@ -86,7 +86,7 @@ export const Repositories = () => {
       </div>
 
       {/* Filter Bar */}
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-2 bg-black rounded-2xl shadow-sm border border-red-900/20">
+      <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-2 bg-black rounded-2xl shadow-premium border-2 border-red-900/30">
         <div className="relative w-full md:w-96">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
           <input 
@@ -142,7 +142,7 @@ export const Repositories = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-            <Card className="group border border-red-900/10 shadow-premium hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden bg-black">
+            <Card className="group border-2 border-red-900/20 hover:border-red-600 shadow-premium hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] hover:-translate-y-1 transition-all duration-500 overflow-hidden bg-black rounded-[2.5rem]">
                 <div className="h-2 bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between">

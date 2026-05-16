@@ -22,7 +22,7 @@
 
 @layer base {
   * {
-    @apply border-red-900/20;
+    @apply border-red-900/40;
   }
 
   html {
@@ -42,7 +42,7 @@
 
 @layer components {
   .glass-card {
-    @apply bg-black/40 backdrop-blur-md border border-red-900/30 shadow-premium rounded-2xl;
+    @apply bg-black/60 backdrop-blur-xl border border-red-800/40 shadow-premium rounded-[2.5rem] transition-all duration-300;
   }
 
   .btn-premium {

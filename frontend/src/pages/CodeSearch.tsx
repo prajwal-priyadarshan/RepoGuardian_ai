@@ -37,7 +37,7 @@ export const CodeSearch = () => {
   return (
     <div className="space-y-8 pb-12">
       {/* Search Command Header */}
-      <div className="p-8 bg-black border border-red-900/30 rounded-[2.5rem]">
+      <div className="p-8 bg-black border-2 border-red-900/40 rounded-[2.5rem] shadow-premium">
         <div className="max-w-4xl mx-auto space-y-8">
            <div className="text-center">
               <h1 className="text-4xl font-black text-white tracking-tight mb-3">Semantic Knowledge Retrieval</h1>
@@ -129,7 +129,7 @@ export const CodeSearch = () => {
                    animate={{ opacity: 1, x: 0 }}
                    transition={{ delay: i * 0.1 }}
                  >
-                   <Card className="border border-red-900/10 shadow-premium bg-black group hover:shadow-2xl transition-all duration-300 overflow-hidden">
+                    <Card className="border-2 border-red-900/20 group hover:border-red-600 shadow-premium hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] transition-all duration-500 overflow-hidden bg-black rounded-[2.5rem]">
                       <div className="h-1 bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                       <CardHeader className="p-6 pb-2 border-b border-red-900/20">
                          <div className="flex items-center justify-between">

@@ -71,7 +71,7 @@ export const Home = () => {
                 <img 
                   src="/hero_ai_guardian.png" 
                   alt="AI Guardian Visualization" 
-                  className="rounded-2xl w-full h-auto shadow-2xl opacity-80 grayscale brightness-125"
+                  className="rounded-2xl w-full h-auto shadow-2xl opacity-80 grayscale brightness-125 hover:grayscale-0 hover:opacity-100 transition-all duration-700 cursor-crosshair"
                 />
               </div>
               {/* Decorative elements */}
@@ -132,7 +132,7 @@ export const Home = () => {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
               >
-                <Card className="h-full hover:shadow-xl transition-shadow border border-red-900/20 shadow-premium group bg-black rounded-[2rem]">
+                <Card className="h-full border-2 border-red-900/40 hover:border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.05)] hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] transition-all duration-500 group bg-black rounded-[2.5rem] overflow-hidden">
                   <CardContent className="pt-8 p-8">
                     <div className="w-12 h-12 rounded-xl bg-red-950/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                       {feature.icon}

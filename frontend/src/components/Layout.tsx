@@ -38,7 +38,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       <motion.aside
         initial={false}
         animate={{ width: isSidebarOpen ? 280 : 80 }}
-        className="fixed inset-y-0 left-0 z-40 bg-black border-r border-red-900/30 shadow-sm overflow-hidden flex flex-col"
+        className="fixed inset-y-0 left-0 z-40 bg-black border-r border-red-900/50 shadow-sm overflow-hidden flex flex-col"
       >
         {/* Sidebar Header */}
         <div className="h-20 flex items-center px-6 mb-4">
@@ -104,7 +104,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-red-900/20">
+        <div className="p-4 border-t border-red-900/40">
           <div className={`flex flex-col ${isSidebarOpen ? 'items-stretch' : 'items-center'} space-y-4`}>
             {/* Status Card */}
             {isSidebarOpen && (
@@ -136,7 +136,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         style={{ marginLeft: isSidebarOpen ? 280 : 80 }}
       >
         {/* Top Header Bar */}
-        <header className="h-20 bg-black/80 backdrop-blur-md sticky top-0 z-30 px-8 flex items-center justify-between border-b border-red-900/30">
+        <header className="h-20 bg-black/80 backdrop-blur-md sticky top-0 z-30 px-8 flex items-center justify-between border-b border-red-800/50">
           <div className="flex items-center space-x-4">
              <h2 className="text-xl font-bold text-white">
                 {navItems.find(i => i.path === location.pathname)?.label || 'Overview'}
@@ -174,7 +174,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
 
         {/* Footer */}
-        <footer className="mt-auto py-8 px-8 border-t border-red-900/20 flex flex-col md:flex-row justify-between items-center text-white/40 text-sm font-medium">
+        <footer className="mt-auto py-8 px-8 border-t border-red-900/40 flex flex-col md:flex-row justify-between items-center text-white/40 text-sm font-medium">
            <p>© 2026 RepoGuardian AI. All rights reserved.</p>
            <div className="flex space-x-6 mt-4 md:mt-0">
              <a href="https://github.com/prajwal-priyadarshan/RepoGuardian_ai" target="_blank" rel="noopener noreferrer" className="hover:text-red-500 transition-colors">GitHub Repository</a>
