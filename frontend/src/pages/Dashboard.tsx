@@ -83,7 +83,7 @@ export const Dashboard = () => {
           <div className="hidden md:flex justify-end">
             <div className="w-48 h-48 rounded-full border border-red-900/20 flex items-center justify-center relative">
               <div className="absolute inset-0 border-2 border-red-500/20 rounded-full animate-ping" />
-              <img src="/favicon.png" className="w-20 h-20 object-cover rounded-md shadow-2xl" alt="Core Identity" />
+              <img src="/favicon.png" className="w-32 h-32 object-cover rounded-md shadow-2xl" alt="Core Identity" />
             </div>
           </div>
         </div>

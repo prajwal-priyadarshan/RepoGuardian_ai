@@ -40,7 +40,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         {/* Sidebar Header */}
         <div className="h-20 flex items-center px-6 mb-4">
           <Link to="/" className="flex items-center space-x-3">
-            <img src="/favicon.png" className="w-10 h-10 min-w-[40px] rounded-md shadow-lg shadow-red-950/50 object-cover" alt="RepoGuardian Logo" />
+            <img src="/favicon.png" className="w-12 h-12 min-w-[48px] rounded-md shadow-lg shadow-red-950/50 object-cover" alt="RepoGuardian Logo" />
             <AnimatePresence>
               {isSidebarOpen && (
                 <motion.div
