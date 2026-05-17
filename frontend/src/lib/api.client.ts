@@ -124,8 +124,11 @@ class APIService {
   async uploadRepo(file: File): Promise<UploadRepoResponse> {
     const formData = new FormData();
     formData.append('file', file);
-    
-    const response = await apiClient.post<UploadRepoResponse>('/repo/upload', formData, {
+
+    // In development mode use the dev-upload endpoint which bypasses auth and RLS
+    const uploadPath = (import.meta.env.VITE_MODE === 'development') ? '/repo/dev-upload' : '/repo/upload';
+
+    const response = await apiClient.post<UploadRepoResponse>(uploadPath, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -185,7 +188,8 @@ class APIService {
 
   // AI Analysis Endpoints
   async analyzeCode(data: AIAnalyzeRequest): Promise<AIAnalyzeResponse> {
-    const response = await apiClient.post<AIAnalyzeResponse>('/ai/analyze', data);
+    const path = (import.meta.env.VITE_MODE === 'development') ? '/ai/analyze/dev' : '/ai/analyze';
+    const response = await apiClient.post<AIAnalyzeResponse>(path, data);
     return response.data;
   }
 

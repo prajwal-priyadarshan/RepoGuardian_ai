@@ -91,6 +91,8 @@ export interface CodeAnalysisResult {
   why_breaks: string;
   suggestions: string[];
   fixed_code: string;
+  semantic_context?: string[];
+  risk_score?: number;
 }
 
 export interface AIAnalyzeResponse {
