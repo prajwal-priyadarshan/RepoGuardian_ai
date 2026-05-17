@@ -1,0 +1,38 @@
+# Root GitIgnore for RepoGuardian AI
+
+# Environment files
+backend/.env
+backend/.env.local
+Frontend/.env
+Frontend/.env.local
+.env
+.env.local
+
+# Dependencies
+Frontend/node_modules/
+backend/venv/
+backend/env/
+backend/.venv/
+
+# Production builds
+Frontend/dist/
+Frontend/dist-ssr/
+
+# Python cache & data directories
+backend/__pycache__/
+backend/data/repos/
+
+# Testing caches
+backend/.pytest_cache/
+backend/.coverage
+backend/htmlcov/
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.suo
+*.sln
+.DS_Store
+Thumbs.db
