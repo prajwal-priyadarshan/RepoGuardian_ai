@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+import { supabase } from '../lib/supabase';
+import type { User } from '@supabase/supabase-js';
 import type {
   ImpactAnalysisResponse,
   AIAnalyzeResponse,
@@ -10,7 +12,7 @@ import type {
 // ============================================
 // Store State Interface
 // ============================================
-interface Repository {
+export interface Repository {
   id: string;
   name: string;
   source: 'github' | 'upload';
@@ -20,6 +22,11 @@ interface Repository {
 }
 
 interface AppState {
+  // Auth State
+  user: User | null;
+  sessionToken: string | null;
+  authLoading: boolean;
+
   // Repository Management
   repositories: Repository[];
   currentRepoId: string | null;
@@ -36,6 +43,10 @@ interface AppState {
   successMessage: string | null;
   
   // Actions
+  setSession: (session: any) => void;
+  logout: () => void;
+  fetchRepositories: () => Promise<void>;
+  
   addRepository: (repo: Repository) => void;
   setCurrentRepo: (repoId: string) => void;
   updateRepoSync: (repoId: string, timestamp: string) => void;
@@ -58,6 +69,9 @@ interface AppState {
 // Initial State
 // ============================================
 const initialState = {
+  user: null,
+  sessionToken: null,
+  authLoading: true,
   repositories: [],
   currentRepoId: null,
   impactAnalysis: null,
@@ -75,13 +89,72 @@ const initialState = {
 export const useAppStore = create<AppState>()(
   devtools(
     persist(
-      (set) => ({
+      (set, get) => ({
         ...initialState,
+        
+        // Auth Actions
+        setSession: (session) => {
+          const user = session?.user || null;
+          const token = session?.access_token || null;
+          
+          set({ 
+            user, 
+            sessionToken: token,
+            authLoading: false
+          }, false, 'setSession');
+          
+          if (user) {
+            // Load their remote database repository mappings automatically!
+            get().fetchRepositories();
+          }
+        },
+        
+        logout: async () => {
+          await supabase.auth.signOut();
+          set({
+            ...initialState,
+            authLoading: false
+          }, false, 'logout');
+        },
+        
+        fetchRepositories: async () => {
+          try {
+            set({ isLoading: true }, false, 'fetchRepositories/loading');
+            const { data, error } = await supabase
+              .from('repositories')
+              .select('*')
+              .order('created_at', { ascending: false });
+              
+            if (error) throw error;
+            
+            if (data) {
+              const mapped: Repository[] = data.map((row: any) => ({
+                id: row.id,
+                name: row.name,
+                source: row.source as 'github' | 'upload',
+                url: row.repo_url || undefined,
+                createdAt: row.created_at,
+                // Local synced details are stored under custom states if needed
+              }));
+              
+              set({ 
+                repositories: mapped,
+                currentRepoId: mapped.length > 0 ? mapped[0].id : null,
+                isLoading: false 
+              }, false, 'fetchRepositories/success');
+            }
+          } catch (err: any) {
+            set({ 
+              error: err.message || 'Failed to fetch repository metadata',
+              isLoading: false 
+            }, false, 'fetchRepositories/error');
+          }
+        },
         
         // Repository Actions
         addRepository: (repo) =>
           set((state) => ({
-            repositories: [...state.repositories, repo],
+            repositories: [repo, ...state.repositories],
             currentRepoId: repo.id,
           }), false, 'addRepository'),
         
@@ -134,7 +207,6 @@ export const useAppStore = create<AppState>()(
       {
         name: 'repoguardian-storage',
         partialize: (state) => ({
-          repositories: state.repositories,
           currentRepoId: state.currentRepoId,
         }),
       }

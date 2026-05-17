@@ -4,7 +4,25 @@ import { Shield, Zap, Search, Activity, GitBranch, Cpu, ArrowRight } from 'lucid
 import { Button, Card, CardContent } from '../components/ui';
 import { ScrollProgress } from '../components/ScrollProgress';
 
+import { supabase } from '../lib/supabase';
+import { useAppStore } from '../store/useAppStore';
+
 export const Home = () => {
+  const { user } = useAppStore();
+
+  const handleGithubConnect = async () => {
+    try {
+      await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+        },
+      });
+    } catch (error) {
+      console.error('Failed to trigger GitHub OAuth', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black transition-colors duration-300">
       <ScrollProgress />
@@ -14,7 +32,7 @@ export const Home = () => {
           <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-red-900/10 rounded-full blur-3xl opacity-50" />
           <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-red-950/10 rounded-full blur-3xl opacity-50" />
         </div>
-
+ 
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
@@ -33,16 +51,35 @@ export const Home = () => {
                 RepoGuardian AI stands watch over your GitHub repositories analyzing structures, explaining logic, and <span className="text-red-600 font-semibold">healing architectural risks</span> automatically.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link to="/dashboard">
-                  <Button size="lg" className="h-14 px-8 text-lg bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/40 transition-transform rounded-xl">
+                {user ? (
+                  <Link to="/dashboard">
+                    <Button size="lg" className="h-14 px-8 text-lg bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/40 transition-transform rounded-xl">
+                      Enter Intelligence Core
+                      <ArrowRight className="ml-2 w-5 h-5" />
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button 
+                    onClick={handleGithubConnect}
+                    size="lg" 
+                    className="h-14 px-8 text-lg bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/40 transition-transform rounded-xl"
+                  >
                     Enter Intelligence Core
                     <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
-                </Link>
-                <Button variant="outline" size="lg" className="h-14 px-8 text-lg border-red-900/30 hover:bg-red-950/20 transition-colors text-white rounded-xl">
-                  <GitBranch className="mr-2 w-5 h-5" />
-                  Connect GitHub
-                </Button>
+                )}
+                
+                {!user && (
+                  <Button 
+                    onClick={handleGithubConnect}
+                    variant="outline" 
+                    size="lg" 
+                    className="h-14 px-8 text-lg border-red-900/30 hover:bg-red-950/20 transition-colors text-white rounded-xl"
+                  >
+                    <GitBranch className="mr-2 w-5 h-5" />
+                    Connect GitHub
+                  </Button>
+                )}
               </div>
 
               <div className="mt-12 flex items-center space-x-8">

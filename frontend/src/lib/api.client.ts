@@ -43,9 +43,15 @@ const apiClient: AxiosInstance = axios.create({
   },
 });
 
-// Request Interceptor (for logging in dev mode)
+import { useAppStore } from '../store/useAppStore';
+
+// apiClient interceptor configuration
 apiClient.interceptors.request.use(
   (config) => {
+    const token = useAppStore.getState().sessionToken;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     if (import.meta.env.DEV) {
       console.log(`[API Request] ${config.method?.toUpperCase()} ${config.url}`);
     }
