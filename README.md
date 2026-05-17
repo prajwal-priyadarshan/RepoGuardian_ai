@@ -1,16 +1,21 @@
-# 🛡️ RepoGuardian AI
+# RepoGuardian AI
 
 <div align="center">
 
-![RepoGuardian AI](frontend/public/hero_ai_guardian.png)
+![RepoGuardian AI](frontend/public/logo.png)
 
 **An AI-powered repository intelligence system that analyzes codebase impact, detects downstream risks, and suggests self-healing fixes.**
 
+[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316194?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
 [![Neo4j](https://img.shields.io/badge/Neo4j-008CC1?style=for-the-badge&logo=neo4j&logoColor=white)](https://neo4j.com/)
 [![Pinecone](https://img.shields.io/badge/Pinecone-000000?style=for-the-badge&logo=pinecone&logoColor=white)](https://www.pinecone.io/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Google Gemini](https://img.shields.io/badge/Google_Gemini-8E75C2?style=for-the-badge&logo=google-gemini&logoColor=white)](https://deepmind.google/technologies/gemini/)
+
 
 [Live Demo](#demo) • [Documentation](backend/API_DOCUMENTATION.md) • [Architecture](#architecture) • [Installation](#installation)
 
@@ -278,7 +283,6 @@ RepoGuardian AI leverages a state-of-the-art, high-performance tech stack design
 | **AI Embedding Model** | **Google Gemini** | High-quality text embeddings (3072 dimensions) for RAG code context retrieval. |
 | **Git Operations** | **GitPython + GitHub API** | Codebase synchronization, diff parsing, and automated Pull Request generation. |
 | **Data Validation** | **Pydantic v2** | Strict type parsing and API request/response schema validation. |
-| **Infrastructure** | **Docker** | Standardized containerization for unified development and production builds. |
 
 ---
 
