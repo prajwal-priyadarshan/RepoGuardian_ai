@@ -636,18 +636,6 @@ RepoGuardian_ai/
 
 ---
 
-## 🤝 Contributing
-
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
-
-**Quick Start:**
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes with tests
-4. Submit a pull request
-
----
-
 ## 👥 Team
 
 **RepoGuardian AI** is built by passionate developers who believe in autonomous code intelligence.
