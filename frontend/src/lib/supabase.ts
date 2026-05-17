@@ -10,5 +10,5 @@ if (!supabaseUrl || !supabaseAnonKey) {
 // 🛡️ Safe fallback initialization to prevent import-time blank-screen crashes
 export const supabase = createClient(
   supabaseUrl || 'https://eygrcrhnryegwngfvvpx.supabase.co', 
-  supabaseAnonKey || 'placeholder'
+  supabaseAnonKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5Z3JjcmhucnllZ3duZ2Z2dnB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5OTIzMzksImV4cCI6MjA5NDU2ODMzOX0.yArS3jt6hpG0RYFo9l2lObGf6FWOfakQ_aZ45PuYXCE'
 );
