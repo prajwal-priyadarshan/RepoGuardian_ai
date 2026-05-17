@@ -40,10 +40,10 @@ export const NotFound = () => {
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center justify-center gap-2">
             <Terminal className="w-6 h-6 text-red-500" />
-            <span>Perimeter Breach Detected</span>
+            <span>Lost In The Codebase</span>
           </h2>
           <p className="text-white/60 font-medium leading-relaxed max-w-md mx-auto">
-            The target file or core module you are searching for does not exist within the RepoGuardian database. It might have been encrypted, relocated, or purged.
+            The page you are looking for doesn't exist, has been removed, or is temporarily unavailable. Let's get you back on track.
           </p>
         </motion.div>
 
