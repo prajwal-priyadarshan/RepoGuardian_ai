@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from app.services import impact_service
 from app.services import ai_service
+from app.services.auth_service import get_current_user, verify_repo_ownership
 
 router = APIRouter()
 
@@ -9,8 +10,11 @@ class AIAnalyzeRequest(BaseModel):
     repo_id: str
 
 @router.post("/analyze")
-def analyze_code_with_ai(req: AIAnalyzeRequest):
+def analyze_code_with_ai(req: AIAnalyzeRequest, user_id: str = Depends(get_current_user)):
     try:
+        # Enforce that the requesting user owns this repository
+        verify_repo_ownership(req.repo_id, user_id)
+        
         # Step 1: Run standard impact analysis 
         # (This now auto-syncs with GitHub and detects changes automatically!)
         impact_res = impact_service.run_impact_analysis(repo_id=req.repo_id)
@@ -50,6 +54,8 @@ def analyze_code_with_ai(req: AIAnalyzeRequest):
             "repo_id": req.repo_id,
             "analyses": all_analyses
         }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -60,9 +66,12 @@ class AIManualAnalyzeRequest(BaseModel):
     new_code: str
 
 @router.post("/analyze/manual")
-def analyze_code_manually(req: AIManualAnalyzeRequest):
+def analyze_code_manually(req: AIManualAnalyzeRequest, user_id: str = Depends(get_current_user)):
     """Manually analyzes a specific code change provided by the user, still using Graph and Vector context."""
     try:
+        # Enforce that the requesting user owns this repository
+        verify_repo_ownership(req.repo_id, user_id)
+        
         # Step 1: Run manual impact analysis for the specific provided function
         impact_res = impact_service.run_manual_impact_analysis(
             repo_id=req.repo_id,
@@ -88,5 +97,7 @@ def analyze_code_manually(req: AIManualAnalyzeRequest):
             "repo_id": req.repo_id,
             "analysis": analysis_result
         }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -1,18 +1,20 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
-from app.services import self_healing_service
+from app.services import self_healing_service, impact_service, ai_service
+from app.services.auth_service import get_current_user, verify_repo_ownership
 
 router = APIRouter()
-
-from app.services import self_healing_service, impact_service, ai_service
 
 class SelfHealRequest(BaseModel):
     repo_id: str
 
 @router.post("/")
-def trigger_self_healing(req: SelfHealRequest):
+def trigger_self_healing(req: SelfHealRequest, user_id: str = Depends(get_current_user)):
     """Autonomous Self-Healing: Detects changes, generates fixes, and applies them automatically."""
     try:
+        # Enforce that the requesting user owns this repository
+        verify_repo_ownership(req.repo_id, user_id)
+        
         # 1. Detect what changed and get context
         impact_res = impact_service.run_impact_analysis(repo_id=req.repo_id)
         
@@ -57,5 +59,7 @@ def trigger_self_healing(req: SelfHealRequest):
             "repo_id": req.repo_id,
             "summary": results
         }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
