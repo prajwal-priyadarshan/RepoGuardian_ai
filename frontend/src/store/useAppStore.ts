@@ -26,6 +26,8 @@ interface AppState {
   user: User | null;
   sessionToken: string | null;
   authLoading: boolean;
+  githubConnected: boolean;
+  githubRepoCount: number;
 
   // Repository Management
   repositories: Repository[];
@@ -46,6 +48,7 @@ interface AppState {
   setSession: (session: any) => void;
   logout: () => void;
   fetchRepositories: () => Promise<void>;
+  fetchGitHubRepoCount: (providerToken: string | null) => Promise<void>;
   
   addRepository: (repo: Repository) => void;
   setCurrentRepo: (repoId: string) => void;
@@ -72,6 +75,8 @@ const initialState = {
   user: null,
   sessionToken: null,
   authLoading: true,
+  githubConnected: false,
+  githubRepoCount: 0,
   repositories: [],
   currentRepoId: null,
   impactAnalysis: null,
@@ -96,15 +101,18 @@ export const useAppStore = create<AppState>()(
         setSession: (session) => {
           const user = session?.user || null;
           const token = session?.access_token || null;
+          const providerToken = session?.provider_token || null;
           
           set({ 
             user, 
             sessionToken: token,
+            githubConnected: Boolean(user && providerToken),
             authLoading: false
           }, false, 'setSession');
           
           if (user) {
             // Load their remote database repository mappings automatically!
+            get().fetchGitHubRepoCount(providerToken);
             get().fetchRepositories();
           }
         },
@@ -130,7 +138,7 @@ export const useAppStore = create<AppState>()(
             if (data) {
               const mapped: Repository[] = data.map((row: any) => ({
                 id: row.id,
-                name: row.name,
+                name: row.name || row.repo_url?.split('/').pop() || row.id,
                 source: row.source as 'github' | 'upload',
                 url: row.repo_url || undefined,
                 createdAt: row.created_at,
@@ -148,6 +156,57 @@ export const useAppStore = create<AppState>()(
               error: err.message || 'Failed to fetch repository metadata',
               isLoading: false 
             }, false, 'fetchRepositories/error');
+          }
+        },
+
+        fetchGitHubRepoCount: async (providerToken) => {
+          if (!providerToken) {
+            set({ githubRepoCount: 0, githubConnected: false }, false, 'fetchGitHubRepoCount/noToken');
+            return;
+          }
+
+          try {
+            let page = 1;
+            let repoCount = 0;
+            const perPage = 100;
+
+            while (true) {
+              const response = await fetch(
+                `https://api.github.com/user/repos?per_page=${perPage}&page=${page}&affiliation=owner,collaborator,organization_member&sort=updated`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${providerToken}`,
+                    Accept: 'application/vnd.github+json',
+                  },
+                }
+              );
+
+              if (!response.ok) {
+                throw new Error(`GitHub API request failed with status ${response.status}`);
+              }
+
+              const repos = await response.json();
+
+              if (!Array.isArray(repos)) {
+                throw new Error('Unexpected GitHub repository response');
+              }
+
+              repoCount += repos.length;
+
+              if (repos.length < perPage) {
+                break;
+              }
+
+              page += 1;
+            }
+
+            set({ githubRepoCount: repoCount, githubConnected: true }, false, 'fetchGitHubRepoCount/success');
+          } catch (err: any) {
+            set({
+              githubRepoCount: 0,
+              githubConnected: false,
+              error: err.message || 'Failed to fetch GitHub repository count',
+            }, false, 'fetchGitHubRepoCount/error');
           }
         },
         

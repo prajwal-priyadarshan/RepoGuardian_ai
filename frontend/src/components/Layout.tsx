@@ -5,6 +5,7 @@ import {
   FolderGit2,
   Brain,
   GitBranch,
+  Database,
   Wrench,
   Search,
   X,
@@ -17,6 +18,7 @@ import { useAppStore } from '../store/useAppStore';
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/repositories', label: 'Repositories', icon: FolderGit2 },
+  { path: '/operations', label: 'Operations', icon: Database },
   { path: '/ai-analysis', label: 'AI Analysis', icon: Brain },
   { path: '/impact', label: 'Impact Analysis', icon: GitBranch },
   { path: '/self-heal', label: 'Self-Healing', icon: Wrench },

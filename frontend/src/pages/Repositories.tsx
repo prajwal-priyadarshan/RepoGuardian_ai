@@ -28,7 +28,7 @@ import { useAppStore } from '../store/useAppStore';
 import { useCloneRepo, useUploadRepo, useSyncRepo } from '../hooks/useAPI';
 
 export const Repositories = () => {
-  const { repositories, isLoading } = useAppStore();
+  const { repositories, isLoading, githubConnected, githubRepoCount, user } = useAppStore();
   const [isCloneModalOpen, setIsCloneModalOpen] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [repoUrl, setRepoUrl] = useState('');
@@ -65,6 +65,17 @@ export const Repositories = () => {
           <p className="text-white/60 mt-2 font-medium">
             Manage and index your repositories for deep AI architectural analysis.
           </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="px-4 py-2 rounded-md border border-red-900/30 bg-red-950/10 text-xs font-bold uppercase tracking-widest text-white/70">
+            Authenticated: <span className={user ? 'text-red-500' : 'text-white/40'}>{user ? 'Yes' : 'No'}</span>
+          </div>
+          <div className="px-4 py-2 rounded-md border border-red-900/30 bg-red-950/10 text-xs font-bold uppercase tracking-widest text-white/70">
+            GitHub Linked: <span className={githubConnected ? 'text-red-500' : 'text-white/40'}>{githubConnected ? 'Yes' : 'No'}</span>
+          </div>
+          <div className="px-4 py-2 rounded-md border border-red-900/30 bg-red-950/10 text-xs font-bold uppercase tracking-widest text-white/70">
+            GitHub Repos: <span className="text-red-500">{githubRepoCount}</span>
+          </div>
         </div>
         <div className="flex items-center space-x-3">
           <Button

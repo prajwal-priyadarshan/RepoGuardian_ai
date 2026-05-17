@@ -9,22 +9,34 @@ import {
   Search,
   ChevronRight,
   TrendingUp,
-  Clock
+  Clock,
+  Database
 } from 'lucide-react';
 import { Card, CardContent, Button } from '../components/ui';
 import { useAppStore } from '../store/useAppStore';
 
 export const Dashboard = () => {
-  const { repositories, aiAnalysis, impactAnalysis } = useAppStore();
+  const { repositories, aiAnalysis, impactAnalysis, githubRepoCount, githubConnected, user } = useAppStore();
+
+  const authStateLabel = user ? 'Authenticated' : 'Signed Out';
+  const connectionStateLabel = githubConnected ? 'GitHub Linked' : 'GitHub Not Linked';
 
   const stats = [
     {
-      label: 'Total Repos',
-      value: repositories.length,
+      label: 'GitHub Repos',
+      value: githubRepoCount,
       icon: GitBranch,
       color: 'text-red-500',
       bg: 'bg-red-950/20',
-      trend: '+2 this week'
+      trend: connectionStateLabel
+    },
+    {
+      label: 'Indexed Repos',
+      value: repositories.length,
+      icon: Database,
+      color: 'text-red-500',
+      bg: 'bg-red-950/20',
+      trend: 'Stored in Supabase'
     },
     {
       label: 'AI Insights',
@@ -43,12 +55,12 @@ export const Dashboard = () => {
       trend: 'Calculated by Neo4j'
     },
     {
-      label: 'Vulnerabilities',
-      value: '0',
+      label: 'Auth State',
+      value: authStateLabel,
       icon: ShieldCheck,
       color: 'text-red-500',
       bg: 'bg-red-950/20',
-      trend: 'System secure'
+      trend: connectionStateLabel
     },
   ];
 
@@ -66,10 +78,10 @@ export const Dashboard = () => {
         <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-              System Pulse: <span className="text-red-500">All Systems Operational</span>
+              System Pulse: <span className="text-red-500">{connectionStateLabel}</span>
             </h1>
             <p className="text-white/60 text-lg mb-8 max-w-md">
-              RepoGuardian AI is currently monitoring your repositories for architectural risks and autonomous healing opportunities.
+              RepoGuardian AI is currently monitoring your authenticated session, GitHub account, and indexed repositories as separate signals.
             </p>
             <div className="flex space-x-4">
               <Button className="bg-red-600 text-white hover:bg-red-700 rounded-md px-6 h-12">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Zap,
@@ -23,9 +23,30 @@ import { useAppStore } from '../store/useAppStore';
 import { useAIAnalysis } from '../hooks/useAPI';
 
 export const AIAnalysis = () => {
-  const { repositories, aiAnalysis } = useAppStore();
+  const { repositories, aiAnalysis, currentRepoId } = useAppStore();
   const [selectedRepoId, setSelectedRepoId] = useState('');
   const analysisMutation = useAIAnalysis();
+  const lastAutoRunRepoId = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!selectedRepoId && currentRepoId) {
+      setSelectedRepoId(currentRepoId);
+    }
+  }, [currentRepoId, selectedRepoId]);
+
+  useEffect(() => {
+    if (!selectedRepoId || analysisMutation.isPending) {
+      return;
+    }
+
+    const hasNotAnalyzedThisRepo = lastAutoRunRepoId.current !== selectedRepoId;
+    const hasNoResults = !aiAnalysis || aiAnalysis.repo_id !== selectedRepoId || (aiAnalysis.analyses?.length ?? 0) === 0;
+
+    if (hasNotAnalyzedThisRepo && hasNoResults) {
+      lastAutoRunRepoId.current = selectedRepoId;
+      void analysisMutation.mutateAsync({ repo_id: selectedRepoId });
+    }
+  }, [selectedRepoId, aiAnalysis, analysisMutation]);
 
   const handleAnalyze = async () => {
     if (!selectedRepoId) return;
@@ -224,6 +245,20 @@ export const AIAnalysis = () => {
                 </div>
               </div>
             </div>
+          </motion.div>
+        ) : aiAnalysis?.message ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex flex-col items-center justify-center py-24 text-center bg-black border border-red-900/20 border-dashed rounded-md"
+          >
+            <div className="w-20 h-20 bg-red-950/10 rounded-md flex items-center justify-center mb-6">
+              <Activity className="w-10 h-10 text-white/20" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">AI Analysis Ready</h3>
+            <p className="text-white/40 max-w-sm mx-auto font-medium">
+              {aiAnalysis.message}
+            </p>
           </motion.div>
         ) : (
           <motion.div

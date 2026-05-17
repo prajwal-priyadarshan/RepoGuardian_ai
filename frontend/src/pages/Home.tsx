@@ -45,7 +45,7 @@ export const Home = () => {
                 <span>The Ultimate Guardian of Projects</span>
               </div>
               <h1 className="text-6xl md:text-7xl font-bold text-white leading-[1.1] mb-6">
-                Your Projects' <span className="text-red-600 italic">Autonomous</span> Guardian.
+                Your Project's <span className="text-red-600 italic">Autonomous</span> Guardian.
               </h1>
               <p className="text-xl text-white/80 mb-10 max-w-xl leading-relaxed">
                 RepoGuardian AI stands watch over your GitHub repositories analyzing structures, explaining logic, and <span className="text-red-600 font-semibold">healing architectural risks</span> automatically.

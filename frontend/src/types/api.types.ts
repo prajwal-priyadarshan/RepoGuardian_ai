@@ -130,6 +130,80 @@ export interface SelfHealResponse {
   summary: HealResult[];
 }
 
+// Repository Workflow Types
+export interface RootStatusResponse {
+  status: string;
+  service: string;
+  version: string;
+  endpoints?: {
+    docs: string;
+    health: string;
+  };
+}
+
+export interface HealthStatusResponse {
+  status: string;
+  service: string;
+}
+
+export interface ScanRepoResponse {
+  repo_id: string;
+  files: string[];
+}
+
+export interface ParseRepoResponse {
+  repo_id: string;
+  parsed_data: unknown;
+}
+
+export interface BuildGraphResponse {
+  repo_id: string;
+  status: string;
+}
+
+export interface ClearGraphResponse {
+  status: string;
+  message: string;
+}
+
+export interface GitDiffResponse {
+  changed_functions: string[];
+  raw_diff: string;
+}
+
+export interface PRGenerateRequest {
+  repo_id: string;
+  github_token?: string;
+}
+
+export interface PRGenerateResponse {
+  repo_id?: string;
+  status?: string;
+  message?: string;
+  patch?: {
+    type?: string;
+    file?: string;
+  };
+  summary?: unknown;
+  pr_result?: unknown;
+}
+
+export interface PRPatchResponse {
+  repo_id: string;
+  patch: unknown;
+}
+
+export interface PRSummaryResponse {
+  repo_id: string;
+  summary: unknown;
+}
+
+export interface PRRiskResponse {
+  repo_id: string;
+  risk_analysis: unknown;
+  pr_summary: unknown;
+}
+
 // Error Response Type
 export interface APIError {
   detail: string;

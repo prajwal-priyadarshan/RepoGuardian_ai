@@ -16,6 +16,18 @@ import type {
   AIManualAnalyzeResponse,
   SelfHealRequest,
   SelfHealResponse,
+  RootStatusResponse,
+  HealthStatusResponse,
+  ScanRepoResponse,
+  ParseRepoResponse,
+  BuildGraphResponse,
+  ClearGraphResponse,
+  GitDiffResponse,
+  PRGenerateRequest,
+  PRGenerateResponse,
+  PRPatchResponse,
+  PRSummaryResponse,
+  PRRiskResponse,
   APIError,
 } from '../types/api.types';
 
@@ -92,6 +104,17 @@ apiClient.interceptors.response.use(
 // API Service Class
 // ============================================
 class APIService {
+  // Health / Service Status
+  async getRootStatus(): Promise<RootStatusResponse> {
+    const response = await apiClient.get<RootStatusResponse>('/');
+    return response.data;
+  }
+
+  async getHealthStatus(): Promise<HealthStatusResponse> {
+    const response = await apiClient.get<HealthStatusResponse>('/health');
+    return response.data;
+  }
+
   // Repository Management Endpoints
   async cloneRepo(data: CloneRepoRequest): Promise<CloneRepoResponse> {
     const response = await apiClient.post<CloneRepoResponse>('/repo/clone', data);
@@ -112,6 +135,34 @@ class APIService {
 
   async syncRepo(repoId: string): Promise<SyncRepoResponse> {
     const response = await apiClient.post<SyncRepoResponse>(`/repo/sync/${repoId}`);
+    return response.data;
+  }
+
+  // Code Scanning & Parsing
+  async scanRepo(repoId: string): Promise<ScanRepoResponse> {
+    const response = await apiClient.get<ScanRepoResponse>(`/scan/${repoId}`);
+    return response.data;
+  }
+
+  async parseRepo(repoId: string): Promise<ParseRepoResponse> {
+    const response = await apiClient.get<ParseRepoResponse>(`/parse/${repoId}`);
+    return response.data;
+  }
+
+  // Graph Operations
+  async buildGraph(repoId: string): Promise<BuildGraphResponse> {
+    const response = await apiClient.post<BuildGraphResponse>(`/graph/build/${repoId}`);
+    return response.data;
+  }
+
+  async clearGraph(): Promise<ClearGraphResponse> {
+    const response = await apiClient.delete<ClearGraphResponse>('/graph/clear');
+    return response.data;
+  }
+
+  // Git Operations
+  async gitDiff(repoId: string): Promise<GitDiffResponse> {
+    const response = await apiClient.post<GitDiffResponse>(`/git/diff/${repoId}`);
     return response.data;
   }
 
@@ -146,6 +197,27 @@ class APIService {
   // Self-Healing Endpoint
   async triggerSelfHeal(data: SelfHealRequest): Promise<SelfHealResponse> {
     const response = await apiClient.post<SelfHealResponse>('/self-heal/', data);
+    return response.data;
+  }
+
+  // Pull Request Generation
+  async generatePullRequest(data: PRGenerateRequest): Promise<PRGenerateResponse> {
+    const response = await apiClient.post<PRGenerateResponse>('/pr/generate', data);
+    return response.data;
+  }
+
+  async generatePullRequestPatch(repoId: string): Promise<PRPatchResponse> {
+    const response = await apiClient.post<PRPatchResponse>('/pr/patch', { repo_id: repoId });
+    return response.data;
+  }
+
+  async generatePullRequestSummary(data: PRGenerateRequest): Promise<PRSummaryResponse> {
+    const response = await apiClient.post<PRSummaryResponse>('/pr/summary', data);
+    return response.data;
+  }
+
+  async analyzePullRequestRisk(repoId: string): Promise<PRRiskResponse> {
+    const response = await apiClient.post<PRRiskResponse>('/pr/risk-analysis', { repo_id: repoId });
     return response.data;
   }
 

@@ -10,6 +10,13 @@ import type {
   SelfHealRequest,
 } from '../types/api.types';
 
+const getRepoDisplayNameFromUrl = (repoUrl: string) => {
+  const cleaned = repoUrl.trim().replace(/\/$/, '').replace(/\.git$/i, '');
+  return cleaned.split('/').pop() || 'Unknown';
+};
+
+const getRepoDisplayNameFromFile = (fileName: string) => fileName.replace(/\.[^/.]+$/, '') || 'Uploaded Repository';
+
 // ============================================
 // Query Keys
 // ============================================
@@ -50,7 +57,7 @@ export const useCloneRepo = () => {
     onSuccess: (data, variables) => {
       addRepository({
         id: data.repo_id,
-        name: variables.repo_url.split('/').pop() || 'Unknown',
+        name: getRepoDisplayNameFromUrl(variables.repo_url),
         source: 'github',
         url: variables.repo_url,
         createdAt: new Date().toISOString(),
@@ -80,7 +87,7 @@ export const useUploadRepo = () => {
     onSuccess: (data, file) => {
       addRepository({
         id: data.repo_id,
-        name: file.name.replace('.zip', ''),
+        name: getRepoDisplayNameFromFile(file.name),
         source: 'upload',
         createdAt: new Date().toISOString(),
       });
