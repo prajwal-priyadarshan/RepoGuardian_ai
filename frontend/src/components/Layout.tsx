@@ -10,7 +10,7 @@ import {
   X,
   MoreVertical,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Toast } from './ui/Toast';
 import { useAppStore } from '../store/useAppStore';
 
@@ -28,8 +28,24 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
-  const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'Rahul'}`;
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    if (isUserMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isUserMenuOpen]);
+
+  const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email}`;
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
@@ -79,7 +95,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           <div className="w-px h-6 bg-red-900/30 hidden lg:block" />
 
           {/* User Avatar & Mobile Toggle */}
-          <div className="flex items-center space-x-3 relative">
+          <div ref={userMenuRef} className="flex items-center space-x-3 relative">
             <div 
               onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
               className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-red-900/20 border-2 border-red-900/40 shadow-sm flex items-center justify-center overflow-hidden cursor-pointer hover:border-red-500 transition-colors"
@@ -90,29 +106,26 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
             {/* User Dropdown Menu */}
             <AnimatePresence>
               {isUserMenuOpen && (
-                <>
-                  <div className="fixed inset-0 z-10 cursor-default" onClick={() => setIsUserMenuOpen(false)} />
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    className="absolute right-0 top-12 mt-2 w-56 rounded-xl bg-black border border-red-900/40 shadow-2xl p-2 z-20"
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  className="absolute right-0 top-12 mt-2 w-56 rounded-xl bg-black border border-red-900/40 shadow-2xl p-2 z-20"
+                >
+                  <div className="px-4 py-3 border-b border-red-900/20">
+                    <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Logged in as</p>
+                    <p className="text-sm font-bold text-white truncate mt-1">{user?.email}</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setIsUserMenuOpen(false);
+                      logout();
+                    }}
+                    className="w-full text-left px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-950/20 rounded-lg mt-1 transition-colors flex items-center space-x-2 cursor-pointer"
                   >
-                    <div className="px-4 py-3 border-b border-red-900/20">
-                      <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Logged in as</p>
-                      <p className="text-sm font-bold text-white truncate mt-1">{user?.email}</p>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setIsUserMenuOpen(false);
-                        logout();
-                      }}
-                      className="w-full text-left px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-950/20 rounded-lg mt-1 transition-colors flex items-center space-x-2 cursor-pointer"
-                    >
-                      <span>Disconnect Session</span>
-                    </button>
-                  </motion.div>
-                </>
+                    <span>Logout</span>
+                  </button>
+                </motion.div>
               )}
             </AnimatePresence>
             

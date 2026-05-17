@@ -12,7 +12,12 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authLoading && !user) {
+    // 🔍 Avoid premature redirects if we are in the middle of processing a Supabase OAuth callback hash
+    const hasHashCallback = window.location.hash.includes('access_token=') || 
+                            window.location.hash.includes('error=') ||
+                            window.location.search.includes('code=');
+
+    if (!authLoading && !user && !hasHashCallback) {
       // Elegant redirect to Home landing page if unauthenticated
       navigate('/', { replace: true });
     }
