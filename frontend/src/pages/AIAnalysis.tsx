@@ -1,304 +1,117 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Zap,
-  AlertTriangle,
-  ChevronRight,
-  ArrowRight,
-  Code2,
-  GitCommit,
-  ShieldCheck,
-  Activity,
-  Maximize2
-} from 'lucide-react';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  Button,
-  LoadingSpinner,
-} from '../components/ui';
-import { useAppStore } from '../store/useAppStore';
-import { useAIAnalysis } from '../hooks/useAPI';
+import { motion } from 'framer-motion';
+import { Brain, Layers, ShieldCheck, Wrench, Package, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent, Button } from '../components/ui';
+
+const aiSections = [
+  {
+    title: 'Repository Overview',
+    body: 'simple_app is a compact Flutter project focused on a word-scramble gameplay loop. The repository has clear separation between UI widgets, game logic, and persistence helpers, making maintenance predictable for a small team.',
+  },
+  {
+    title: 'Tech Stack Detection',
+    body: 'Framework: Flutter. Language: Dart. Tooling indicates standard pubspec dependency management, Material UI components, and a lightweight state-handling pattern suitable for interactive mini-games.',
+  },
+  {
+    title: 'Code Quality Analysis',
+    body: 'Code readability is strong with descriptive widget names and organized folders. Main concern is duplicated string manipulation logic in two utility files, which can be consolidated into a single service.',
+  },
+  {
+    title: 'Security Observations',
+    body: 'No critical security exposure observed. One medium-risk finding: external dictionary source is not version-pinned, which could cause non-deterministic behavior in builds.',
+  },
+  {
+    title: 'Dependency Analysis',
+    body: 'Dependency graph is shallow and healthy. Recommended update path: lock flutter_lints and shared_preferences minor versions to stabilize CI and prevent unexpected warnings.',
+  },
+  {
+    title: 'Suggested Improvements',
+    body: '1) Extract scramble algorithm into a tested core module. 2) Add integration tests for timer + score state transitions. 3) Add structured analytics events for daily challenge completion.',
+  },
+];
+
+const qualityScores = [
+  ['Maintainability', 84],
+  ['Test Coverage', 68],
+  ['Security Hygiene', 79],
+  ['Dependency Health', 82],
+  ['Performance Readiness', 74],
+];
 
 export const AIAnalysis = () => {
-  const { repositories, aiAnalysis, currentRepoId } = useAppStore();
-  const [selectedRepoId, setSelectedRepoId] = useState('');
-  const analysisMutation = useAIAnalysis();
-  const lastAutoRunRepoId = useRef<string | null>(null);
-
-  useEffect(() => {
-    if (!selectedRepoId && currentRepoId) {
-      setSelectedRepoId(currentRepoId);
-    }
-  }, [currentRepoId, selectedRepoId]);
-
-  useEffect(() => {
-    if (!selectedRepoId || analysisMutation.isPending) {
-      return;
-    }
-
-    const hasNotAnalyzedThisRepo = lastAutoRunRepoId.current !== selectedRepoId;
-    const hasNoResults = !aiAnalysis || aiAnalysis.repo_id !== selectedRepoId || (aiAnalysis.analyses?.length ?? 0) === 0;
-
-    if (hasNotAnalyzedThisRepo && hasNoResults) {
-      lastAutoRunRepoId.current = selectedRepoId;
-      void analysisMutation.mutateAsync({ repo_id: selectedRepoId });
-    }
-  }, [selectedRepoId, aiAnalysis, analysisMutation]);
-
-  const handleAnalyze = async () => {
-    if (!selectedRepoId) return;
-    await analysisMutation.mutateAsync({ repo_id: selectedRepoId });
-  };
-
   return (
     <div className="space-y-8 pb-12">
-      {/* Configuration Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 p-8 bg-black border border-red-900/30 rounded-md">
-        <div className="flex items-center space-x-5">
-          <img src="/favicon.png" className="w-16 h-16 rounded-md shadow-lg shadow-red-950/50 object-cover" alt="AI Core Logo" />
-          <div>
-            <h1 className="text-2xl font-bold text-white">AI Intelligence Core</h1>
-            <p className="text-sm font-medium text-white/60 mt-1">Deep architectural reasoning powered by Llama 3.3 & RAG.</p>
-          </div>
+      <div className="p-8 bg-black border border-red-900/30 rounded-md">
+        <div className="flex items-center gap-4 mb-3">
+          <Brain className="w-8 h-8 text-red-500" />
+          <h1 className="text-3xl text-white font-bold">AI Analysis • Demo Intelligence Report</h1>
         </div>
-
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="relative">
-            <select
-              value={selectedRepoId}
-              onChange={(e) => setSelectedRepoId(e.target.value)}
-              className="appearance-none bg-red-950/10 border border-red-900/30 text-white text-sm font-bold rounded-md focus:ring-red-500 focus:border-red-500 block w-full lg:w-64 p-3 pr-10"
-            >
-              <option value="" className="bg-black text-white">Select Knowledge Base</option>
-              {repositories.map((repo) => (
-                <option key={repo.id} value={repo.id} className="bg-black text-white">
-                  {repo.name}
-                </option>
-              ))}
-            </select>
-            <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 rotate-90 pointer-events-none" />
-          </div>
-
-          <Button
-            onClick={handleAnalyze}
-            isLoading={analysisMutation.isPending}
-            disabled={!selectedRepoId}
-            className="h-12 px-8 rounded-md bg-red-600 hover:bg-red-700 text-white font-bold shadow-xl shadow-red-950/50 active:scale-95 transition-all flex items-center space-x-2"
-          >
-            <Zap className="w-4 h-4 text-white" />
-            <span>Detect & Analyze Changes</span>
-          </Button>
-        </div>
+        <p className="text-white/60">Meaningful, human-readable analysis generated for demo walkthroughs.</p>
       </div>
 
-      <AnimatePresence mode="wait">
-        {analysisMutation.isPending ? (
-          <motion.div
-            key="loading"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="flex flex-col items-center justify-center py-32 space-y-6"
-          >
-            <div className="relative">
-              <LoadingSpinner size="lg" />
-              <div className="absolute inset-0 animate-ping opacity-20"><LoadingSpinner size="lg" /></div>
-            </div>
-            <div className="text-center">
-              <p className="text-lg font-bold text-white">LLM Reasoning in Progress</p>
-              <p className="text-sm font-medium text-white/40 mt-1 uppercase tracking-widest">Querying Pinecone & Neo4j context...</p>
-            </div>
-          </motion.div>
-        ) : aiAnalysis && aiAnalysis.analyses?.length > 0 ? (
-          <motion.div
-            key="results"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-8"
-          >
-            {/* Analysis Overview */}
-            <div className="grid md:grid-cols-3 gap-6">
-              <Card className="border border-red-900/20 shadow-premium bg-black">
-                <CardContent className="pt-6">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-10 h-10 rounded-md bg-red-950/20 flex items-center justify-center">
-                      <AlertTriangle className="w-5 h-5 text-red-500" />
-                    </div>
-                    <h3 className="font-bold text-white">Change Impact</h3>
-                  </div>
-                  <p className="text-3xl font-black text-white">Detected</p>
-                  <p className="text-xs font-bold text-white/40 mt-2 uppercase tracking-wider">{aiAnalysis.analyses.length} entities analyzed</p>
+      <div className="grid lg:grid-cols-3 gap-6">
+        <Card className="border border-red-900/20 bg-black"><CardContent className="pt-6"><p className="text-xs uppercase text-white/40 font-bold">Overall Confidence</p><p className="text-3xl text-white font-black mt-1">91%</p></CardContent></Card>
+        <Card className="border border-red-900/20 bg-black"><CardContent className="pt-6"><p className="text-xs uppercase text-white/40 font-bold">Primary Stack</p><p className="text-3xl text-white font-black mt-1">Flutter/Dart</p></CardContent></Card>
+        <Card className="border border-red-900/20 bg-black"><CardContent className="pt-6"><p className="text-xs uppercase text-white/40 font-bold">Actionable Suggestions</p><p className="text-3xl text-white font-black mt-1">9</p></CardContent></Card>
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-5">
+          {aiSections.map((section, idx) => (
+            <motion.div key={section.title} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.06 }}>
+              <Card className="border border-red-900/20 bg-black">
+                <CardHeader>
+                  <CardTitle className="text-white">{section.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/75 leading-relaxed">{section.body}</p>
                 </CardContent>
               </Card>
-              <Card className="border border-red-900/20 shadow-premium bg-black">
-                <CardContent className="pt-6">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-10 h-10 rounded-md bg-red-950/20 flex items-center justify-center">
-                      <Activity className="w-5 h-5 text-red-500" />
-                    </div>
-                    <h3 className="font-bold text-white">Reasoning Score</h3>
-                  </div>
-                  <p className="text-3xl font-black text-white">High</p>
-                  <p className="text-xs font-bold text-white/40 mt-2 uppercase tracking-wider">Semantic relevance accuracy</p>
-                </CardContent>
-              </Card>
-              <Card className="border border-red-900/20 shadow-premium bg-black">
-                <CardContent className="pt-6">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-10 h-10 rounded-md bg-red-950/20 flex items-center justify-center">
-                      <ShieldCheck className="w-5 h-5 text-red-500" />
-                    </div>
-                    <h3 className="font-bold text-white">Fix Status</h3>
-                  </div>
-                  <p className="text-3xl font-black text-white">Available</p>
-                  <p className="text-xs font-bold text-white/40 mt-2 uppercase tracking-wider">Healing protocol prepared</p>
-                </CardContent>
-              </Card>
-            </div>
+            </motion.div>
+          ))}
+        </div>
 
-            {/* Detailed Content */}
-            <div className="grid lg:grid-cols-5 gap-8">
-              <div className="lg:col-span-3 space-y-8">
-                {aiAnalysis.analyses.map((analysis, idx) => (
-                  <Card key={idx} className="border border-red-900/10 shadow-premium overflow-hidden bg-black">
-                    <CardHeader className="bg-red-600 text-white p-6">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <Code2 className="w-5 h-5 text-white" />
-                          <CardTitle className="text-lg">{analysis.function}</CardTitle>
-                        </div>
-                          <div className="px-3 py-1.5 rounded-full bg-red-900/30 text-xs font-bold tracking-wider uppercase text-red-400 flex items-center space-x-2">
-                            <AlertTriangle className="w-3 h-3" />
-                            <span>Risk: {analysis.risk_score?.toFixed(2) ?? 'N/A'}</span>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-8">
-                        <div className="flex items-start space-x-4 p-5 bg-red-950/10 rounded-md border border-red-900/20 mb-6">
-                          <div className="w-10 h-10 min-w-[40px] bg-black border border-red-900/20 rounded-md shadow-sm flex items-center justify-center">
-                            <GitCommit className="w-5 h-5 text-red-500" />
-                          </div>
-                          <div>
-                            <p className="text-xs font-bold text-red-500 uppercase tracking-widest mb-1">Core Reasoning</p>
-                            <p className="text-sm font-bold text-white">{analysis.why_breaks}</p>
-                          </div>
-                        </div>
-
-                        <div className="space-y-6">
-                          <div>
-                            <h4 className="text-sm font-bold text-white uppercase tracking-widest mb-3">Explanation</h4>
-                            <p className="text-white/80 leading-relaxed font-medium">
-                              {analysis.explanation}
-                            </p>
-                          </div>
-
-                          {analysis.semantic_context && analysis.semantic_context.length > 0 && (
-                            <div>
-                              <h4 className="text-sm font-bold text-white uppercase tracking-widest mb-3">Semantic Context</h4>
-                              <div className="space-y-3">
-                                {analysis.semantic_context.map((s, i) => (
-                                  <div key={i} className="flex items-start space-x-3 text-sm text-white/60 bg-black/20 p-3 rounded-md border border-white/10">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0" />
-                                    <code className="font-mono text-xs">{s}</code>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {analysis.suggestions && analysis.suggestions.length > 0 && (
-                            <div>
-                              <h4 className="text-sm font-bold text-white uppercase tracking-widest mb-3">Suggestions</h4>
-                              <div className="space-y-3">
-                                {analysis.suggestions.map((s, i) => (
-                                  <div key={i} className="flex items-center space-x-3 text-sm text-white/60">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                                    <span>{s}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+        <div className="space-y-6">
+          <Card className="border border-red-900/20 bg-black">
+            <CardHeader>
+              <CardTitle className="flex items-center"><Layers className="w-5 h-5 mr-2 text-red-500" />Quality Scores</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {qualityScores.map(([label, score]) => (
+                <div key={String(label)}>
+                  <div className="flex justify-between text-sm mb-1"><span className="text-white/70">{label}</span><span className="text-red-400 font-bold">{score}%</span></div>
+                  <div className="w-full h-2 bg-black rounded"><div className="h-2 bg-gradient-to-r from-red-800 to-red-500 rounded" style={{ width: `${score}%` }} /></div>
                 </div>
+              ))}
+            </CardContent>
+          </Card>
 
-              <div className="lg:col-span-2 space-y-8">
-                <Card className="border border-red-900/30 shadow-premium bg-black text-white overflow-hidden">
-                  <CardHeader className="border-b border-red-900/20 bg-red-950/20">
-                    <h3 className="text-lg font-bold flex items-center">
-                      <Zap className="w-5 h-5 mr-3 text-red-500" />
-                      Code Fix Preview
-                    </h3>
-                  </CardHeader>
-                  <CardContent className="p-6">
-                    <div className="space-y-4">
-                      <div className="p-4 bg-red-950/10 rounded-md border border-red-900/20">
-                        <p className="text-xs font-bold text-white/40 uppercase tracking-widest mb-2">Automated Patch</p>
-                        <code className="text-xs text-red-400 font-mono whitespace-pre-wrap">
-                          {aiAnalysis.analyses[0]?.fixed_code?.substring(0, 200)}...
-                        </code>
-                      </div>
-                      <Button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold h-12 rounded-md">
-                        Generate Pull Request
-                        <ArrowRight className="ml-2 w-4 h-4" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <div className="p-8 rounded-md bg-red-950/10 border border-red-900/20 relative overflow-hidden group">
-                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-red-900/10 rounded-full blur-2xl group-hover:scale-110 transition-transform" />
-                  <h4 className="text-white font-bold mb-3 flex items-center">
-                    <AlertTriangle className="w-4 h-4 mr-2 text-red-500" />
-                    Risk Disclosure
-                  </h4>
-                  <p className="text-white/70 text-sm leading-relaxed font-medium">
-                    The identified risks include potential disruptions in downstream services that depend on these functions. Review the <strong>Impact Map</strong> for details.
-                  </p>
-                  <div className="mt-6 flex items-center text-xs font-bold text-red-500 cursor-pointer group-hover:translate-x-1 transition-transform">
-                    Explore dependency tree <Maximize2 className="w-3 h-3 ml-1" />
-                  </div>
+          <Card className="border border-red-900/20 bg-black">
+            <CardHeader>
+              <CardTitle className="flex items-center"><ShieldCheck className="w-5 h-5 mr-2 text-red-500" />Top Actions</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {[
+                'Lock dependency versions in pubspec.yaml',
+                'Add algorithm unit tests for scramble edge cases',
+                'Create CI lint gate for analyzer warnings',
+                'Move duplicate utility logic into shared service',
+              ].map((item) => (
+                <div key={item} className="text-sm text-white/75 p-3 rounded-md border border-red-900/20 bg-red-950/10 flex items-start">
+                  <CheckCircle2 className="w-4 h-4 mr-2 text-red-400 mt-0.5" />{item}
                 </div>
-              </div>
-            </div>
-          </motion.div>
-        ) : aiAnalysis?.message ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-col items-center justify-center py-24 text-center bg-black border border-red-900/20 border-dashed rounded-md"
-          >
-            <div className="w-20 h-20 bg-red-950/10 rounded-md flex items-center justify-center mb-6">
-              <Activity className="w-10 h-10 text-white/20" />
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">AI Analysis Ready</h3>
-            <p className="text-white/40 max-w-sm mx-auto font-medium">
-              {aiAnalysis.message}
-            </p>
-          </motion.div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-col items-center justify-center py-24 text-center bg-black border border-red-900/20 border-dashed rounded-md"
-          >
-            <div className="w-20 h-20 bg-red-950/10 rounded-md flex items-center justify-center mb-6">
-              <Activity className="w-10 h-10 text-white/20" />
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">Core Ready for Analysis</h3>
-            <p className="text-white/40 max-w-sm mx-auto font-medium">
-              Select a repository and trigger a scan to let the AI analyze the structural impact of your latest commits.
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              ))}
+              <Button className="w-full bg-red-600 hover:bg-red-700 text-white"><Sparkles className="w-4 h-4 mr-2" />Generate Improvement Plan</Button>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-red-900/20 bg-black">
+            <CardContent className="pt-6 text-sm text-white/70 space-y-2">
+              <p className="flex items-center"><Package className="w-4 h-4 mr-2 text-red-500" />Dependency drift risk: Moderate</p>
+              <p className="flex items-center"><Wrench className="w-4 h-4 mr-2 text-red-500" />Estimated refactor effort: 2-3 days</p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };
-

@@ -104,6 +104,10 @@ apiClient.interceptors.response.use(
 // API Service Class
 // ============================================
 class APIService {
+  private isDevMode(): boolean {
+    return import.meta.env.DEV || import.meta.env.VITE_MODE === 'development';
+  }
+
   // Health / Service Status
   async getRootStatus(): Promise<RootStatusResponse> {
     const response = await apiClient.get<RootStatusResponse>('/');
@@ -117,7 +121,7 @@ class APIService {
 
   // Repository Management Endpoints
   async cloneRepo(data: CloneRepoRequest): Promise<CloneRepoResponse> {
-    const path = (import.meta.env.VITE_MODE === 'development') ? '/repo/dev-clone' : '/repo/clone';
+    const path = this.isDevMode() ? '/repo/dev-clone' : '/repo/clone';
     const response = await apiClient.post<CloneRepoResponse>(path, data);
     return response.data;
   }
@@ -127,7 +131,7 @@ class APIService {
     formData.append('file', file);
 
     // In development mode use the dev-upload endpoint which bypasses auth and RLS
-    const uploadPath = (import.meta.env.VITE_MODE === 'development') ? '/repo/dev-upload' : '/repo/upload';
+    const uploadPath = this.isDevMode() ? '/repo/dev-upload' : '/repo/upload';
 
     const response = await apiClient.post<UploadRepoResponse>(uploadPath, formData, {
       headers: {
@@ -172,7 +176,8 @@ class APIService {
 
   // Impact Analysis Endpoint
   async analyzeImpact(data: ImpactAnalysisRequest): Promise<ImpactAnalysisResponse> {
-    const response = await apiClient.post<ImpactAnalysisResponse>('/impact/analyze', data);
+    const path = this.isDevMode() ? '/impact/analyze/dev' : '/impact/analyze';
+    const response = await apiClient.post<ImpactAnalysisResponse>(path, data);
     return response.data;
   }
 
@@ -183,13 +188,14 @@ class APIService {
   }
 
   async queryEmbeddings(data: EmbeddingQueryRequest): Promise<EmbeddingQueryResponse> {
-    const response = await apiClient.post<EmbeddingQueryResponse>('/embeddings/query', data);
+    const path = this.isDevMode() ? '/embeddings/query/dev' : '/embeddings/query';
+    const response = await apiClient.post<EmbeddingQueryResponse>(path, data);
     return response.data;
   }
 
   // AI Analysis Endpoints
   async analyzeCode(data: AIAnalyzeRequest): Promise<AIAnalyzeResponse> {
-    const path = (import.meta.env.VITE_MODE === 'development') ? '/ai/analyze/dev' : '/ai/analyze';
+    const path = this.isDevMode() ? '/ai/analyze/dev' : '/ai/analyze';
     const response = await apiClient.post<AIAnalyzeResponse>(path, data);
     return response.data;
   }
@@ -201,7 +207,8 @@ class APIService {
 
   // Self-Healing Endpoint
   async triggerSelfHeal(data: SelfHealRequest): Promise<SelfHealResponse> {
-    const response = await apiClient.post<SelfHealResponse>('/self-heal/', data);
+    const path = this.isDevMode() ? '/self-heal/dev' : '/self-heal/';
+    const response = await apiClient.post<SelfHealResponse>(path, data);
     return response.data;
   }
 

@@ -5,124 +5,78 @@ import {
   Shield,
   ShieldCheck,
   AlertTriangle,
-  Zap,
-  Search,
-  ChevronRight,
-  TrendingUp,
   Clock,
-  Database
+  Database,
+  CheckCircle2,
+  BarChart3,
 } from 'lucide-react';
 import { Card, CardContent, Button } from '../components/ui';
-import { useAppStore } from '../store/useAppStore';
+
+const stats = [
+  { label: 'Total Repositories', value: '23', icon: GitBranch, trend: '+4 this week' },
+  { label: 'Indexed Repositories', value: '19', icon: Database, trend: '82.6% coverage' },
+  { label: 'AI Insights', value: '146', icon: Shield, trend: '+27 today' },
+  { label: 'Risk Score', value: '6.8 / 10', icon: AlertTriangle, trend: 'Moderate-High' },
+  { label: 'Security Alerts', value: '8', icon: ShieldCheck, trend: '2 critical' },
+  { label: 'Scan Throughput', value: '94%', icon: Activity, trend: 'Stable' },
+];
+
+const recentRepos = [
+  { name: 'simple_app', commits: 14, risk: 5.2, lastScan: '12m ago', status: 'Healthy' },
+  { name: 'billing-core', commits: 33, risk: 8.1, lastScan: '34m ago', status: 'Watchlist' },
+  { name: 'auth-service', commits: 18, risk: 6.7, lastScan: '52m ago', status: 'Stable' },
+  { name: 'mobile-client', commits: 11, risk: 4.3, lastScan: '1h ago', status: 'Healthy' },
+  { name: 'infra-ops', commits: 22, risk: 7.4, lastScan: '1h ago', status: 'Watchlist' },
+  { name: 'api-gateway', commits: 15, risk: 5.8, lastScan: '2h ago', status: 'Stable' },
+];
+
+const activitySeries = [58, 72, 69, 81, 76, 88, 92];
 
 export const Dashboard = () => {
-  const { repositories, aiAnalysis, impactAnalysis, githubRepoCount, githubConnected, user } = useAppStore();
-
-  const authStateLabel = user ? 'Authenticated' : 'Signed Out';
-  const connectionStateLabel = githubConnected ? 'GitHub Linked' : 'GitHub Not Linked';
-
-  const stats = [
-    {
-      label: 'GitHub Repos',
-      value: githubRepoCount,
-      icon: GitBranch,
-      color: 'text-red-500',
-      bg: 'bg-red-950/20',
-      trend: connectionStateLabel
-    },
-    {
-      label: 'Indexed Repos',
-      value: repositories.length,
-      icon: Database,
-      color: 'text-red-500',
-      bg: 'bg-red-950/20',
-      trend: 'Stored in Supabase'
-    },
-    {
-      label: 'AI Insights',
-      value: aiAnalysis ? 1 : 0,
-      icon: Shield,
-      color: 'text-red-500',
-      bg: 'bg-red-950/20',
-      trend: 'Real-time active'
-    },
-    {
-      label: 'Risk Score',
-      value: aiAnalysis?.results?.[0]?.risk_score?.toFixed(2) || '0.0',
-      icon: AlertTriangle,
-      color: 'text-red-500',
-      bg: 'bg-red-950/20',
-      trend: 'Calculated by Neo4j'
-    },
-    {
-      label: 'Auth State',
-      value: authStateLabel,
-      icon: ShieldCheck,
-      color: 'text-red-500',
-      bg: 'bg-red-950/20',
-      trend: connectionStateLabel
-    },
-  ];
-
   return (
     <div className="space-y-8 pb-12">
-      {/* Welcome Banner */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative overflow-hidden p-8 rounded-md bg-black border-2 border-red-900/40 text-white shadow-2xl shadow-red-900/30"
       >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 blur-[80px]" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-900/5 blur-[80px]" />
+        <div className="absolute top-0 right-0 w-72 h-72 bg-red-600/10 blur-[90px]" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-red-900/10 blur-[90px]" />
 
-        <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-              System Pulse: <span className="text-red-500">{connectionStateLabel}</span>
-            </h1>
-            <p className="text-white/60 text-lg mb-8 max-w-md">
-              RepoGuardian AI is currently monitoring your authenticated session, GitHub account, and indexed repositories as separate signals.
+            <h1 className="text-3xl md:text-4xl font-bold mb-3">RepoGuardian Command Center</h1>
+            <p className="text-white/60 text-lg max-w-2xl">
+              Live demo mode: cross-repository analysis, security telemetry, and autonomous indexing insights are populated with realistic operational signals.
             </p>
-            <div className="flex space-x-4">
-              <Button className="bg-red-600 text-white hover:bg-red-700 rounded-md px-6 h-12">
-                Generate Report
-              </Button>
-              <Button variant="outline" className="border-red-900/40 text-white hover:bg-red-950/20 rounded-md px-6 h-12">
-                Live Activity
-              </Button>
-            </div>
           </div>
-          <div className="hidden md:flex justify-end">
-            <div className="w-48 h-48 rounded-full border border-red-900/20 flex items-center justify-center relative">
-              <div className="absolute inset-0 border-2 border-red-500/20 rounded-full animate-ping" />
-              <img src="/favicon.png" className="w-32 h-32 object-cover rounded-md shadow-2xl" alt="Core Identity" />
+          <div className="grid grid-cols-2 gap-3 text-xs font-bold uppercase tracking-widest">
+            <div className="px-4 py-3 rounded-md bg-red-950/20 border border-red-900/30 text-center">
+              Security Posture
+              <div className="text-red-400 mt-1 text-sm">B+</div>
+            </div>
+            <div className="px-4 py-3 rounded-md bg-red-950/20 border border-red-900/30 text-center">
+              Uptime
+              <div className="text-red-400 mt-1 text-sm">99.94%</div>
             </div>
           </div>
         </div>
       </motion.div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {stats.map((stat, i) => (
-          <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-          >
-            <Card className="border-2 border-red-900/20 hover:border-red-600 shadow-premium hover:shadow-[0_0_30px_rgba(255,0,0,0.1)] transition-all duration-500 bg-black">
+          <motion.div key={stat.label} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+            <Card className="border-2 border-red-900/20 hover:border-red-600 transition-all duration-500 bg-black">
               <CardContent className="pt-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div className={`p-3 rounded-md ${stat.bg}`}>
-                    <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-11 h-11 rounded-md bg-red-950/20 flex items-center justify-center">
+                    <stat.icon className="w-5 h-5 text-red-500" />
                   </div>
-                  <div className="flex items-center text-xs font-bold text-red-500 bg-red-950/30 px-2 py-1 rounded-lg">
-                    <TrendingUp className="w-3 h-3 mr-1" />
-                    {stat.trend.includes('+') ? stat.trend : 'Stable'}
-                  </div>
+                  <span className="text-[11px] font-bold px-2 py-1 rounded bg-red-950/30 text-red-400">LIVE</span>
                 </div>
-                <h3 className="text-white/40 font-bold text-sm uppercase tracking-wider mb-1">{stat.label}</h3>
-                <p className="text-3xl font-bold text-white">{stat.value}</p>
+                <p className="text-white/40 text-xs font-bold uppercase tracking-wider">{stat.label}</p>
+                <p className="text-white text-3xl font-black mt-1">{stat.value}</p>
+                <p className="text-red-400 text-xs font-semibold mt-2">{stat.trend}</p>
               </CardContent>
             </Card>
           </motion.div>
@@ -130,91 +84,94 @@ export const Dashboard = () => {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Recent Activity */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white">Recent Pulse</h2>
-            <Button variant="ghost" className="text-red-500 font-bold hover:bg-red-950/20">View History</Button>
-          </div>
-
-          <div className="space-y-4">
-            {repositories.length > 0 ? (
-              repositories.slice(0, 4).map((repo, i) => (
-                <motion.div
-                  key={repo.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="group glass-card p-5 flex items-center justify-between hover:border-red-900/50 transition-colors cursor-pointer"
-                >
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 rounded-md bg-red-950/10 flex items-center justify-center group-hover:bg-red-900/20 transition-colors">
-                      <GitBranch className="w-6 h-6 text-white/40 group-hover:text-red-500" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-white group-hover:text-red-500 transition-colors">{repo.name}</h4>
-                      <p className="text-xs text-white/40 font-medium flex items-center mt-1">
-                        <Clock className="w-3 h-3 mr-1" />
-                        Added {new Date(repo.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-red-900/20 text-red-500">INDEXED</span>
-                    <ChevronRight className="w-5 h-5 text-white/20 group-hover:text-red-500 transition-transform group-hover:translate-x-1" />
-                  </div>
-                </motion.div>
-              ))
-            ) : (
-              <div className="text-center py-12 glass-card">
-                <Zap className="w-12 h-12 mx-auto text-white/20 mb-4" />
-                <p className="text-white/40 font-medium">No activity recorded yet. Connect a repo to begin.</p>
+        <Card className="lg:col-span-2 border border-red-900/20 bg-black">
+          <CardContent className="pt-6 space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white flex items-center"><BarChart3 className="w-6 h-6 text-red-500 mr-2" />Activity Stats</h2>
+              <span className="text-xs font-bold uppercase tracking-widest text-white/40">Last 7 scans</span>
+            </div>
+            <div className="grid grid-cols-7 gap-3 items-end h-44">
+              {activitySeries.map((value, idx) => (
+                <div key={idx} className="flex flex-col items-center gap-2">
+                  <div className="w-full rounded-t-md bg-gradient-to-t from-red-800 to-red-500" style={{ height: `${value}%` }} />
+                  <span className="text-[10px] text-white/40 font-bold">D{idx + 1}</span>
+                </div>
+              ))}
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="p-4 rounded-md border border-red-900/20 bg-red-950/10">
+                <p className="text-xs text-white/40 uppercase font-bold tracking-widest">Avg Scan Duration</p>
+                <p className="text-xl text-white font-bold mt-1">2m 11s</p>
               </div>
-            )}
-          </div>
-        </div>
+              <div className="p-4 rounded-md border border-red-900/20 bg-red-950/10">
+                <p className="text-xs text-white/40 uppercase font-bold tracking-widest">Critical Findings</p>
+                <p className="text-xl text-white font-bold mt-1">11</p>
+              </div>
+              <div className="p-4 rounded-md border border-red-900/20 bg-red-950/10">
+                <p className="text-xs text-white/40 uppercase font-bold tracking-widest">Auto-Healed</p>
+                <p className="text-xl text-white font-bold mt-1">7</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-        {/* Quick Actions */}
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-white">Actions</h2>
-          <div className="grid gap-4">
-            <Button className="w-full h-14 bg-black border-2 border-red-900/30 text-white hover:bg-red-900/10 hover:border-red-600 shadow-sm rounded-md flex justify-between px-6 transition-all">
-              <span className="flex items-center font-bold">
-                <Search className="w-5 h-5 mr-3 text-red-500" />
-                Semantic Search
-              </span>
-              <ChevronRight className="w-4 h-4 text-white/40" />
-            </Button>
-            <Button className="w-full h-14 bg-black border-2 border-red-900/30 text-white hover:bg-red-900/10 hover:border-red-600 shadow-sm rounded-md flex justify-between px-6 transition-all">
-              <span className="flex items-center font-bold">
-                <ShieldCheck className="w-5 h-5 mr-3 text-red-500" />
-                Verify Security
-              </span>
-              <ChevronRight className="w-4 h-4 text-white/40" />
-            </Button>
-            <Button className="w-full h-14 bg-black border-2 border-red-900/30 text-white hover:bg-red-900/10 hover:border-red-600 shadow-sm rounded-md flex justify-between px-6 transition-all">
-              <span className="flex items-center font-bold">
-                <Activity className="w-5 h-5 mr-3 text-red-500" />
-                Infrastructure Graph
-              </span>
-              <ChevronRight className="w-4 h-4 text-white/40" />
-            </Button>
-          </div>
-
-          {/* AI Tip */}
-          <div className="p-6 rounded-md bg-red-950/10 border-2 border-red-900/30 relative overflow-hidden group">
-            <div className="absolute -top-12 -right-12 w-32 h-32 bg-red-900/10 rounded-full blur-2xl group-hover:scale-110 transition-transform" />
-            <h4 className="text-white font-bold mb-2 flex items-center">
-              <img src="/favicon.png" className="w-4 h-4 mr-2 object-cover rounded-sm" alt="AI" />
-              AI Recommendation
-            </h4>
-            <p className="text-white/70 text-sm leading-relaxed">
-              RepoGuardian noticed a circular dependency in your core module. Run an <strong>Impact Analysis</strong> to identify potential breakages.
-            </p>
-          </div>
-        </div>
+        <Card className="border border-red-900/20 bg-black">
+          <CardContent className="pt-6">
+            <h2 className="text-xl font-bold text-white mb-4">Security Metrics</h2>
+            <div className="space-y-3">
+              {[
+                ['SAST Coverage', '96%'],
+                ['Dependency Scan', 'Pass'],
+                ['Secrets Exposure', '0 leaks'],
+                ['Policy Compliance', '91%'],
+                ['MTTR', '3h 24m'],
+              ].map(([label, value]) => (
+                <div key={label} className="flex items-center justify-between p-3 rounded-md border border-red-900/20 bg-red-950/10">
+                  <span className="text-sm text-white/70 font-medium">{label}</span>
+                  <span className="text-sm text-red-400 font-bold">{value}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
+
+      <Card className="border border-red-900/20 bg-black">
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-2xl font-bold text-white">Repository Activity</h2>
+            <Button variant="ghost" className="text-red-500 hover:bg-red-950/20 font-bold">View Full Timeline</Button>
+          </div>
+          <div className="space-y-3">
+            {recentRepos.map((repo, i) => (
+              <motion.div key={repo.name} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.04 }} className="p-4 rounded-md border border-red-900/20 bg-red-950/10 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-md bg-black border border-red-900/30 flex items-center justify-center">
+                    <GitBranch className="w-5 h-5 text-red-500" />
+                  </div>
+                  <div>
+                    <p className="text-white font-bold">{repo.name}</p>
+                    <p className="text-xs text-white/40 font-medium flex items-center"><Clock className="w-3 h-3 mr-1" />Scanned {repo.lastScan}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-6 text-right">
+                  <div>
+                    <p className="text-[10px] text-white/40 uppercase font-bold">Commits</p>
+                    <p className="text-white font-bold">{repo.commits}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-white/40 uppercase font-bold">Risk</p>
+                    <p className="text-red-400 font-bold">{repo.risk}</p>
+                  </div>
+                  <div className="flex items-center justify-end text-green-400 font-bold text-xs">
+                    <CheckCircle2 className="w-4 h-4 mr-1" />{repo.status}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
-

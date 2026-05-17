@@ -1,221 +1,106 @@
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  Activity,
-  Database,
-  GitBranch,
-  RefreshCw,
-  Search,
-  ShieldCheck,
-  Trash2,
-  Zap,
-} from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter, Button, Input } from '../components/ui';
-import { api } from '../lib/api.client';
-import { useAppStore } from '../store/useAppStore';
+import { Activity, CheckCircle2, AlertTriangle, RefreshCw, Server, Shield, GitBranch, Clock, Database } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent, Button } from '../components/ui';
 
-type OperationResult = {
-  title: string;
-  endpoint: string;
-  payload: unknown;
-};
+const activeScans = [
+  { repo: 'simple_app', stage: 'Dependency graph build', progress: 86, eta: '48s' },
+  { repo: 'billing_core', stage: 'Security ruleset evaluation', progress: 57, eta: '1m 22s' },
+  { repo: 'auth_service', stage: 'Semantic embedding refresh', progress: 41, eta: '2m 09s' },
+];
 
-const formatPayload = (payload: unknown) => JSON.stringify(payload, null, 2);
+const pipeline = [
+  { name: 'Build & Test', status: 'Passed', latency: '4m 12s' },
+  { name: 'Container Scan', status: 'Passed', latency: '1m 41s' },
+  { name: 'Deploy Staging', status: 'In Progress', latency: '2m 03s' },
+  { name: 'Canary Analysis', status: 'Queued', latency: '-' },
+];
+
+const syncLogs = [
+  '19:42 • simple_app • Pull successful • 4 files changed',
+  '19:39 • auth_service • Graph rebuild complete • 2 warnings',
+  '19:37 • billing_core • Dependency lock updated',
+  '19:31 • infra_ops • Drift monitor triggered rollback simulation',
+  '19:25 • mobile_client • Index cache refreshed',
+];
+
+const securityEvents = [
+  { severity: 'high', text: 'Potential JWT validation bypass pattern detected in auth middleware' },
+  { severity: 'medium', text: 'Outdated http package found in flutter dependencies' },
+  { severity: 'low', text: 'Debug logs expose internal route names in staging build' },
+];
+
+const topStats = [
+  { label: 'Active Scans', value: '7', icon: Activity },
+  { label: 'Deployment Health', value: '98.7%', icon: Server },
+  { label: 'Pipeline Success', value: '31/34', icon: GitBranch },
+  { label: 'Security Signals', value: '14', icon: Shield },
+];
 
 export const Operations = () => {
-  const { repositories, currentRepoId, setCurrentRepo } = useAppStore();
-  const [repoId, setRepoId] = useState('');
-  const [githubToken, setGithubToken] = useState('');
-  const [isRunning, setIsRunning] = useState<string | null>(null);
-  const [latestResult, setLatestResult] = useState<OperationResult | null>(null);
-  const [serviceStatus, setServiceStatus] = useState<{ root?: unknown; health?: unknown }>({});
-
-  useEffect(() => {
-    if (!repoId && currentRepoId) {
-      setRepoId(currentRepoId);
-    }
-  }, [currentRepoId, repoId]);
-
-  const runOperation = async (title: string, endpoint: string, runner: () => Promise<unknown>) => {
-    setIsRunning(endpoint);
-    try {
-      const payload = await runner();
-      setLatestResult({ title, endpoint, payload });
-    } finally {
-      setIsRunning(null);
-    }
-  };
-
-  const canUseRepo = repoId.trim().length > 0;
-
-  const loadServiceStatus = async () => {
-    setIsRunning('service-status');
-    try {
-      const [root, health] = await Promise.all([api.getRootStatus(), api.getHealthStatus()]);
-      setServiceStatus({ root, health });
-      setLatestResult({
-        title: 'Backend Health',
-        endpoint: 'GET / + GET /health',
-        payload: { root, health },
-      });
-    } finally {
-      setIsRunning(null);
-    }
-  };
-
-  const syncSelectedRepo = (value: string) => {
-    setRepoId(value);
-    if (value) {
-      setCurrentRepo(value);
-    }
-  };
-
-  const resultText = latestResult ? formatPayload(latestResult.payload) : '// No backend request has been run yet.';
-
   return (
     <div className="space-y-8 pb-12">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="p-8 bg-black border border-red-900/30 rounded-md shadow-premium"
-      >
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <div className="space-y-3 max-w-3xl">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-red-950/30 text-red-500 text-xs font-bold uppercase tracking-[0.2em]">
-              <Database className="w-4 h-4" />
-              <span>Integration Workspace</span>
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-white leading-tight">Frontend to Backend Operations</h1>
-              <p className="text-white/60 mt-3 font-medium max-w-2xl">
-                Run repository scanning, parsing, graph generation, git diffing, and pull request workflows from one themed control surface.
-              </p>
-            </div>
-          </div>
+      <div className="p-8 bg-black border border-red-900/30 rounded-md">
+        <h1 className="text-3xl text-white font-bold">Operations Command Board</h1>
+        <p className="text-white/60 mt-2">Demo telemetry for scans, deployment lifecycle, sync orchestration, and security monitoring.</p>
+      </div>
 
-          <div className="grid grid-cols-2 gap-3 text-center text-xs font-bold uppercase tracking-widest text-white/50">
-            <div className="px-4 py-3 rounded-md bg-red-950/10 border border-red-900/20">
-              {repositories.length}
-              <div className="mt-1 text-white/30">Repositories</div>
-            </div>
-            <div className="px-4 py-3 rounded-md bg-red-950/10 border border-red-900/20">
-              {currentRepoId || 'None'}
-              <div className="mt-1 text-white/30">Current Repo</div>
-            </div>
-          </div>
-        </div>
-      </motion.div>
+      <div className="grid xl:grid-cols-4 md:grid-cols-2 gap-6">
+        {topStats.map((item, i) => (
+          <motion.div key={item.label} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}>
+            <Card className="border border-red-900/20 bg-black">
+              <CardContent className="pt-6">
+                <div className="flex justify-between items-center mb-3">
+                  <item.icon className="w-5 h-5 text-red-500" />
+                  <span className="text-[10px] uppercase tracking-widest text-white/40">Live</span>
+                </div>
+                <p className="text-xs uppercase tracking-widest text-white/40 font-bold">{item.label}</p>
+                <p className="text-3xl text-white font-black mt-1">{item.value}</p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        <Card className="border border-red-900/20 bg-black lg:col-span-2">
+      <div className="grid lg:grid-cols-2 gap-8">
+        <Card className="border border-red-900/20 bg-black">
           <CardHeader>
-            <CardTitle className="flex items-center gap-3">
-              <Activity className="w-5 h-5 text-red-500" />
-              Repository Pipeline
-            </CardTitle>
+            <CardTitle>Active Scan Queue</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-4">
-              <Input
-                label="Repository ID"
-                placeholder="Paste a repo_id from clone/upload"
-                value={repoId}
-                onChange={(e) => syncSelectedRepo(e.target.value)}
-              />
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-white/80">Repository Shortcut</label>
-                <select
-                  value={repoId}
-                  onChange={(e) => syncSelectedRepo(e.target.value)}
-                  className="flex h-10 w-full rounded-lg border border-red-900/40 bg-black px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                >
-                  <option value="" className="bg-black text-white">Select an indexed repository</option>
-                  {repositories.map((repo) => (
-                    <option key={repo.id} value={repo.id} className="bg-black text-white">
-                      {repo.name}
-                    </option>
-                  ))}
-                </select>
+          <CardContent className="space-y-4">
+            {activeScans.map((scan) => (
+              <div key={scan.repo} className="p-4 rounded-md border border-red-900/20 bg-red-950/10">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="text-white font-bold">{scan.repo}</p>
+                  <p className="text-xs text-white/40 uppercase font-bold">ETA {scan.eta}</p>
+                </div>
+                <p className="text-sm text-white/60 mb-3">{scan.stage}</p>
+                <div className="w-full h-2 bg-black rounded">
+                  <div className="h-2 bg-gradient-to-r from-red-700 to-red-500 rounded" style={{ width: `${scan.progress}%` }} />
+                </div>
               </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-              <Button
-                onClick={loadServiceStatus}
-                isLoading={isRunning === 'service-status'}
-                className="justify-between h-12 bg-red-600 text-white hover:bg-red-700 rounded-md"
-              >
-                Check Service Health
-                <RefreshCw className="w-4 h-4" />
-              </Button>
-              <Button
-                onClick={() => runOperation('Scan Repository', 'scan', () => api.scanRepo(repoId))}
-                disabled={!canUseRepo}
-                isLoading={isRunning === 'scan'}
-                className="justify-between h-12 bg-black border border-red-900/40 text-white hover:bg-red-950/20 rounded-md"
-              >
-                Scan Files
-                <Search className="w-4 h-4" />
-              </Button>
-              <Button
-                onClick={() => runOperation('Parse Repository', 'parse', () => api.parseRepo(repoId))}
-                disabled={!canUseRepo}
-                isLoading={isRunning === 'parse'}
-                className="justify-between h-12 bg-black border border-red-900/40 text-white hover:bg-red-950/20 rounded-md"
-              >
-                Parse Structure
-                <GitBranch className="w-4 h-4" />
-              </Button>
-              <Button
-                onClick={() => runOperation('Build Graph', 'graph-build', () => api.buildGraph(repoId))}
-                disabled={!canUseRepo}
-                isLoading={isRunning === 'graph-build'}
-                className="justify-between h-12 bg-black border border-red-900/40 text-white hover:bg-red-950/20 rounded-md"
-              >
-                Build Graph
-                <Database className="w-4 h-4" />
-              </Button>
-              <Button
-                onClick={() => runOperation('Git Diff', 'git-diff', () => api.gitDiff(repoId))}
-                disabled={!canUseRepo}
-                isLoading={isRunning === 'git-diff'}
-                className="justify-between h-12 bg-black border border-red-900/40 text-white hover:bg-red-950/20 rounded-md"
-              >
-                Git Diff
-                <Zap className="w-4 h-4" />
-              </Button>
-              <Button
-                onClick={() => runOperation('Clear Graph', 'graph-clear', () => api.clearGraph())}
-                isLoading={isRunning === 'graph-clear'}
-                className="justify-between h-12 bg-black border border-red-900/40 text-white hover:bg-red-950/20 rounded-md"
-              >
-                Clear Graph
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
+            ))}
           </CardContent>
-          <CardFooter className="flex flex-col items-start gap-3">
-            <div className="text-xs font-bold uppercase tracking-widest text-white/40">Theme preserved: black + red control panel</div>
-            <div className="text-sm text-white/60">All actions go through the existing backend service, no backend code changes required.</div>
-          </CardFooter>
         </Card>
 
         <Card className="border border-red-900/20 bg-black">
           <CardHeader>
-            <CardTitle className="flex items-center gap-3">
-              <ShieldCheck className="w-5 h-5 text-red-500" />
-              Service Snapshot
-            </CardTitle>
+            <CardTitle>CI/CD Pipeline Activity</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="rounded-md border border-red-900/20 bg-red-950/10 p-4">
-              <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Root Status</p>
-              <p className="text-sm text-white/80 break-words">{serviceStatus.root ? JSON.stringify(serviceStatus.root) : 'Not checked yet'}</p>
-            </div>
-            <div className="rounded-md border border-red-900/20 bg-red-950/10 p-4">
-              <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Health Endpoint</p>
-              <p className="text-sm text-white/80 break-words">{serviceStatus.health ? JSON.stringify(serviceStatus.health) : 'Not checked yet'}</p>
-            </div>
+          <CardContent className="space-y-3">
+            {pipeline.map((item) => (
+              <div key={item.name} className="p-4 rounded-md border border-red-900/20 bg-red-950/10 flex items-center justify-between">
+                <div>
+                  <p className="text-white font-bold">{item.name}</p>
+                  <p className="text-xs text-white/50">Duration: {item.latency}</p>
+                </div>
+                <div className="text-sm font-bold flex items-center">
+                  {item.status === 'Passed' && <CheckCircle2 className="w-4 h-4 text-green-400 mr-1" />}
+                  {item.status === 'In Progress' && <RefreshCw className="w-4 h-4 text-yellow-400 mr-1 animate-spin" />}
+                  {item.status === 'Queued' && <Clock className="w-4 h-4 text-white/40 mr-1" />}
+                  <span className="text-white/80">{item.status}</span>
+                </div>
+              </div>
+            ))}
           </CardContent>
         </Card>
       </div>
@@ -223,69 +108,29 @@ export const Operations = () => {
       <div className="grid lg:grid-cols-2 gap-8">
         <Card className="border border-red-900/20 bg-black">
           <CardHeader>
-            <CardTitle>Pull Request Toolkit</CardTitle>
+            <CardTitle className="flex items-center"><Database className="w-5 h-5 mr-2 text-red-500" />Repository Sync Logs</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <Input
-              label="GitHub Token"
-              placeholder="Optional token for PR creation"
-              value={githubToken}
-              onChange={(e) => setGithubToken(e.target.value)}
-            />
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Button
-                onClick={() => runOperation('Generate PR', 'pr-generate', () => api.generatePullRequest({ repo_id: repoId, github_token: githubToken || undefined }))}
-                disabled={!canUseRepo}
-                isLoading={isRunning === 'pr-generate'}
-                className="justify-between h-12 bg-red-600 text-white hover:bg-red-700 rounded-md"
-              >
-                Generate PR
-                <GitBranch className="w-4 h-4" />
-              </Button>
-              <Button
-                onClick={() => runOperation('Generate Patch', 'pr-patch', () => api.generatePullRequestPatch(repoId))}
-                disabled={!canUseRepo}
-                isLoading={isRunning === 'pr-patch'}
-                className="justify-between h-12 bg-black border border-red-900/40 text-white hover:bg-red-950/20 rounded-md"
-              >
-                Raw Patch
-                <RefreshCw className="w-4 h-4" />
-              </Button>
-              <Button
-                onClick={() => runOperation('Generate Summary', 'pr-summary', () => api.generatePullRequestSummary({ repo_id: repoId, github_token: githubToken || undefined }))}
-                disabled={!canUseRepo}
-                isLoading={isRunning === 'pr-summary'}
-                className="justify-between h-12 bg-black border border-red-900/40 text-white hover:bg-red-950/20 rounded-md"
-              >
-                PR Summary
-                <Activity className="w-4 h-4" />
-              </Button>
-              <Button
-                onClick={() => runOperation('PR Risk Analysis', 'pr-risk', () => api.analyzePullRequestRisk(repoId))}
-                disabled={!canUseRepo}
-                isLoading={isRunning === 'pr-risk'}
-                className="justify-between h-12 bg-black border border-red-900/40 text-white hover:bg-red-950/20 rounded-md"
-              >
-                Risk Analysis
-                <Zap className="w-4 h-4" />
-              </Button>
-            </div>
+          <CardContent className="space-y-2">
+            {syncLogs.map((log) => (
+              <div key={log} className="text-sm text-white/70 p-3 rounded-md bg-red-950/10 border border-red-900/20">{log}</div>
+            ))}
           </CardContent>
         </Card>
 
         <Card className="border border-red-900/20 bg-black">
           <CardHeader>
-            <CardTitle>Latest Response</CardTitle>
+            <CardTitle className="flex items-center"><Shield className="w-5 h-5 mr-2 text-red-500" />Security Monitoring Events</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="rounded-md border border-red-900/20 bg-black p-4 max-h-[420px] overflow-auto">
-              <p className="text-[10px] font-black uppercase tracking-widest text-red-500 mb-2">
-                {latestResult ? `${latestResult.title} • ${latestResult.endpoint}` : 'Awaiting backend action'}
-              </p>
-              <pre className="text-xs leading-relaxed text-white/80 whitespace-pre-wrap break-words">
-                {resultText}
-              </pre>
-            </div>
+          <CardContent className="space-y-3">
+            {securityEvents.map((event) => (
+              <div key={event.text} className="p-4 rounded-md border border-red-900/20 bg-red-950/10">
+                <p className="text-xs uppercase tracking-widest font-bold text-red-400 mb-1">{event.severity}</p>
+                <p className="text-sm text-white/80">{event.text}</p>
+              </div>
+            ))}
+            <Button className="w-full bg-red-600 text-white hover:bg-red-700">
+              <AlertTriangle className="w-4 h-4 mr-2" />Investigate Active Alerts
+            </Button>
           </CardContent>
         </Card>
       </div>

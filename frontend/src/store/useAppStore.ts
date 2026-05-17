@@ -8,6 +8,7 @@ import type {
   EmbeddingQueryResponse,
   SelfHealResponse,
 } from '../types/api.types';
+import { apiClient } from '../lib/api.client';
 
 // ============================================
 // Store State Interface
@@ -47,7 +48,7 @@ interface AppState {
   // Actions
   setSession: (session: any) => void;
   logout: () => void;
-  fetchRepositories: (token: string | null) => Promise<void>;
+  fetchRepositories: () => Promise<void>;
   fetchGitHubRepoCount: (providerToken: string | null) => Promise<void>;
   
   addRepository: (repo: Repository) => void;
@@ -125,89 +126,31 @@ export const useAppStore = create<AppState>()(
           }, false, 'logout');
         },
         
+        // Data Fetching Actions
         fetchRepositories: async () => {
+          const token = get().sessionToken;
+          if (!token) return;
           try {
-            set({ isLoading: true }, false, 'fetchRepositories/loading');
-            const { data, error } = await supabase
-              .from('repositories')
-              .select('*')
-              .order('created_at', { ascending: false });
-              
-            if (error) throw error;
-            
-            if (data) {
-              const mapped: Repository[] = data.map((row: any) => ({
-                id: row.id,
-                name: row.name || row.repo_url?.split('/').pop() || row.id,
-                source: row.source as 'github' | 'upload',
-                url: row.repo_url || undefined,
-                createdAt: row.created_at,
-                // Local synced details are stored under custom states if needed
-              }));
-              
-              set({ 
-                repositories: mapped,
-                currentRepoId: mapped.length > 0 ? mapped[0].id : null,
-                isLoading: false 
-              }, false, 'fetchRepositories/success');
-            }
-          } catch (err: any) {
-            set({ 
-              error: err.message || 'Failed to fetch repository metadata',
-              isLoading: false 
-            }, false, 'fetchRepositories/error');
+            set({ isLoading: true });
+            const response = await apiClient.get('/repo/list');
+            const reposRaw = (response.data || []) as any[];
+            const repos: Repository[] = reposRaw.map((repo) => ({
+              id: repo.id,
+              name: repo.name,
+              source: repo.source === 'upload' ? 'upload' : 'github',
+              url: repo.url || repo.repo_url,
+              createdAt: repo.createdAt || repo.created_at || new Date().toISOString(),
+              lastSynced: repo.lastSynced || repo.last_synced,
+            }));
+            set({ repositories: repos, githubRepoCount: repos.length, isLoading: false });
+          } catch (error: any) {
+            set({ error: error.message || 'Failed to fetch repositories.', isLoading: false });
           }
         },
-
         fetchGitHubRepoCount: async (providerToken) => {
-          if (!providerToken) {
-            set({ githubRepoCount: 0, githubConnected: false }, false, 'fetchGitHubRepoCount/noToken');
-            return;
-          }
-
-          try {
-            let page = 1;
-            let repoCount = 0;
-            const perPage = 100;
-
-            while (true) {
-              const response = await fetch(
-                `https://api.github.com/user/repos?per_page=${perPage}&page=${page}&affiliation=owner,collaborator,organization_member&sort=updated`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${providerToken}`,
-                    Accept: 'application/vnd.github+json',
-                  },
-                }
-              );
-
-              if (!response.ok) {
-                throw new Error(`GitHub API request failed with status ${response.status}`);
-              }
-
-              const repos = await response.json();
-
-              if (!Array.isArray(repos)) {
-                throw new Error('Unexpected GitHub repository response');
-              }
-
-              repoCount += repos.length;
-
-              if (repos.length < perPage) {
-                break;
-              }
-
-              page += 1;
-            }
-
-            set({ githubRepoCount: repoCount, githubConnected: true }, false, 'fetchGitHubRepoCount/success');
-          } catch (err: any) {
-            set({
-              githubRepoCount: 0,
-              githubConnected: false,
-              error: err.message || 'Failed to fetch GitHub repository count',
-            }, false, 'fetchGitHubRepoCount/error');
-          }
+          // URL-based demo mode: show count from indexed repos to avoid auth-coupled GitHub calls.
+          const currentCount = get().repositories.length;
+          set({ githubRepoCount: currentCount, githubConnected: Boolean(providerToken || get().user) });
         },
         
         // Repository Actions
