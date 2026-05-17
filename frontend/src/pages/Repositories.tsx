@@ -1,289 +1,183 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  FolderGit2,
-  Upload,
-  RefreshCw,
-  Trash2,
   GitBranch,
   Calendar,
   Plus,
   Search,
   Globe,
-  Lock,
-  MoreVertical
+  MoreVertical,
+  Users,
+  Shield,
+  BarChart3,
 } from 'lucide-react';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-  Button,
-  Input,
-  Modal,
-  LoadingSpinner,
-} from '../components/ui';
-import { useAppStore } from '../store/useAppStore';
-import { useCloneRepo, useUploadRepo, useSyncRepo } from '../hooks/useAPI';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter, Button, Input, Modal } from '../components/ui';
+
+const demoRepositories = [
+  {
+    id: 'simple-app-demo',
+    name: 'simple_app',
+    url: 'https://github.com/prajwal-priyadarshan/simple_app',
+    lastCommit: 'feat: add flutter scramble animation tuning',
+    lastCommitAgo: '2 hours ago',
+    contributors: 5,
+    vulnerabilities: { critical: 0, high: 1, medium: 2 },
+    aiSummary: 'Flutter word-scramble game app with clean widget separation, Riverpod-lite state updates, and lightweight local persistence.',
+    commitActivity: [6, 3, 8, 5, 9, 4, 7],
+    framework: 'Flutter',
+    language: 'Dart',
+  },
+  {
+    id: 'billing-core-demo',
+    name: 'billing_core',
+    url: 'https://github.com/acme/billing_core',
+    lastCommit: 'refactor: isolate invoice retry queue processor',
+    lastCommitAgo: '5 hours ago',
+    contributors: 9,
+    vulnerabilities: { critical: 1, high: 2, medium: 4 },
+    aiSummary: 'Financial microservice with high transaction concurrency and strict reconciliation checks.',
+    commitActivity: [3, 8, 7, 6, 5, 9, 4],
+    framework: 'FastAPI',
+    language: 'Python',
+  },
+];
 
 export const Repositories = () => {
-  const { repositories, isLoading } = useAppStore();
   const [isCloneModalOpen, setIsCloneModalOpen] = useState(false);
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [repoUrl, setRepoUrl] = useState('');
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isIndexing, setIsIndexing] = useState(false);
+  const [isConnectedDemoRepo, setIsConnectedDemoRepo] = useState(false);
 
-  const cloneMutation = useCloneRepo();
-  const uploadMutation = useUploadRepo();
-  const syncMutation = useSyncRepo();
+  const repositories = useMemo(() => {
+    if (isConnectedDemoRepo) return demoRepositories;
+    return [demoRepositories[0]];
+  }, [isConnectedDemoRepo]);
 
-  const handleClone = async () => {
+  const handleConnect = async () => {
     if (!repoUrl.trim()) return;
-    await cloneMutation.mutateAsync({ repo_url: repoUrl });
+    setIsIndexing(true);
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+    setIsConnectedDemoRepo(true);
     setRepoUrl('');
+    setIsIndexing(false);
     setIsCloneModalOpen(false);
-  };
-
-  const handleUpload = async () => {
-    if (!selectedFile) return;
-    await uploadMutation.mutateAsync(selectedFile);
-    setSelectedFile(null);
-    setIsUploadModalOpen(false);
-  };
-
-  const handleSync = async (repoId: string) => {
-    await syncMutation.mutateAsync(repoId);
   };
 
   return (
     <div className="space-y-8 pb-12">
-      {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h1 className="text-3xl font-bold text-white leading-tight">Code Intelligence Base</h1>
           <p className="text-white/60 mt-2 font-medium">
-            Manage and index your repositories for deep AI architectural analysis.
+            Demo mode with realistic repository metadata and indexing telemetry.
           </p>
         </div>
-        <div className="flex items-center space-x-3">
-          <Button
-            onClick={() => setIsCloneModalOpen(true)}
-            className="h-12 px-6 rounded-md bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/40 flex items-center space-x-2 transition-all active:scale-95"
-          >
-            <Plus className="w-5 h-5" />
-            <span className="font-bold">Connect GitHub</span>
-          </Button>
-          <Button
-            onClick={() => setIsUploadModalOpen(true)}
-            variant="outline"
-            className="h-12 px-6 rounded-md border-red-900/30 text-white hover:bg-red-900/10 flex items-center space-x-2 transition-all active:scale-95"
-          >
-            <Upload className="w-4 h-4" />
-            <span className="font-bold">Upload Local</span>
-          </Button>
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="px-4 py-2 rounded-md border border-red-900/30 bg-red-950/10 text-xs font-bold uppercase tracking-widest text-white/70">
+            Total Repos: <span className="text-red-400">23</span>
+          </div>
+          <div className="px-4 py-2 rounded-md border border-red-900/30 bg-red-950/10 text-xs font-bold uppercase tracking-widest text-white/70">
+            Indexed: <span className="text-red-400">{repositories.length}</span>
+          </div>
         </div>
+        <Button
+          onClick={() => setIsCloneModalOpen(true)}
+          className="h-12 px-6 rounded-md bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/40 flex items-center space-x-2"
+        >
+          <Plus className="w-5 h-5" />
+          <span className="font-bold">Connect Knowledge Source</span>
+        </Button>
       </div>
 
-      {/* Filter Bar */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-2 bg-black rounded-md shadow-premium border-2 border-red-900/30">
         <div className="relative w-full md:w-96">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-          <input
-            type="text"
-            placeholder="Filter indexed repositories..."
-            className="w-full pl-11 pr-4 py-3 bg-transparent text-sm font-semibold text-white placeholder:text-white/30 focus:outline-none rounded-md"
-          />
+          <input type="text" placeholder="Filter repositories..." className="w-full pl-11 pr-4 py-3 bg-transparent text-sm font-semibold text-white placeholder:text-white/30 focus:outline-none rounded-md" />
         </div>
-        <div className="flex space-x-2 px-2">
-          <button className="px-4 py-2 text-xs font-bold text-red-500 bg-red-900/20 rounded-lg">All</button>
-          <button className="px-4 py-2 text-xs font-bold text-white/40 hover:bg-red-900/10 rounded-lg transition-colors">GitHub</button>
-          <button className="px-4 py-2 text-xs font-bold text-white/40 hover:bg-red-900/10 rounded-lg transition-colors">Local</button>
-        </div>
+        <div className="text-xs uppercase tracking-widest text-white/40 font-bold">Demo dataset • realistic metadata</div>
       </div>
 
-      {/* Repositories Grid */}
-      {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-24 space-y-4">
-          <LoadingSpinner size="lg" />
-          <p className="text-white/40 font-bold animate-pulse uppercase tracking-widest text-xs">Accessing Knowledge Base...</p>
-        </div>
-      ) : repositories.length === 0 ? (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-        >
-          <Card className="border-2 border-dashed border-red-900/20 shadow-none bg-red-950/5">
-            <CardContent className="text-center py-20">
-              <div className="w-20 h-20 bg-black border border-red-900/20 rounded-md shadow-sm flex items-center justify-center mx-auto mb-6">
-                <FolderGit2 className="w-10 h-10 text-white/20" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">No Repositories Indexed</h3>
-              <p className="text-white/60 mb-8 max-w-sm mx-auto font-medium">
-                Your AI guardian needs code to analyze. Connect your first repository to begin building your structural knowledge base.
-              </p>
-              <div className="flex justify-center space-x-4">
-                <Button onClick={() => setIsCloneModalOpen(true)} className="rounded-md h-12 px-8 font-bold">
-                  Clone Now
-                </Button>
-                <Button variant="outline" onClick={() => setIsUploadModalOpen(true)} className="rounded-md h-12 px-8 font-bold">
-                  Upload ZIP
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {repositories.map((repo, index) => (
-            <motion.div
-              key={repo.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Card className="group border-2 border-red-900/20 hover:border-red-600 shadow-premium hover:shadow-[0_0_30px_rgba(255,0,0,0.15)] hover:-translate-y-1 transition-all duration-500 overflow-hidden bg-black rounded-md">
-                <div className="h-2 bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <CardHeader className="pb-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className={`w-12 h-12 rounded-md flex items-center justify-center shadow-sm ${repo.source === 'github' ? 'bg-red-600 text-white' : 'bg-red-900/20 text-red-500'}`}>
-                        {repo.source === 'github' ? (
-                          <GitBranch className="w-6 h-6" />
-                        ) : (
-                          <Upload className="w-6 h-6" />
-                        )}
-                      </div>
-                      <div className="overflow-hidden">
-                        <CardTitle className="text-lg font-bold text-white truncate leading-none mb-2">{repo.name}</CardTitle>
-                        <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-white/40">
-                          {repo.source === 'github' ? <Globe className="w-3 h-3" /> : <Lock className="w-3 h-3" />}
-                          <span>{repo.source === 'github' ? 'Public / Managed' : 'Private / Local'}</span>
-                        </div>
-                      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {repositories.map((repo, idx) => (
+          <motion.div key={repo.id} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.08 }}>
+            <Card className="group border-2 border-red-900/20 hover:border-red-600 shadow-premium bg-black rounded-md overflow-hidden">
+              <div className="h-2 bg-red-600" />
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 rounded-md bg-red-600 text-white flex items-center justify-center">
+                      <GitBranch className="w-6 h-6" />
                     </div>
-                    <button className="text-white/40 hover:text-red-500 transition-colors">
-                      <MoreVertical className="w-5 h-5" />
-                    </button>
-                  </div>
-                </CardHeader>
-                <CardContent className="pb-6">
-                  <div className="space-y-4">
-                    {repo.url && (
-                      <p className="text-sm font-medium text-white/60 truncate bg-red-900/10 p-2 rounded-lg border border-red-900/20">{repo.url}</p>
-                    )}
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-1">
-                        <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Added</p>
-                        <div className="flex items-center text-sm font-bold text-white/80">
-                          <Calendar className="w-3.5 h-3.5 mr-2 text-white/40" />
-                          {new Date(repo.createdAt).toLocaleDateString()}
-                        </div>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Last Sync</p>
-                        <div className="flex items-center text-sm font-bold text-white/80">
-                          <RefreshCw className="w-3.5 h-3.5 mr-2 text-white/40" />
-                          {repo.lastSynced ? new Date(repo.lastSynced).toLocaleDateString() : 'Never'}
-                        </div>
+                    <div>
+                      <CardTitle className="text-lg text-white">{repo.name}</CardTitle>
+                      <div className="flex items-center text-xs text-white/40 font-bold uppercase tracking-widest mt-1">
+                        <Globe className="w-3 h-3 mr-1" /> Public / Managed
                       </div>
                     </div>
                   </div>
-                </CardContent>
-                <CardFooter className="bg-red-950/10 p-4 flex justify-between items-center border-t border-red-900/20">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => handleSync(repo.id)}
-                    isLoading={syncMutation.isPending}
-                    className="font-bold text-red-500 hover:bg-red-900/20 hover:text-red-600 rounded-lg h-9"
-                    disabled={repo.source !== 'github'}
-                  >
-                    <RefreshCw className={`w-4 h-4 mr-2 ${syncMutation.isPending ? 'animate-spin' : ''}`} />
-                    Refresh Node Graph
-                  </Button>
-                  <Button size="sm" variant="ghost" className="h-9 w-9 p-0 text-white/40 hover:text-red-500 hover:bg-red-900/10 rounded-lg">
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      )}
+                  <button className="text-white/40 hover:text-red-500"><MoreVertical className="w-5 h-5" /></button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-white/70 bg-red-950/10 border border-red-900/20 rounded-md p-3 truncate">{repo.url}</p>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="p-3 rounded-md border border-red-900/20 bg-red-950/10">
+                    <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Last Commit</p>
+                    <p className="text-sm text-white font-semibold mt-1">{repo.lastCommit}</p>
+                    <p className="text-xs text-white/40 mt-1 flex items-center"><Calendar className="w-3 h-3 mr-1" />{repo.lastCommitAgo}</p>
+                  </div>
+                  <div className="p-3 rounded-md border border-red-900/20 bg-red-950/10">
+                    <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Contributors</p>
+                    <p className="text-sm text-white font-semibold mt-1 flex items-center"><Users className="w-4 h-4 mr-1 text-red-400" />{repo.contributors}</p>
+                    <p className="text-xs text-white/50">{repo.framework} • {repo.language}</p>
+                  </div>
+                </div>
+                <div className="p-3 rounded-md border border-red-900/20 bg-red-950/10">
+                  <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold mb-2">Vulnerabilities</p>
+                  <div className="grid grid-cols-3 gap-2 text-xs font-bold">
+                    <div className="text-red-400">Critical: {repo.vulnerabilities.critical}</div>
+                    <div className="text-orange-400">High: {repo.vulnerabilities.high}</div>
+                    <div className="text-yellow-400">Medium: {repo.vulnerabilities.medium}</div>
+                  </div>
+                </div>
+                <div className="p-3 rounded-md border border-red-900/20 bg-black">
+                  <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold mb-2">AI Summary</p>
+                  <p className="text-sm text-white/70">{repo.aiSummary}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold mb-2">Commit Activity (7d)</p>
+                  <div className="grid grid-cols-7 gap-2 items-end h-16">
+                    {repo.commitActivity.map((v, i) => (
+                      <div key={i} className="bg-gradient-to-t from-red-800 to-red-500 rounded-t" style={{ height: `${v * 10}%` }} />
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter className="bg-red-950/10 border-t border-red-900/20 flex justify-between">
+                <Button variant="ghost" className="text-red-400 hover:bg-red-900/20"><Shield className="w-4 h-4 mr-2" />Run Security Sweep</Button>
+                <Button variant="ghost" className="text-red-400 hover:bg-red-900/20"><BarChart3 className="w-4 h-4 mr-2" />Open Insights</Button>
+              </CardFooter>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
 
-      {/* Clone Modal */}
-      <Modal
-        isOpen={isCloneModalOpen}
-        onClose={() => setIsCloneModalOpen(false)}
-        title="Connect Knowledge Source"
-      >
-        <div className="space-y-6 pt-2">
-          <p className="text-sm text-white/60 font-medium leading-relaxed">
-            Provide a GitHub repository URL. RepoGuardian will clone, index, and build a dependency graph for deep analysis.
-          </p>
+      <Modal isOpen={isCloneModalOpen} onClose={() => setIsCloneModalOpen(false)} title="Connect Knowledge Source">
+        <div className="space-y-5">
+          <p className="text-sm text-white/60">For demo mode, this action simulates cloning and indexing with production-like behavior.</p>
           <Input
-            label="GitHub URL"
-            placeholder="https://github.com/username/repository"
+            label="Repository URL"
+            placeholder="https://github.com/prajwal-priyadarshan/simple_app"
             value={repoUrl}
             onChange={(e) => setRepoUrl(e.target.value)}
-            className="h-12 rounded-md"
           />
-          <div className="flex justify-end space-x-3 pt-4">
-            <Button variant="ghost" onClick={() => setIsCloneModalOpen(false)} className="h-12 px-6 rounded-md font-bold">
-              Dismiss
-            </Button>
-            <Button
-              onClick={handleClone}
-              isLoading={cloneMutation.isPending}
-              disabled={!repoUrl.trim()}
-              className="h-12 px-8 rounded-md font-bold bg-red-600 text-white"
-            >
+          <div className="rounded-md border border-red-900/20 bg-red-950/10 p-3 text-sm text-white/70">
+            Try: <span className="text-red-400">https://github.com/prajwal-priyadarshan/simple_app</span>
+          </div>
+          <div className="flex justify-end gap-3">
+            <Button variant="ghost" onClick={() => setIsCloneModalOpen(false)}>Cancel</Button>
+            <Button onClick={handleConnect} isLoading={isIndexing} disabled={!repoUrl.trim()} className="bg-red-600 text-white hover:bg-red-700">
               Start Autonomous Indexing
-            </Button>
-          </div>
-        </div>
-      </Modal>
-
-      {/* Upload Modal */}
-      <Modal
-        isOpen={isUploadModalOpen}
-        onClose={() => setIsUploadModalOpen(false)}
-        title="Upload Structural Base"
-      >
-        <div className="space-y-6 pt-2">
-          <p className="text-sm text-white/60 font-medium leading-relaxed">
-            Upload a local project ZIP. This is useful for analyzing private codebases without cloud git integration.
-          </p>
-          <div
-            className={`border-2 border-dashed rounded-[2rem] p-12 text-center transition-all ${selectedFile ? 'border-red-600 bg-red-950/10' : 'border-red-900/20 hover:border-red-900/40'}`}
-          >
-            <input
-              type="file"
-              accept=".zip"
-              id="zip-upload"
-              onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-              className="hidden"
-            />
-            <label htmlFor="zip-upload" className="cursor-pointer group">
-              <div className="w-16 h-16 bg-black border border-red-900/20 rounded-md shadow-sm flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Upload className={`w-8 h-8 ${selectedFile ? 'text-red-500' : 'text-white/20'}`} />
-              </div>
-              <p className="text-sm font-bold text-white">{selectedFile ? selectedFile.name : 'Select ZIP Archive'}</p>
-              <p className="text-xs font-bold text-white/40 mt-2">Maximum size: 50MB</p>
-            </label>
-          </div>
-          <div className="flex justify-end space-x-3 pt-4">
-            <Button variant="ghost" onClick={() => setIsUploadModalOpen(false)} className="h-12 px-6 rounded-md font-bold">
-              Cancel
-            </Button>
-            <Button
-              onClick={handleUpload}
-              isLoading={uploadMutation.isPending}
-              disabled={!selectedFile}
-              className="h-12 px-8 rounded-md font-bold bg-red-600 text-white"
-            >
-              Analyze & Index
             </Button>
           </div>
         </div>
@@ -291,4 +185,3 @@ export const Repositories = () => {
     </div>
   );
 };
-

@@ -26,7 +26,7 @@ export const Toast = () => {
           initial={{ opacity: 0, y: -50, x: '-50%' }}
           animate={{ opacity: 1, y: 0, x: '-50%' }}
           exit={{ opacity: 0, y: -50, x: '-50%' }}
-          className="fixed top-4 left-1/2 z-50 w-full max-w-md"
+          className="fixed top-4 left-1/2 z-[100] w-full max-w-md"
         >
           <div
             className={`flex items-center gap-3 p-4 rounded-lg shadow-lg bg-black border border-red-900/40 border-l-4 ${
