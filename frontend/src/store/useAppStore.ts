@@ -47,7 +47,7 @@ interface AppState {
   // Actions
   setSession: (session: any) => void;
   logout: () => void;
-  fetchRepositories: () => Promise<void>;
+  fetchRepositories: (token: string | null) => Promise<void>;
   fetchGitHubRepoCount: (providerToken: string | null) => Promise<void>;
   
   addRepository: (repo: Repository) => void;

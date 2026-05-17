@@ -17,7 +17,7 @@ import { AuthGuard } from './components/AuthGuard';
 import { ScrollToTop } from './components/ScrollToTop';
 
 function App() {
-  const { setSession } = useAppStore();
+  const { setSession, fetchRepositories, fetchGitHubRepoCount, sessionToken } = useAppStore();
 
   useEffect(() => {
     // 🔍 1. Recover active token/session from Supabase client on load
@@ -34,6 +34,13 @@ function App() {
       subscription.unsubscribe();
     };
   }, [setSession]);
+
+  useEffect(() => {
+    if (sessionToken) {
+      fetchRepositories();
+      fetchGitHubRepoCount(sessionToken);
+    }
+  }, [sessionToken, fetchRepositories, fetchGitHubRepoCount]);
 
   return (
     <>

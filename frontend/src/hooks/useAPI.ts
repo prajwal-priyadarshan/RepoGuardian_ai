@@ -23,6 +23,7 @@ const getRepoDisplayNameFromFile = (fileName: string) => fileName.replace(/\.[^/
 export const queryKeys = {
   health: ['health'] as const,
   repositories: ['repositories'] as const,
+  githubRepositories: ['github-repositories'] as const,
   impactAnalysis: (repoId: string) => ['impact', repoId] as const,
   aiAnalysis: (repoId: string) => ['ai-analysis', repoId] as const,
   searchResults: (query: string, repoId: string) => ['search', repoId, query] as const,
@@ -38,6 +39,19 @@ export const useHealthCheck = () => {
     queryFn: () => api.healthCheck(),
     refetchInterval: 30000, // Check every 30 seconds
     retry: 3,
+  });
+};
+
+// ============================================
+// GitHub Repositories Hook
+// ============================================
+export const useGitHubRepos = () => {
+  const { sessionToken } = useAppStore();
+  return useQuery({
+    queryKey: queryKeys.githubRepositories,
+    queryFn: () => api.getGitHubRepos(),
+    enabled: !!sessionToken,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 };
 

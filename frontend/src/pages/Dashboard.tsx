@@ -48,7 +48,7 @@ export const Dashboard = () => {
     },
     {
       label: 'Risk Score',
-      value: impactAnalysis?.risk_score || '0.0',
+      value: aiAnalysis?.results?.[0]?.risk_score?.toFixed(2) || '0.0',
       icon: AlertTriangle,
       color: 'text-red-500',
       bg: 'bg-red-950/20',

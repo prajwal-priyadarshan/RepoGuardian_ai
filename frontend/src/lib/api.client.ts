@@ -117,7 +117,8 @@ class APIService {
 
   // Repository Management Endpoints
   async cloneRepo(data: CloneRepoRequest): Promise<CloneRepoResponse> {
-    const response = await apiClient.post<CloneRepoResponse>('/repo/clone', data);
+    const path = (import.meta.env.VITE_MODE === 'development') ? '/repo/dev-clone' : '/repo/clone';
+    const response = await apiClient.post<CloneRepoResponse>(path, data);
     return response.data;
   }
 

@@ -170,41 +170,63 @@ export const AIAnalysis = () => {
                           <Code2 className="w-5 h-5 text-white" />
                           <CardTitle className="text-lg">{analysis.function}</CardTitle>
                         </div>
-                        <div className="px-3 py-1 rounded-full bg-red-900/20 text-[10px] font-bold tracking-widest uppercase text-white/60">
-                          RAG Context
+                          <div className="px-3 py-1.5 rounded-full bg-red-900/30 text-xs font-bold tracking-wider uppercase text-red-400 flex items-center space-x-2">
+                            <AlertTriangle className="w-3 h-3" />
+                            <span>Risk: {analysis.risk_score?.toFixed(2) ?? 'N/A'}</span>
                         </div>
                       </div>
                     </CardHeader>
                     <CardContent className="p-8">
-                      <div className="prose prose-invert max-w-none">
-                        <div className="flex items-start space-x-4 p-5 bg-red-950/10 rounded-md border border-red-900/20 mb-8">
+                        <div className="flex items-start space-x-4 p-5 bg-red-950/10 rounded-md border border-red-900/20 mb-6">
                           <div className="w-10 h-10 min-w-[40px] bg-black border border-red-900/20 rounded-md shadow-sm flex items-center justify-center">
                             <GitCommit className="w-5 h-5 text-red-500" />
                           </div>
                           <div>
-                            <p className="text-xs font-bold text-red-500 uppercase tracking-widest mb-1">Impact Analysis</p>
+                            <p className="text-xs font-bold text-red-500 uppercase tracking-widest mb-1">Core Reasoning</p>
                             <p className="text-sm font-bold text-white">{analysis.why_breaks}</p>
                           </div>
                         </div>
-                        <p className="text-white/80 leading-relaxed font-medium">
-                          {analysis.explanation}
-                        </p>
-                        {analysis.suggestions?.length > 0 && (
-                          <div className="mt-8 space-y-3">
-                            <p className="text-sm font-bold text-white uppercase tracking-widest">Core Suggestions</p>
-                            {analysis.suggestions.map((s, i) => (
-                              <div key={i} className="flex items-center space-x-2 text-sm text-white/60">
-                                <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                                <span>{s}</span>
-                              </div>
-                            ))}
+
+                        <div className="space-y-6">
+                          <div>
+                            <h4 className="text-sm font-bold text-white uppercase tracking-widest mb-3">Explanation</h4>
+                            <p className="text-white/80 leading-relaxed font-medium">
+                              {analysis.explanation}
+                            </p>
                           </div>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+
+                          {analysis.semantic_context && analysis.semantic_context.length > 0 && (
+                            <div>
+                              <h4 className="text-sm font-bold text-white uppercase tracking-widest mb-3">Semantic Context</h4>
+                              <div className="space-y-3">
+                                {analysis.semantic_context.map((s, i) => (
+                                  <div key={i} className="flex items-start space-x-3 text-sm text-white/60 bg-black/20 p-3 rounded-md border border-white/10">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0" />
+                                    <code className="font-mono text-xs">{s}</code>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {analysis.suggestions && analysis.suggestions.length > 0 && (
+                            <div>
+                              <h4 className="text-sm font-bold text-white uppercase tracking-widest mb-3">Suggestions</h4>
+                              <div className="space-y-3">
+                                {analysis.suggestions.map((s, i) => (
+                                  <div key={i} className="flex items-center space-x-3 text-sm text-white/60">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                                    <span>{s}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
 
               <div className="lg:col-span-2 space-y-8">
                 <Card className="border border-red-900/30 shadow-premium bg-black text-white overflow-hidden">
