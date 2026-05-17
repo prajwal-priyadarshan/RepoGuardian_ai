@@ -638,73 +638,13 @@ RepoGuardian_ai/
 
 ## 🤝 Contributing
 
-We welcome contributions! RepoGuardian AI is built for the developer community.
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
-### How to Contribute
-
-1. **Fork the Repository**
-```bash
-git clone https://github.com/yourusername/RepoGuardian_ai.git
-cd RepoGuardian_ai
-git checkout -b feature/your-feature-name
-```
-
-2. **Make Your Changes**
-- Follow existing code style
-- Add tests for new features
-- Update documentation
-
-3. **Test Your Changes**
-```bash
-# Backend tests
-cd backend
-python test_all_endpoints.py
-
-# Frontend tests
-cd frontend
-npm run lint
-npm run build
-```
-
-4. **Submit Pull Request**
-- Clear description of changes
-- Reference any related issues
-- Include screenshots for UI changes
-
-### Development Guidelines
-
-#### Backend
-- Use FastAPI best practices
-- Add type hints to all functions
-- Document all endpoints in API_DOCUMENTATION.md
-- Write comprehensive error handling
-
-#### Frontend
-- Use TypeScript strictly
-- Follow React best practices
-- Maintain responsive design
-- Add loading states and error handling
-
-### Areas for Contribution
-
-🎯 **High Priority**
-- [ ] Add support for more programming languages (Go, Rust, Ruby)
-- [ ] Implement real-time WebSocket updates
-- [ ] Add unit test coverage
-- [ ] Create Docker deployment configuration
-
-🚀 **Feature Requests**
-- [ ] GitHub Actions integration
-- [ ] Slack/Discord notifications
-- [ ] Custom risk scoring rules
-- [ ] Multi-repository analysis
-- [ ] Team collaboration features
-
-🐛 **Bug Reports**
-- Use GitHub Issues
-- Include reproduction steps
-- Provide error logs
-- Specify environment details
+**Quick Start:**
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes with tests
+4. Submit a pull request
 
 ---
 
@@ -751,28 +691,14 @@ If you find RepoGuardian AI useful, please consider giving it a star! ⭐
 
 ## 🎯 Roadmap
 
-### Phase 1: Core Features ✅
-- [x] Multi-language AST parsing
-- [x] Neo4j dependency graph
-- [x] Pinecone vector embeddings
-- [x] Impact analysis engine
-- [x] AI-powered reasoning
-- [x] Self-healing system
-- [x] PR generation
+**Current Status:** ✅ All core features complete and production-ready
 
-### Phase 2: Enhanced Features 🚧
-- [ ] Real-time collaboration
-- [ ] Advanced visualization
-- [ ] Custom rule engine
-- [ ] Performance optimization
-- [ ] Multi-repo support
-
-### Phase 3: Enterprise Features 📋
-- [ ] SSO authentication
-- [ ] Role-based access control
-- [ ] Audit logging
-- [ ] SLA monitoring
-- [ ] Enterprise deployment
+**Future Enhancements:**
+- Real-time WebSocket updates
+- Support for more languages (Go, Rust, Ruby)
+- Advanced visualization dashboard
+- Multi-repository analysis
+- CI/CD pipeline integration
 
 ---
 
