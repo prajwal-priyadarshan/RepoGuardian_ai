@@ -260,31 +260,25 @@ graph LR
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- **Framework**: React 19 with TypeScript
-- **Styling**: Tailwind CSS 4.0
-- **State Management**: Zustand
-- **Routing**: React Router v7
-- **HTTP Client**: Axios
-- **Animations**: Framer Motion
-- **Build Tool**: Vite
+RepoGuardian AI leverages a state-of-the-art, high-performance tech stack designed for lightning-fast repository analysis, high-fidelity visualization, and robust security.
 
-### Backend
-- **Framework**: FastAPI (Python)
-- **Server**: Uvicorn (ASGI)
-- **Code Parsing**: Tree-sitter (6 languages)
-- **Graph Database**: Neo4j (Dependency mapping)
-- **Vector Database**: Pinecone (Semantic search)
-- **AI Models**:
-  - **Groq Llama 3.3 70B**: Code analysis & reasoning
-  - **Google Gemini**: Embeddings (3072 dimensions)
-- **Git Operations**: GitPython
-- **Validation**: Pydantic
-
-### Infrastructure
-- **Version Control**: Git + GitHub API
-- **Environment**: Python 3.12+, Node.js 18+
-- **Deployment**: Docker-ready (FastAPI + React)
+| Layer | Technology | Purpose & Details |
+| :--- | :--- | :--- |
+| **Frontend Framework** | **React 19 (TypeScript)** | Component-driven architecture with strict type safety. |
+| **Frontend Styling** | **Tailwind CSS 4.0** | Minimalist cyberpunk styling, ultra-responsive and fluid layouts. |
+| **State Management** | **Zustand** | Dynamic global state syncing and client-side storage persistence. |
+| **Routing & Client** | **React Router v7 + Axios** | Clean SPA layout transitions and global bearer token authorization injection. |
+| **Authentication** | **Supabase Auth** | Secure social authentication powered by **GitHub OAuth**. |
+| **Backend Framework** | **FastAPI (Python)** | High-speed, asynchronous API engine with automatic OpenAPI documentation. |
+| **Graph Database** | **Neo4j** | Graph dependency engine mapping function calls, classes, and file imports. |
+| **Relational Database** | **PostgreSQL (Supabase)** | Handles multi-tenant repository listings and user-repo ownership records. |
+| **Vector Database** | **Pinecone** | High-dimension vector indexing for semantic code search. |
+| **Code Parsing AST** | **Tree-sitter** | Multi-language semantic code structure extraction (Python, JS, TS, Java, C/C++). |
+| **AI Reasoning Model** | **Llama 3.3 70B (Groq)** | Ultra-fast inference engine for static analysis and self-healing patch generation. |
+| **AI Embedding Model** | **Google Gemini** | High-quality text embeddings (3072 dimensions) for RAG code context retrieval. |
+| **Git Operations** | **GitPython + GitHub API** | Codebase synchronization, diff parsing, and automated Pull Request generation. |
+| **Data Validation** | **Pydantic v2** | Strict type parsing and API request/response schema validation. |
+| **Infrastructure** | **Docker** | Standardized containerization for unified development and production builds. |
 
 ---
 
@@ -329,6 +323,10 @@ PINECONE_INDEX_NAME=repoguardian-gemini
 # AI Models
 GEMINI_API_KEY=your_gemini_key  # For embeddings
 GROQ_API_KEY=your_groq_key      # For AI analysis
+
+# Supabase (Auth & Multi-Tenant Separation)
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 ```
 
 #### Start Backend Server
@@ -354,6 +352,10 @@ Create `.env` file in `frontend/` directory:
 VITE_API_URL_DEV=http://127.0.0.1:8000
 VITE_API_URL_PROD=https://your-production-url.com
 VITE_MODE=development
+
+# Supabase (Client Integration)
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 #### Start Development Server
@@ -636,19 +638,6 @@ RepoGuardian_ai/
 
 ---
 
-## 👥 Team
-
-**RepoGuardian AI** is built by passionate developers who believe in autonomous code intelligence.
-
-### Core Contributors
-
-#### Backend Team
-- **Jivites Damodar, Sukanthan** — Backend Architecture, API Development, AI Integration, Database Design
-
-#### Frontend Team
-- **Rahul LS, Prajwal Priyadarshan** — Frontend Architecture, UI/UX Design, Component Development, State Management, Deployment
-
-
 ### Acknowledgments
 - Tree-sitter team for multi-language parsing
 - Neo4j for graph database technology
@@ -662,38 +651,3 @@ RepoGuardian_ai/
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-
-## 🌟 Star History
-
-If you find RepoGuardian AI useful, please consider giving it a star! ⭐
-
----
-
-## 📞 Support
-
-- **Documentation**: [API Docs](backend/API_DOCUMENTATION.md)
-- **Issues**: [GitHub Issues](https://github.com/yourusername/RepoGuardian_ai/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/RepoGuardian_ai/discussions)
-
----
-
-## 🎯 Roadmap
-
-**Current Status:** ✅ All core features complete and production-ready
-
-**Future Enhancements:**
-- Real-time WebSocket updates
-- Support for more languages (Go, Rust, Ruby)
-- Advanced visualization dashboard
-- Multi-repository analysis
-- CI/CD pipeline integration
-
----
-
-<div align="center">
-
-**Built with ❤️ by developers, for developers**
-
-[⬆ Back to Top](#️-repoguardian-ai)
-
-</div>
