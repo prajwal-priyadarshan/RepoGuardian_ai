@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![RepoGuardian AI](frontend/public/logo.png)
+<img src="frontend/public/logo.png" width="120" alt="RepoGuardian AI Logo" />
 
 **An AI-powered repository intelligence system that analyzes codebase impact, detects downstream risks, and suggests self-healing fixes.**
 
@@ -17,7 +17,7 @@
 [![Google Gemini](https://img.shields.io/badge/Google_Gemini-8E75C2?style=for-the-badge&logo=google-gemini&logoColor=white)](https://deepmind.google/technologies/gemini/)
 
 
-[Live Demo](#demo) • [Documentation](backend/API_DOCUMENTATION.md) • [Architecture](#architecture) • [Installation](#installation)
+[Live Demo 🚀](https://repo-guardian-ai.vercel.app)
 
 </div>
 
