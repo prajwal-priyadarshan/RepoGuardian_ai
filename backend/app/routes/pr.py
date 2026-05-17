@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from typing import Optional
 from app.services import pr_service, impact_service, ai_service
+from app.services.auth_service import get_current_user, verify_repo_ownership
 
 router = APIRouter()
 
@@ -16,7 +17,7 @@ class PRRiskRequest(BaseModel):
     repo_id: str
 
 @router.post("/generate")
-def generate_pr_endpoint(req: PRGenerateRequest):
+def generate_pr_endpoint(req: PRGenerateRequest, user_id: str = Depends(get_current_user)):
     """
     Phase 10: Complete PR Generation Pipeline
     1. Creates git patch
@@ -26,6 +27,9 @@ def generate_pr_endpoint(req: PRGenerateRequest):
     5. Creates GitHub PR (if token provided)
     """
     try:
+        # Enforce that the requesting user owns this repository
+        verify_repo_ownership(req.repo_id, user_id)
+        
         # Step 1: Create git patch
         patch_data = pr_service.create_git_patch(req.repo_id)
         
@@ -67,26 +71,35 @@ def generate_pr_endpoint(req: PRGenerateRequest):
             "summary": pr_summary,
             "pr_result": pr_result
         }
-        
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/patch")
-def create_patch_endpoint(req: PRPatchRequest):
+def create_patch_endpoint(req: PRPatchRequest, user_id: str = Depends(get_current_user)):
     """Step 10.1: Create git patch only."""
     try:
+        # Enforce that the requesting user owns this repository
+        verify_repo_ownership(req.repo_id, user_id)
+        
         patch_data = pr_service.create_git_patch(req.repo_id)
         return {
             "repo_id": req.repo_id,
             "patch": patch_data
         }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/summary")
-def generate_summary_endpoint(req: PRGenerateRequest):
+def generate_summary_endpoint(req: PRGenerateRequest, user_id: str = Depends(get_current_user)):
     """Step 10.2: Generate PR summary with impact and AI analysis."""
     try:
+        # Enforce that the requesting user owns this repository
+        verify_repo_ownership(req.repo_id, user_id)
+        
         # Run impact analysis
         impact_data = impact_service.run_impact_analysis(req.repo_id)
         
@@ -115,13 +128,18 @@ def generate_summary_endpoint(req: PRGenerateRequest):
             "repo_id": req.repo_id,
             "summary": pr_summary
         }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/risk-analysis")
-def analyze_pr_risk_endpoint(req: PRRiskRequest):
+def analyze_pr_risk_endpoint(req: PRRiskRequest, user_id: str = Depends(get_current_user)):
     """Phase 12: Advanced PR Risk Analysis."""
     try:
+        # Enforce that the requesting user owns this repository
+        verify_repo_ownership(req.repo_id, user_id)
+        
         # Get impact data
         impact_data = impact_service.run_impact_analysis(req.repo_id)
         
@@ -136,6 +154,8 @@ def analyze_pr_risk_endpoint(req: PRRiskRequest):
             "risk_analysis": risk_analysis,
             "pr_summary": pr_summary
         }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
