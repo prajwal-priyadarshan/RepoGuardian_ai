@@ -10,6 +10,7 @@ import { AIAnalysis } from './pages/AIAnalysis';
 import { ImpactAnalysis } from './pages/ImpactAnalysis';
 import { SelfHealing } from './pages/SelfHealing';
 import { CodeSearch } from './pages/CodeSearch';
+import { NotFound } from './pages/NotFound';
 import { AuthGuard } from './components/AuthGuard';
 import { ScrollToTop } from './components/ScrollToTop';
 
@@ -36,24 +37,19 @@ function App() {
     <>
       <ScrollToTop />
       <Routes>
+        {/* Public Landing View */}
         <Route path="/" element={<Home />} />
-        <Route
-          path="/*"
-          element={
-            <AuthGuard>
-              <Layout>
-                <Routes>
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/repositories" element={<Repositories />} />
-                  <Route path="/ai-analysis" element={<AIAnalysis />} />
-                  <Route path="/impact" element={<ImpactAnalysis />} />
-                  <Route path="/self-heal" element={<SelfHealing />} />
-                  <Route path="/search" element={<CodeSearch />} />
-                </Routes>
-              </Layout>
-            </AuthGuard>
-          }
-        />
+        
+        {/* Protected Dashboard Core Operations */}
+        <Route path="/dashboard" element={<AuthGuard><Layout><Dashboard /></Layout></AuthGuard>} />
+        <Route path="/repositories" element={<AuthGuard><Layout><Repositories /></Layout></AuthGuard>} />
+        <Route path="/ai-analysis" element={<AuthGuard><Layout><AIAnalysis /></Layout></AuthGuard>} />
+        <Route path="/impact" element={<AuthGuard><Layout><ImpactAnalysis /></Layout></AuthGuard>} />
+        <Route path="/self-heal" element={<AuthGuard><Layout><SelfHealing /></Layout></AuthGuard>} />
+        <Route path="/search" element={<AuthGuard><Layout><CodeSearch /></Layout></AuthGuard>} />
+
+        {/* Fallback 404 System Alert */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
