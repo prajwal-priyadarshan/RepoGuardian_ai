@@ -7,4 +7,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
   console.warn("Supabase credentials are missing from Frontend .env!");
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// 🛡️ Safe fallback initialization to prevent import-time blank-screen crashes
+export const supabase = createClient(
+  supabaseUrl || 'https://eygrcrhnryegwngfvvpx.supabase.co', 
+  supabaseAnonKey || 'placeholder'
+);
