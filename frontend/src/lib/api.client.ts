@@ -55,12 +55,15 @@ const apiClient: AxiosInstance = axios.create({
   },
 });
 
-import { useAppStore } from '../store/useAppStore';
+import { getApiSessionToken } from './sessionToken';
 
 // apiClient interceptor configuration
 apiClient.interceptors.request.use(
   (config) => {
-    const token = useAppStore.getState().sessionToken;
+    const token = getApiSessionToken();
+    // #region agent log
+    fetch('http://127.0.0.1:7642/ingest/62923a67-11d4-49f1-8731-d12ede83483e',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'2c2a23'},body:JSON.stringify({sessionId:'2c2a23',location:'api.client.ts:request',message:'API request interceptor',data:{url:config.url,hasToken:Boolean(token)},timestamp:Date.now(),hypothesisId:'D'})}).catch(()=>{});
+    // #endregion
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import type { Session } from '@supabase/supabase-js';
+import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from './lib/supabase';
 import { useAppStore } from './store/useAppStore';
 import { Layout } from './components/Layout';
@@ -16,10 +16,28 @@ import { NotFound } from './pages/NotFound';
 import { AuthGuard } from './components/AuthGuard';
 import { ScrollToTop } from './components/ScrollToTop';
 
+const isSupabaseConfigured = Boolean(
+  import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY
+);
+
 function App() {
   const { setSession } = useAppStore();
 
   useEffect(() => {
+    // Local dev without Supabase: skip OAuth and unlock protected routes
+    if (import.meta.env.DEV && !isSupabaseConfigured) {
+      // #region agent log
+      fetch('http://127.0.0.1:7642/ingest/62923a67-11d4-49f1-8731-d12ede83483e',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'2c2a23'},body:JSON.stringify({sessionId:'2c2a23',location:'App.tsx:useEffect',message:'Local dev auth bypass (no Supabase)',data:{dev:true},timestamp:Date.now(),hypothesisId:'C'})}).catch(()=>{});
+      // #endregion
+      useAppStore.setState({
+        user: { id: 'local-dev-user', email: 'dev@local' } as User,
+        sessionToken: null,
+        authLoading: false,
+        githubConnected: false,
+      });
+      return;
+    }
+
     // 🔍 1. Recover active token/session from Supabase client on load
     supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
       setSession(data.session);

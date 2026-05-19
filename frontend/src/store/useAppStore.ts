@@ -9,6 +9,7 @@ import type {
   SelfHealResponse,
 } from '../types/api.types';
 import { apiClient } from '../lib/api.client';
+import { setApiSessionToken } from '../lib/sessionToken';
 
 // ============================================
 // Store State Interface
@@ -49,7 +50,7 @@ interface AppState {
   setSession: (session: any) => void;
   logout: () => void;
   fetchRepositories: () => Promise<void>;
-  fetchGitHubRepoCount: (providerToken: string | null) => Promise<void>;
+  fetchGitHubRepoCount: (providerToken?: string | null) => Promise<void>;
   
   addRepository: (repo: Repository) => void;
   setCurrentRepo: (repoId: string) => void;
@@ -104,6 +105,7 @@ export const useAppStore = create<AppState>()(
           const token = session?.access_token || null;
           const providerToken = session?.provider_token || null;
           
+          setApiSessionToken(token);
           set({ 
             user, 
             sessionToken: token,
@@ -112,7 +114,7 @@ export const useAppStore = create<AppState>()(
           }, false, 'setSession');
           
           if (user) {
-            // Load their remote database repository mappings automatically!
+            // Load their remote repository mappings automatically.
             get().fetchGitHubRepoCount(providerToken);
             get().fetchRepositories();
           }
@@ -120,6 +122,7 @@ export const useAppStore = create<AppState>()(
         
         logout: async () => {
           await supabase.auth.signOut();
+          setApiSessionToken(null);
           set({
             ...initialState,
             authLoading: false
@@ -128,11 +131,16 @@ export const useAppStore = create<AppState>()(
         
         // Data Fetching Actions
         fetchRepositories: async () => {
+          const isDevMode = import.meta.env.DEV || import.meta.env.VITE_MODE === 'development';
           const token = get().sessionToken;
-          if (!token) return;
+          
+          // In production mode, require a token
+          if (!isDevMode && !token) return;
+          
           try {
             set({ isLoading: true });
-            const response = await apiClient.get('/repo/list');
+            const endpoint = isDevMode ? '/repo/dev-list' : '/repo/list';
+            const response = await apiClient.get(endpoint);
             const reposRaw = (response.data || []) as any[];
             const repos: Repository[] = reposRaw.map((repo) => ({
               id: repo.id,
@@ -142,21 +150,43 @@ export const useAppStore = create<AppState>()(
               createdAt: repo.createdAt || repo.created_at || new Date().toISOString(),
               lastSynced: repo.lastSynced || repo.last_synced,
             }));
-            set({ repositories: repos, githubRepoCount: repos.length, isLoading: false });
+            set({ repositories: repos, isLoading: false });
           } catch (error: any) {
-            set({ error: error.message || 'Failed to fetch repositories.', isLoading: false });
+            const isNetworkError = error?.message === 'Network Error' || !error?.response;
+            if (!isNetworkError) {
+              set({ error: error.message || 'Failed to fetch repositories.', isLoading: false });
+              return;
+            }
+
+            set({ isLoading: false });
+            console.warn('Repository fetch skipped because the backend is unreachable.');
           }
         },
         fetchGitHubRepoCount: async (providerToken) => {
-          // URL-based demo mode: show count from indexed repos to avoid auth-coupled GitHub calls.
-          const currentCount = get().repositories.length;
-          set({ githubRepoCount: currentCount, githubConnected: Boolean(providerToken || get().user) });
+          const githubConnected = Boolean(providerToken || get().user);
+
+          try {
+            const isDevMode = import.meta.env.DEV || import.meta.env.VITE_MODE === 'development';
+            const endpoint = isDevMode ? '/repo/dev-count' : '/repo/count';
+            const response = await apiClient.get(endpoint, {
+              headers: providerToken ? { 'X-GitHub-Token': providerToken } : undefined,
+            });
+            const githubRepoCount = Number(response.data?.github_repositories ?? 0);
+            set({ githubRepoCount, githubConnected });
+          } catch (error) {
+            console.warn('Repository count fetch failed, falling back to indexed GitHub repositories.', error);
+            set({
+              githubRepoCount: get().repositories.filter((repo) => repo.source === 'github').length,
+              githubConnected,
+            });
+          }
         },
         
         // Repository Actions
         addRepository: (repo) =>
           set((state) => ({
             repositories: [repo, ...state.repositories],
+            githubRepoCount: repo.source === 'github' ? state.githubRepoCount + 1 : state.githubRepoCount,
             currentRepoId: repo.id,
           }), false, 'addRepository'),
         
@@ -171,10 +201,17 @@ export const useAppStore = create<AppState>()(
           }), false, 'updateRepoSync'),
         
         removeRepository: (repoId) =>
-          set((state) => ({
-            repositories: state.repositories.filter((repo) => repo.id !== repoId),
-            currentRepoId: state.currentRepoId === repoId ? null : state.currentRepoId,
-          }), false, 'removeRepository'),
+          set((state) => {
+            const repoToRemove = state.repositories.find((repo) => repo.id === repoId);
+            return {
+              repositories: state.repositories.filter((repo) => repo.id !== repoId),
+              githubRepoCount:
+                repoToRemove?.source === 'github' && state.githubRepoCount > 0
+                  ? state.githubRepoCount - 1
+                  : state.githubRepoCount,
+              currentRepoId: state.currentRepoId === repoId ? null : state.currentRepoId,
+            };
+          }, false, 'removeRepository'),
         
         // Analysis Actions
         setImpactAnalysis: (data) =>

@@ -7,11 +7,18 @@ interface AuthGuardProps {
   children: ReactNode;
 }
 
+const isSupabaseConfigured = Boolean(
+  import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY
+);
+const devAuthBypass = import.meta.env.DEV && !isSupabaseConfigured;
+
 export const AuthGuard = ({ children }: AuthGuardProps) => {
   const { user, authLoading } = useAppStore();
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (devAuthBypass) return;
+
     // 🔍 Avoid premature redirects if we are in the middle of processing a Supabase OAuth callback hash
     const hasHashCallback = window.location.hash.includes('access_token=') || 
                             window.location.hash.includes('error=') ||
@@ -22,6 +29,10 @@ export const AuthGuard = ({ children }: AuthGuardProps) => {
       navigate('/', { replace: true });
     }
   }, [user, authLoading, navigate]);
+
+  if (devAuthBypass) {
+    return <>{children}</>;
+  }
 
   if (authLoading) {
     return (

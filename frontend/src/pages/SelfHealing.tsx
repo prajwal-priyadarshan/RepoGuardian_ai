@@ -1,84 +1,114 @@
 import { motion } from 'framer-motion';
-import { Wrench, ShieldCheck, RefreshCw, FileCheck2, Package, Terminal, CheckCircle2, AlertCircle } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent, Button } from '../components/ui';
-
-const fixes = [
-  { item: 'Refactor duplicate scramble function into shared utility', status: 'Applied', impact: 'High' },
-  { item: 'Patch vulnerable http dependency to secure version', status: 'Patched', impact: 'Critical' },
-  { item: 'Add null-check guard in timer callback', status: 'Applied', impact: 'Medium' },
-  { item: 'Stabilize score persistence write order', status: 'Queued', impact: 'Medium' },
-];
-
-const logs = [
-  '20:02:11 • Auto-fix generated for scramble_service.dart',
-  '20:02:21 • Dependency patch simulated: http 0.13.5 -> 1.2.1',
-  '20:02:34 • Recovery checkpoint saved: pre_heal_snapshot_041',
-  '20:02:46 • Validation suite completed (14/14 pass)',
-  '20:03:01 • Runtime smoke test passed on demo profile',
-];
+import { WandSparkles, ShieldCheck, Activity, Brain, Loader2, RotateCcw } from 'lucide-react';
+import { useState } from 'react';
+import { Card, CardContent, Button } from '../components/ui';
+import { selectCurrentRepo, useAppStore } from '../store/useAppStore';
+import { getDisplayName } from '../lib/utils';
+import { useSelfHeal } from '../hooks/useAPI';
 
 export const SelfHealing = () => {
+  const currentRepo = useAppStore(selectCurrentRepo);
+  const selfHealResults = useAppStore((state) => state.selfHealResults);
+  const [running, setRunning] = useState(false);
+  const healMutation = useSelfHeal();
+
+  const handleHeal = async () => {
+    if (!currentRepo) {
+      return;
+    }
+
+    try {
+      setRunning(true);
+      await healMutation.mutateAsync({ repo_id: currentRepo.id });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setRunning(false);
+    }
+  };
+
+  const summary = selfHealResults?.summary ?? [];
+
   return (
-    <div className="space-y-8 pb-12">
-      <div className="p-8 bg-black border border-red-900/30 rounded-md">
-        <div className="flex items-center gap-4 mb-3">
-          <Wrench className="w-8 h-8 text-red-500" />
-          <h1 className="text-3xl text-white font-bold">Autonomous Self-Healing</h1>
-        </div>
-        <p className="text-white/60">Demo mode simulating auto-remediation workflow with repair logs and validation status.</p>
-      </div>
-
-      <div className="grid md:grid-cols-4 gap-6">
-        <Card className="border border-red-900/20 bg-black"><CardContent className="pt-6"><p className="text-xs uppercase text-white/40 font-bold">Fixes Suggested</p><p className="text-3xl text-white font-black mt-1">12</p></CardContent></Card>
-        <Card className="border border-red-900/20 bg-black"><CardContent className="pt-6"><p className="text-xs uppercase text-white/40 font-bold">Auto Applied</p><p className="text-3xl text-white font-black mt-1">7</p></CardContent></Card>
-        <Card className="border border-red-900/20 bg-black"><CardContent className="pt-6"><p className="text-xs uppercase text-white/40 font-bold">Patch Safety</p><p className="text-3xl text-green-400 font-black mt-1">95%</p></CardContent></Card>
-        <Card className="border border-red-900/20 bg-black"><CardContent className="pt-6"><p className="text-xs uppercase text-white/40 font-bold">Recovery State</p><p className="text-3xl text-white font-black mt-1">Ready</p></CardContent></Card>
-      </div>
-
-      <div className="grid lg:grid-cols-2 gap-8">
-        <Card className="border border-red-900/20 bg-black">
-          <CardHeader><CardTitle className="flex items-center"><FileCheck2 className="w-5 h-5 mr-2 text-red-500" />Auto-fix Suggestions</CardTitle></CardHeader>
-          <CardContent className="space-y-3">
-            {fixes.map((fix) => (
-              <motion.div key={fix.item} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="p-4 rounded-md border border-red-900/20 bg-red-950/10 flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-sm text-white/80">{fix.item}</p>
-                  <p className="text-xs text-white/40 mt-1">Impact: {fix.impact}</p>
-                </div>
-                <span className="text-xs font-bold text-red-400 uppercase">{fix.status}</span>
-              </motion.div>
-            ))}
-          </CardContent>
-        </Card>
-
-        <Card className="border border-red-900/20 bg-black">
-          <CardHeader><CardTitle className="flex items-center"><Package className="w-5 h-5 mr-2 text-red-500" />Dependency Repair & Patch Simulation</CardTitle></CardHeader>
-          <CardContent className="space-y-4">
-            <div className="p-4 rounded-md border border-red-900/20 bg-red-950/10 text-sm text-white/80">
-              Vulnerability patch simulation completed for 3 dependency chains. Rollback checkpoint preserved for fast restore.
+    <div className="space-y-8">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 border-red-900/20">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-12 h-12 rounded-md bg-red-950/20 flex items-center justify-center">
+                <WandSparkles className="w-6 h-6 text-red-500" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-white">Self Healing</h1>
+                <p className="text-white/50">Automated fixes and recovery actions for the active repository.</p>
+              </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-md border border-red-900/20 bg-black text-center"><p className="text-xs text-white/40 uppercase">Patched Packages</p><p className="text-white font-bold">3</p></div>
-              <div className="p-3 rounded-md border border-red-900/20 bg-black text-center"><p className="text-xs text-white/40 uppercase">Rollback Points</p><p className="text-white font-bold">2</p></div>
+            <div className="flex flex-wrap gap-2">
+              <span className="px-3 py-1 rounded-full bg-red-950/20 text-red-300 border border-red-900/30 text-sm">{currentRepo ? getDisplayName(currentRepo) : 'No repository selected'}</span>
+              <span className="px-3 py-1 rounded-full bg-white/5 text-white/60 border border-white/10 text-sm">{healMutation.isPending || running ? 'Healing in progress' : 'Idle'}</span>
             </div>
-            <Button className="w-full bg-red-600 hover:bg-red-700 text-white"><RefreshCw className="w-4 h-4 mr-2" />Run Recovery Drill</Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card className="border border-red-900/20 bg-black">
-        <CardHeader><CardTitle className="flex items-center"><Terminal className="w-5 h-5 mr-2 text-red-500" />Recovery Logs & Status Indicators</CardTitle></CardHeader>
-        <CardContent className="space-y-3">
-          {logs.map((log) => (
-            <div key={log} className="p-3 rounded-md border border-red-900/20 bg-red-950/10 text-sm text-white/75">{log}</div>
-          ))}
-          <div className="grid md:grid-cols-3 gap-3 pt-2">
-            <div className="p-3 rounded-md border border-red-900/20 bg-black flex items-center text-sm text-green-400 font-bold"><CheckCircle2 className="w-4 h-4 mr-2" />Validation Passed</div>
-            <div className="p-3 rounded-md border border-red-900/20 bg-black flex items-center text-sm text-yellow-400 font-bold"><AlertCircle className="w-4 h-4 mr-2" />1 Manual Review</div>
-            <div className="p-3 rounded-md border border-red-900/20 bg-black flex items-center text-sm text-green-400 font-bold"><ShieldCheck className="w-4 h-4 mr-2" />System Stable</div>
           </div>
-        </CardContent>
-      </Card>
+          <Button onClick={handleHeal} disabled={!currentRepo || running || healMutation.isPending} className="bg-red-600 text-white hover:bg-red-700">
+            {(running || healMutation.isPending) ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ShieldCheck className="w-4 h-4 mr-2" />}
+            Start Self-Heal
+          </Button>
+        </div>
+      </motion.div>
+
+      {!currentRepo ? (
+        <Card className="border border-red-900/20 bg-black">
+          <CardContent className="pt-10 pb-10 text-center text-white/50">No repository selected. Connect one in Repositories first.</CardContent>
+        </Card>
+      ) : (
+        <div className="grid lg:grid-cols-3 gap-8">
+          <Card className="lg:col-span-2 border border-red-900/20 bg-black">
+            <CardContent className="pt-6 space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-white flex items-center"><Activity className="w-6 h-6 text-red-500 mr-2" />Healing Actions</h2>
+                <span className="text-xs font-bold uppercase tracking-widest text-white/40">Live mode</span>
+              </div>
+
+              <div className="space-y-4">
+                {summary.length > 0 ? summary.map((item, index) => (
+                  <div key={`${item.entity}-${index}`} className="p-4 rounded-md border border-red-900/20 bg-red-950/10">
+                    <p className="text-white font-semibold">{item.entity}</p>
+                    <p className="text-sm text-white/50 mt-1">{item.file}</p>
+                    <p className="text-sm text-white/70 mt-2">{item.result.message}</p>
+                    <p className="text-xs text-white/40 mt-2">Status: {item.result.status}</p>
+                  </div>
+                )) : (
+                  <div className="p-4 rounded-md border border-red-900/20 bg-red-950/10 text-white/60">No self-healing results yet.</div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="space-y-6">
+            <Card className="border border-red-900/20 bg-black">
+              <CardContent className="pt-6">
+                <h2 className="text-xl font-bold text-white mb-4 flex items-center"><Brain className="w-5 h-5 text-red-500 mr-2" />Status</h2>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 rounded-md border border-red-900/20 bg-red-950/10">
+                    <span className="text-sm text-white/70 font-medium">Repository</span>
+                    <span className="text-sm text-red-400 font-bold">{currentRepo ? getDisplayName(currentRepo) : 'None'}</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-md border border-red-900/20 bg-red-950/10">
+                    <span className="text-sm text-white/70 font-medium">State</span>
+                    <span className="text-sm text-red-400 font-bold">{healMutation.isPending || running ? 'Running' : 'Idle'}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border border-red-900/20 bg-black">
+              <CardContent className="pt-6">
+                <h2 className="text-xl font-bold text-white mb-4 flex items-center"><RotateCcw className="w-5 h-5 text-red-500 mr-2" />Next Step</h2>
+                <p className="text-white/60 text-sm leading-relaxed">Trigger self-healing after a fresh analysis so the backend can generate repository-specific remediation output.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
