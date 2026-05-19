@@ -102,6 +102,21 @@ http://localhost:8000
 }
 ```
 
+### GET /repo/count
+**Description:** Count the authenticated user's repositories by source
+
+**Headers:**
+- `X-GitHub-Token` (optional): GitHub OAuth token used to count the user's actual GitHub repositories
+
+**Response:*
+```json
+{
+  "total_repositories": 4,
+  "github_repositories": 3,
+  "upload_repositories": 1
+}
+```
+
 ---
 
 ## Code Scanning & Parsing

@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from app.services import self_healing_service, impact_service, ai_service
 from app.services.auth_service import get_current_user, verify_repo_ownership
+import os
 
 router = APIRouter()
 
@@ -63,3 +64,59 @@ def trigger_self_healing(req: SelfHealRequest, user_id: str = Depends(get_curren
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/dev")
+def trigger_self_healing_dev(req: SelfHealRequest):
+    from app.utils.dev_mode import dev_endpoints_enabled
+
+    if not dev_endpoints_enabled():
+        raise HTTPException(status_code=403, detail="Dev self-heal only available in DEBUG mode")
+
+    if not req.repo_id:
+        raise HTTPException(status_code=400, detail="repo_id is required")
+
+    try:
+        impact_res = impact_service.run_impact_analysis(repo_id=req.repo_id)
+        impact_items = impact_res.get("impact", [])[:10]
+    except Exception:
+        impact_items = []
+
+    summary = []
+    for item in impact_items:
+        fn_name = item.get("function", "unknown")
+        file_path = (item.get("affected_files") or ["unknown"])[0]
+        summary.append({
+            "entity": fn_name,
+            "file": file_path,
+            "result": {
+                "status": "patched",
+                "message": f"Generated safe refactor patch for {fn_name}",
+                "commit_sha": "dev-simulated",
+                "validation": {
+                    "syntax_valid": True,
+                    "errors": [],
+                },
+            },
+        })
+
+    if not summary:
+        summary.append({
+            "entity": "repository",
+            "file": "N/A",
+            "result": {
+                "status": "skipped",
+                "message": "No high-risk entities detected in dev mode.",
+                "commit_sha": "dev-simulated",
+                "validation": {
+                    "syntax_valid": True,
+                    "errors": [],
+                },
+            },
+        })
+
+    return {
+        "repo_id": req.repo_id,
+        "message": "Dev self-healing simulation completed.",
+        "summary": summary,
+    }
